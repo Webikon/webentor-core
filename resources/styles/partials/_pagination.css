@@ -1,0 +1,35 @@
+/* Post loop pagination */
+.wp-block-query-pagination {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  color: var(--color-primary);
+  font-size: 1rem;
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .wp-block-query-pagination-previous {
+    position: absolute;
+    left: 0;
+  }
+
+  .wp-block-query-pagination-next {
+    position: absolute;
+    right: 0;
+  }
+
+  .page-numbers.current {
+    color: var(--color-primary);
+    font-size: 1.125rem;
+  }
+
+  .wp-block-query & {
+    > .wp-block-query-pagination-numbers,
+    > .wp-block-query-pagination-previous,
+    > .wp-block-query-pagination-next {
+      margin: 0;
+    }
+  }
+}

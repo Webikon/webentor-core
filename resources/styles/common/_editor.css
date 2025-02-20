@@ -1,0 +1,86 @@
+.post-type-post .editor-styles-wrapper {
+  font-family: var(--font-primary), serif;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.editor-styles-wrapper {
+  .has-primary-font-family {
+    font-family: var(--font-primary);
+  }
+
+  .has-heading-font-family {
+    font-family: var(--font-heading);
+  }
+
+  ul {
+    list-style: outside;
+    margin-left: 24px;
+  }
+}
+
+.w-link-settings {
+  .block-editor-link-control {
+    min-width: 100%;
+  }
+
+  .block-editor-url-input {
+    min-width: auto;
+    margin: 0;
+    padding: 0 16px;
+  }
+}
+
+.wp-block-post-title {
+  margin-bottom: 20px;
+}
+
+/* Margins for the content, which is added right to the root container, e.g. on blogs */
+.is-root-container {
+  > p,
+  > ul,
+  > ol,
+  > h1,
+  > h2,
+  > h3,
+  > h4,
+  > h5,
+  > h6,
+  > figure,
+  > .wp-block-embed,
+  > .wp-block-webentor-e-image {
+    margin-bottom: 20px;
+  }
+}
+
+.wp-block-webentor-e-image {
+  img {
+    max-height: 100%;
+  }
+}
+
+/* Dirty fix for hiding empty typography panel, see https://github.com/WordPress/gutenberg/issues/61231 */
+.typography-block-support-panel:has(
+    .components-tools-panel-header + :empty:last-child
+  ) {
+  display: none;
+}
+
+/* Fix responsive settings tabs */
+.w-responsive-settings-tabs {
+  .components-tab-panel__tabs {
+    justify-content: space-between;
+  }
+
+  .components-tab-panel__tabs-item {
+    padding: 0 6px;
+    flex-shrink: 0;
+
+    &.is-active {
+      font-weight: bold;
+    }
+  }
+}

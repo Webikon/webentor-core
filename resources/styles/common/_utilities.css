@@ -1,0 +1,59 @@
+/* Custom classes for container because we cannot set max-width and padding via standard config
+https://github.com/tailwindlabs/tailwindcss/issues/3235 */
+.container.container {
+  padding-left: 16px;
+  padding-right: 16px;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+
+  @media (min-width: theme(--breakpoint-xl)) {
+    max-width: 1682px;
+  }
+}
+
+.container-px {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.bg-image-underlay {
+  position: relative;
+
+  &::before {
+    position: absolute;
+    display: block;
+    inset: 0;
+    background-color: var(--color-gray-900);
+    opacity: 0.2;
+    content: '';
+  }
+
+  > * {
+    z-index: 1;
+  }
+}
+
+.hidden-for-xl {
+  @media (min-width: theme(--breakpoint-xl)) {
+    display: none;
+  }
+}
+
+.hidden-for-lg {
+  @media (min-width: theme(--breakpoint-lg)) {
+    display: none;
+  }
+}
+
+.hidden-for-md {
+  @media (min-width: theme(--breakpoint-md)) {
+    display: none;
+  }
+}
+
+.hidden-for-sm {
+  @media (min-width: theme(--breakpoint-sm)) {
+    display: none;
+  }
+}

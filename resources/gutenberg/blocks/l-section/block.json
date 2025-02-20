@@ -1,0 +1,55 @@
+{
+  "$schema": "../../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "name": "webentor/l-section",
+  "title": "Section",
+  "description": "Section wrapper",
+  "category": "webentor-layout",
+  "icon": "align-wide",
+  "keywords": [
+    "section",
+    "container",
+    "layout"
+  ],
+  "attributes": {
+    "borderTop": {
+      "type": "boolean",
+      "default": false
+    },
+    "borderBottom": {
+      "type": "boolean",
+      "default": false
+    },
+    "spacing": {
+      "type": "object",
+      "default": {
+        "padding-top": {
+          "value": {
+            "basic": "pt-10",
+            "lg": "pt-20"
+          }
+        },
+        "padding-bottom": {
+          "value": {
+            "basic": "pb-10",
+            "lg": "pb-20"
+          }
+        }
+      }
+    },
+    "anchor": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "anchor": true,
+    "color": {
+      "text": true,
+      "background": true
+    },
+    "webentor": {
+      "spacing": true
+    }
+  }
+}

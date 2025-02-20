@@ -1,0 +1,19 @@
+{{--
+  $title - Block name
+  $description - Placeholder description
+  $hide_description - Hide description
+
+  Useage:
+  @include('components.block-placeholder', ['name' => 'My block' ])
+
+  --}}
+<div
+  class="wbtr:border-grey-200 wbtr:bg-grey-100 wbtr:flex wbtr:flex-col wbtr:gap-3 wbtr:border-2 wbtr:p-3 wbtr:align-middle"
+>
+  <div class="wbtr:text-20">{{ __('Block: ', 'webentor') }} {{ $name }}</div>
+
+  @if (empty($hide_description))
+    <div class="wbtr:text-18">{{ $description ?? __('Please fill the block fields to render preview.', 'webentor') }}
+    </div>
+  @endif
+</div>

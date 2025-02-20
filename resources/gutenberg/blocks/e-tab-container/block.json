@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "name": "webentor/e-tab-container",
+  "title": "Single Tab",
+  "description": "Tab used in Tabs block.",
+  "category": "webentor-elements",
+  "icon": "table-row-after",
+  "keywords": [
+    "tabs",
+    "container",
+    "elements"
+  ],
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "hideTitle": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "webentor": {
+      "display": true
+    }
+  }
+}

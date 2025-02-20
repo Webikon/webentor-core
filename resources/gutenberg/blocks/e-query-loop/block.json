@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "name": "webentor/e-query-loop",
+  "title": "Webentor Query Loop",
+  "description": "Loop with various query configuration",
+  "category": "webentor-elements",
+  "icon": "update",
+  "keywords": [
+    "loop",
+    "query",
+    "slider"
+  ],
+  "attributes": {
+    "query": {
+      "type": "object",
+      "default": {
+        "perPage": null,
+        "pages": 0,
+        "offset": 0,
+        "postType": "post",
+        "order": "desc",
+        "orderBy": "date",
+        "author": "",
+        "search": "",
+        "exclude": [],
+        "sticky": "",
+        "inherit": true,
+        "taxQuery": null,
+        "parents": [],
+        "queryId": ""
+      }
+    }
+  },
+  "supports": {}
+}

@@ -1,0 +1,139 @@
+@layer base {
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-primary);
+  }
+
+  /**
+   * Disable smooth scrolling when users have prefers-reduced-motion enabled
+   */
+  @media screen and (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  a,
+  button,
+  label {
+    transition:
+      color 0.15s ease-out,
+      background-color 0.15s ease-out,
+      opacity 0.15s ease-out,
+      border-color 0.15s ease-out;
+  }
+
+  svg {
+    transition: fill 0.15s ease-out;
+  }
+
+  p > a {
+    text-decoration: none;
+    color: var(--color-primary);
+  }
+
+  p > a:hover {
+    text-decoration: underline;
+  }
+}
+
+/* Content lists styles */
+.format-content {
+  ul,
+  ol {
+    list-style: outside;
+    margin-left: 24px;
+    margin-bottom: 16px;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  table a,
+  ul li a,
+  ol li a {
+    color: var(--color-primary);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  li::marker {
+    font-family: var(--font-primary);
+  }
+
+  p {
+    margin-bottom: 16px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-bottom: 16px;
+  }
+}
+
+.tabs-navigation ul {
+  list-style: none;
+  margin-left: 0;
+}
+
+.wp-block-query {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  align-items: center;
+}
+
+.caption p a {
+  text-decoration: underline;
+  color: var(--color-primary);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* Fix for AlpineJS blip when page loads and we use x-show */
+[x-cloak] {
+  display: none !important;
+}
+
+/* Loading state for Alpine.js AJAX requests */
+[aria-busy='true'] {
+  cursor: wait;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Loading spinner */
+.loader {
+  width: 24px;
+  height: 24px;
+  border: 5px solid var(--color-white);
+  border-bottom-color: var(--color-primary);
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

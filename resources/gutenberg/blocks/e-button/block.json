@@ -1,0 +1,30 @@
+{
+  "$schema": "../../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "name": "webentor/e-button",
+  "title": "Button",
+  "description": "Button block.",
+  "category": "webentor-elements",
+  "icon": "button",
+  "keywords": [
+    "button",
+    "link",
+    "cta",
+    "call to action"
+  ],
+  "attributes": {
+    "button": {
+      "type": "object",
+      "default": {
+        "showButton": true,
+        "title": "Button",
+        "variant": "primary",
+        "size": "medium",
+        "asPill": false,
+        "url": "#",
+        "newTab": false
+      }
+    }
+  },
+  "supports": {}
+}

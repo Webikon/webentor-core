@@ -1,0 +1,75 @@
+{
+  "$schema": "../../../../schemas/webentor-block.json",
+  "name": "webentor/e-image",
+  "title": "Custom Responsive Image",
+  "description": "Responsive image block.",
+  "category": "webentor-elements",
+  "icon": "format-image",
+  "keywords": ["image"],
+  "example": {
+    "attributes": {
+      "mode": "preview",
+      "data": {
+        "preview_image_help": true
+      }
+    }
+  },
+  "attributes": {
+    "imgId": {
+      "type": "number",
+      "default": 0
+    },
+    "focalPoint": {
+      "type": "object",
+      "default": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "lazyload": {
+      "type": "boolean",
+      "default": true
+    },
+    "openInLightbox": {
+      "type": "boolean",
+      "default": false
+    },
+    "link": {
+      "type": "object",
+      "default": {}
+    },
+    "fullWidth": {
+      "type": "boolean",
+      "default": false
+    },
+    "rounded": {
+      "type": "boolean",
+      "default": false
+    },
+    "border": {
+      "type": "boolean",
+      "default": false
+    },
+    "objectFit": {
+      "type": "string",
+      "default": "none"
+    },
+    "objectPosition": {
+      "type": "string",
+      "default": "center"
+    },
+    "imageSize": {
+      "type": "string",
+      "default": "large"
+    },
+    "customSizeEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "customSize": {
+      "type": "object",
+      "default": {}
+    }
+  },
+  "supports": {}
+}

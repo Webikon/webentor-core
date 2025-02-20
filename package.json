@@ -1,0 +1,80 @@
+{
+  "name": "webentor-core-php",
+  "homepage": "https://webikon.sk",
+  "version": "0.9.0",
+  "license": "MIT",
+  "author": "Webikon s.r.o.",
+  "maintainers": [
+    {
+      "name": "Webikon s.r.o.",
+      "email": "support@webikon.sk"
+    },
+    {
+      "name": "Pavol Caban",
+      "email": "pavol.caban@webikon.sk"
+    }
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "npm run lint:js && npm run lint:css",
+    "lint:js": "eslint resources/gutenberg",
+    "lint:css": "stylelint \"resources/**/*.{vue,css,sass,scss,less}\"",
+    "prettier-check": "prettier --check 'resources/**/*.{js,ts,tsx,css}'",
+    "prettier-check:js": "prettier --check 'resources/**/*.{js,ts,tsx}'",
+    "prettier-check:css": "prettier --check 'resources/**/*.css'",
+    "prettier-check:blade": "prettier --check 'resources/**/*.blade.php'",
+    "prettier-fix": "prettier --write 'resources/**/*.{js,ts,tsx,css}'",
+    "prettier-fix:js": "prettier --write 'resources/**/*.{js,ts,tsx}'",
+    "prettier-fix:css": "prettier --write 'resources/**/*.css'",
+    "prettier-fix:blade": "prettier --write 'resources/**/*.blade.php'",
+    "postinstall": "patch-package"
+  },
+  "devDependencies": {
+    "@10up/block-components": "^1.19.6",
+    "@eslint/js": "^9.20.0",
+    "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
+    "@kucrut/vite-for-wp": "^0.10.0",
+    "@shufo/prettier-plugin-blade": "^1.15.3",
+    "@tailwindcss/postcss": "^4.0.6",
+    "@tailwindcss/vite": "^4.0.6",
+    "@types/wordpress__block-editor": "^11.5.16",
+    "@vitejs/plugin-react": "^4.3.4",
+    "@wordpress/block-editor": "^14.13.0",
+    "@wordpress/block-library": "^9.18.0",
+    "@wordpress/blocks": "^14.7.0",
+    "@wordpress/components": "^29.4.0",
+    "@wordpress/dependency-extraction-webpack-plugin": "^6.18.0",
+    "@wordpress/i18n": "^5.18.0",
+    "eslint": "^9.20.1",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-react": "^7.37.4",
+    "globals": "^15.15.0",
+    "lint-staged": "^15.4.3",
+    "patch-package": "^8.0.0",
+    "postcss": "^8.5.2",
+    "postcss-pxtorem": "^6.1.0",
+    "prettier": "^3.5.1",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "rollup-plugin-external-globals": "^0.13.0",
+    "stylelint": "^16.14.1",
+    "stylelint-config-recommended": "^15.0.0",
+    "tailwindcss": "^4.0.6",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.0",
+    "vite": "^6.0.11",
+    "vite-plugin-external": "^4.3.1",
+    "webentor-core-js": "webikon/webentor-core-js#main"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": "npm run lint:js --",
+    "*.css": "npm run lint:css --"
+  }
+}

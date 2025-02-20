@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "name": "webentor/e-accordion-group",
+  "title": "Accordion Group",
+  "description": "Accordion group block.",
+  "category": "webentor-elements",
+  "icon": "list-view",
+  "keywords": [
+    "accordion",
+    "toggle",
+    "elements"
+  ],
+  "attributes": {
+    "minHeightEnabled": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "anchor": true
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../../schemas/webentor-block.json",
+  "name": "webentor/l-flexible-container",
+  "apiVersion": 3,
+  "title": "Flexible Container",
+  "description": "Container block with a lot of flexible options.",
+  "category": "webentor-layout",
+  "icon": "layout",
+  "keywords": [
+    "section",
+    "container",
+    "layout"
+  ],
+  "attributes": {
+    "template":{
+      "type":"array",
+      "default": []
+    }
+  },
+  "supports": {
+    "anchor": true,
+    "color": {
+      "background": true,
+      "text": true
+    },
+    "webentor": {
+      "spacing": true,
+      "display": true,
+      "grid": true,
+      "gridItem": true,
+      "flexbox": true,
+      "flexboxItem": true,
+      "blockLink": true
+    }
+  }
+}

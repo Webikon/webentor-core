@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "title": "Table Row",
+  "description": "Row with inner content.",
+  "name": "webentor/e-table-row",
+  "parent": ["webentor/e-table"],
+  "category": "webentor-elements",
+  "example": {
+    "attributes": {
+      "mode": "preview",
+      "data": {
+        "preview_image_help": true
+      }
+    }
+  },
+  "attributes": {},
+  "supports": {
+    "html": false,
+    "multiple": true,
+    "customClassName": false
+  }
+}

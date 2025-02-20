@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../../schemas/webentor-block.json",
+  "name": "webentor/e-breadcrumbs",
+  "apiVersion": 3,
+  "title": "Breadcrumbs",
+  "description": "Block showing breadcrumbs.",
+  "category": "webentor-elements",
+  "icon": "open-folder",
+  "keywords": [
+    "breadcrumbs"
+  ],
+  "attributes": {
+    "anchor": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "anchor": true
+  }
+}

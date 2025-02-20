@@ -1,0 +1,59 @@
+{
+  "plugins": [
+    "@shufo/prettier-plugin-blade",
+    "@ianvs/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "useTabs": false,
+  "wrapAttributes": "force-expand-multiline",
+  "sortTailwindcssClasses": true,
+  "sortHtmlAttributes": "none",
+  "noPhpSyntaxCheck": false,
+  "overrides": [
+    {
+      "files": [
+        "*.blade.php"
+      ],
+      "options": {
+        "tabWidth": 2,
+        "parser": "blade"
+      }
+    }
+  ],
+  "tailwindStylesheet": "./resources/styles/app.css",
+  "importOrder": [
+    "^react",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^@webentorCore",
+    "^@webentorCore/(.*)$",
+    "",
+    "^@gutenberg",
+    "^@gutenberg/(.*)$",
+    "",
+    "^@scripts",
+    "^@scripts/(.*)$",
+    "^[.]",
+    "",
+    "^@images",
+    "^@images/(.*)$",
+    "",
+    "^@fonts",
+    "^@fonts/(.*)$",
+    "",
+    "^@styles",
+    "^@styles/(.*)$",
+    "",
+    "<TYPES>^[.]",
+    "<TYPES>",
+    "^@types",
+    "^@types/(.*)$",
+    "",
+    "^(?!.*[.]css$)[./].*$",
+    ".css$"
+  ]
+}

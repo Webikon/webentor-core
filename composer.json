@@ -1,0 +1,22 @@
+{
+  "name": "webikon/webentor-core-php",
+  "version": "0.9.0",
+  "license": "MIT",
+  "description": "Webentor Core PHP package",
+  "homepage": "https://webikon.sk",
+  "authors": [
+    {
+      "name": "Webikon s.r.o.",
+      "email": "support@webikon.sk",
+      "homepage": "https://webikon.sk"
+    },
+    {
+      "name": "Pavol Caban",
+      "email": "pavol.caban@webikon.sk",
+      "homepage": "https://webikon.sk"
+    }
+  ],
+  "require": {
+    "kucrut/vite-for-wp": "^0.10.0"
+  }
+}
