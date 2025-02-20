@@ -16,11 +16,6 @@
       "homepage": "https://webikon.sk"
     }
   ],
-  "autoload": {
-    "files": [
-      "init.php"
-    ]
-  },
   "require": {
     "kucrut/vite-for-wp": "^0.10.0"
   }
