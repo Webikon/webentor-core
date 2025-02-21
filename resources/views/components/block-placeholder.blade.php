@@ -8,7 +8,7 @@
 
   --}}
 <div
-  class="wbtr:border-grey-200 wbtr:bg-grey-100 wbtr:flex wbtr:flex-col wbtr:gap-3 wbtr:border-2 wbtr:p-3 wbtr:align-middle"
+  class="wbtr:border-gray-200 wbtr:bg-gray-100 wbtr:flex wbtr:flex-col wbtr:gap-3 wbtr:border-2 wbtr:p-3 wbtr:align-middle"
 >
   <div class="wbtr:text-20">{{ __('Block: ', 'webentor') }} {{ $name }}</div>
 

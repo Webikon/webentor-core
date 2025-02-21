@@ -14,16 +14,16 @@
       @if ($item[1] !== '')
         <a
           href="{{ $item[1] }}"
-          class="wbtr:text-caption {{ $loop->last ? 'wbtr:text-black' : 'wbtr:text-grey-500' }} wbtr:hover:underline"
+          class="wbtr:text-caption {{ $loop->last ? 'wbtr:text-black' : 'wbtr:text-gray-500' }} wbtr:hover:underline"
         >
         @else
-          <div class="wbtr:text-caption {{ $loop->last ? 'wbtr:text-black' : 'wbtr:text-grey-500' }}">
+          <div class="wbtr:text-caption {{ $loop->last ? 'wbtr:text-black' : 'wbtr:text-gray-500' }}">
       @endif
       {!! $item[0] !!}
       </{{ $item[1] !== '' ? 'a' : 'div' }}>
 
       @if (!$loop->last)
-        @svg('images.svg.arrow-right')
+        @svg('images.svg.chevron-right')
       @endif
     @endforeach
   </div>

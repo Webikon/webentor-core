@@ -34,12 +34,12 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
       <div {...blockProps} className={`${blockProps.className}`}>
         <div className="md:wbtr:pt-8 wbtr:flex wbtr:w-full wbtr:flex-col wbtr:items-center wbtr:gap-8 wbtr:border wbtr:border-editor-border wbtr:px-4 wbtr:pt-5 wbtr:pb-4">
           <div className="wbtr:flex wbtr:w-full wbtr:flex-col wbtr:items-center wbtr:gap-4">
-            <span className="wbtr:text-grey-800 wbtr:font-heading wbtr:text-80">
+            <span className="wbtr:font-heading wbtr:text-80 wbtr:text-gray-800">
               404
             </span>
 
             <RichText
-              className="wbtr:text-grey-800 wbtr:uppercase"
+              className="wbtr:text-gray-800 wbtr:uppercase"
               tagName="h2"
               placeholder={__('Title (required)', 'webentor')}
               value={attributes.title}

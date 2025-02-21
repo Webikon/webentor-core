@@ -28,7 +28,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
     <>
       {/* Custom footer */}
 
-      <div className="footer wbtr:bg-grey-50 wbtr:p-5 wbtr:text-center">
+      <div className="footer wbtr:bg-gray-50 wbtr:p-5 wbtr:text-center">
         Footer which will be displayed dynamically on FE
       </div>
     </>

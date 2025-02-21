@@ -15,12 +15,12 @@
 >
 
   <div class="wbtr:flex wbtr:flex-col wbtr:items-center wbtr:gap-4">
-    <div class="wbtr:font-heading wbtr:text-80 wbtr:leading-125 wbtr:text-grey-800 wbtr:text-center">
+    <div class="wbtr:font-heading wbtr:text-80 wbtr:leading-125 wbtr:text-gray-800 wbtr:text-center">
       404
     </div>
 
     <div
-      class="wbtr:font-heading wbtr:text-30 wbtr:leading-125 wbtr:text-grey-800 xl:wbtr:text-38 wbtr:text-center wbtr:uppercase"
+      class="wbtr:font-heading wbtr:text-30 wbtr:leading-125 wbtr:text-gray-800 xl:wbtr:text-38 wbtr:text-center wbtr:uppercase"
     >
       {!! $attributes['title'] ?? '' !!}
     </div>

@@ -60,7 +60,7 @@
     <button
       x-on:click="expanded = !expanded"
       :aria-expanded="expanded"
-      class="{{ $btn_classes ?? '' }} text-headline wbtr:text-grey-700 wbtr:flex wbtr:w-full wbtr:items-center wbtr:justify-between wbtr:py-2.5 wbtr:text-left"
+      class="{{ $btn_classes ?? '' }} text-headline wbtr:text-gray-700 wbtr:flex wbtr:w-full wbtr:items-center wbtr:justify-between wbtr:py-2.5 wbtr:text-left"
     >
       <span>{{ $title }}</span>
       <span
@@ -68,7 +68,7 @@
         class="transition-transform"
         aria-hidden="true"
       >
-        @svg('images.svg.btn-icon', 'wbtr:w-4 wbtr:h-4 wbtr:text-grey-500')
+        @svg('images.svg.chevron-right', 'wbtr:w-4 wbtr:h-4 wbtr:text-gray-500')
       </span>
 
     </button>

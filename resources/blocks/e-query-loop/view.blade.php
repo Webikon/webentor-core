@@ -9,7 +9,7 @@
    * @param object $block WP_Block_Type instance.
    **/
 
-  // Data passed from app/View/Composers/gutenberg/blocks/EQueryLoop.php
+  // Data passed from app/View/Composers/blocks/EQueryLoop.php
 @endphp
 
 {{-- Query content is prepared in composer --}}

@@ -14,7 +14,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // Get all styles and scripts from blocks
 const blockStylesEntries = [];
 const blocksStyles = glob.sync(
-  resolve(__dirname, 'resources/gutenberg/blocks/**/style.css'),
+  resolve(__dirname, 'resources/blocks/**/style.css'),
 );
 blocksStyles.forEach((style) => {
   blockStylesEntries[style.replace(`${__dirname}/`, '').replace('.css', '')] =
@@ -23,7 +23,7 @@ blocksStyles.forEach((style) => {
 
 const blockScriptsEntries = [];
 const blocksScripts = glob.sync(
-  resolve(__dirname, 'resources/gutenberg/blocks/**/script.ts'),
+  resolve(__dirname, 'resources/blocks/**/script.ts'),
 );
 blocksScripts.forEach((js) => {
   blockScriptsEntries[js.replace(`${__dirname}/`, '').replace('.ts', '')] =
@@ -37,7 +37,7 @@ export default defineConfig({
     v4wp({
       input: {
         // Core
-        coreEditorJs: 'resources/gutenberg/editor.ts',
+        coreEditorJs: 'resources/scripts/editor.ts',
         coreEditorStyles: 'resources/styles/editor.css',
         coreAppStyles: 'resources/styles/app.css',
 
@@ -72,7 +72,7 @@ export default defineConfig({
       '@styles': '/resources/styles',
       '@fonts': '/resources/fonts',
       '@images': '/resources/images',
-      '@gutenberg': '/resources/gutenberg',
+      '@blocks': '/resources/blocks',
       '@webentorCore': '/node_modules/webentor-core-js/src',
     },
   },

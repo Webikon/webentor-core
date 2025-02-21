@@ -97,7 +97,7 @@
 
     .menu-item-has-children {
       > a {
-        color: var(--color-grey-200);
+        color: var(--color-gray-200);
       }
 
       .sub-menu {

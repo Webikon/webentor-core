@@ -1,4 +1,4 @@
-<div class="card wbtr:bg-grey-800 wbtr:p-4">
+<div class="card wbtr:bg-gray-800 wbtr:p-4">
   <div class="card__inner wbtr:bg-white wbtr:p-8">
     @if (!empty($img_url))
       <img

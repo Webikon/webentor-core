@@ -8,12 +8,12 @@
 :root {
   --slider-timer-progress: 0;
 
-  --slider-arrow-color: var(--color-grey-900);
+  --slider-arrow-color: var(--color-gray-900);
   --slider-arrow-color-inverted: var(--color-white);
   --slider-arrow-height: 30px;
   --slider-arrow-width: 30px;
 
-  --slider-pagination-color: var(--color-grey-900);
+  --slider-pagination-color: var(--color-gray-900);
   --slider-pagination-color-inverted: var(--color-white);
 
   --slider-pagination-bullet-height: 8px;

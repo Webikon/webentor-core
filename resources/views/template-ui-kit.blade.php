@@ -33,7 +33,7 @@ Template Name: UI Kit
 
     @include('ui-kit.ui-kit-custom-components')
 
-    <footer class="wp-block-template-part site-footer flex">
+    <footer class="wp-block-template-part site-footer">
       <?php block_footer_area(); ?>
     </footer>
   </div>

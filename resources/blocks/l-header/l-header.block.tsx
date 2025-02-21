@@ -77,7 +77,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
 
       {/* Custom header */}
 
-      <div className="header wbtr:bg-grey-50 wbtr:p-5 wbtr:text-center">
+      <div className="header wbtr:bg-gray-50 wbtr:p-5 wbtr:text-center">
         Header which will be displayed dynamically on FE
       </div>
     </>

@@ -8,7 +8,7 @@ use Illuminate\View\View;
  *
  * First argument is the current block view path.
  */
-Facades\View::composer('gutenberg.blocks.e-query-loop.view', function (View $view) {
+Facades\View::composer('blocks.e-query-loop.view', function (View $view) {
     $data = $view->getData();
     $attributes = $data['attributes'];
 

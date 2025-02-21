@@ -143,7 +143,7 @@
     @endif
 
     @notempty($attributes['caption'])
-      <div class="wbtr:text-14 wbtr:leading-125 wbtr:text-grey-200">{!! $attributes['caption'] !!}</div>
+      <div class="wbtr:text-14 wbtr:leading-125 wbtr:text-gray-200">{!! $attributes['caption'] !!}</div>
     </div>
   @endnotempty
 @endif

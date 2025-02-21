@@ -32,16 +32,16 @@ function register_frontend_blocks_assets($block_json_files = null, $manifest = n
         if (file_exists($manifest_path)) {
             $build_manifest = File::json($manifest_path) ?? [];
             $block_js = array_merge(
-                glob($resources_path . "/gutenberg/blocks/{$block_slug}/script.ts") ?: [],
-                glob($resources_path . "/gutenberg/blocks/{$block_slug}/script.tsx") ?: []
+                glob($resources_path . "/blocks/{$block_slug}/script.ts") ?: [],
+                glob($resources_path . "/blocks/{$block_slug}/script.tsx") ?: []
             );
-            $block_css = glob($resources_path . "/gutenberg/blocks/{$block_slug}/style.css");
+            $block_css = glob($resources_path . "/blocks/{$block_slug}/style.css");
 
             foreach ($build_manifest as $manifest_src => $manifest_item) {
                 if (!empty($block_js[0]) && strpos($block_js[0], $manifest_src) !== false) {
                     $assets = \Kucrut\Vite\register_asset(
                         $public_path,
-                        "resources/gutenberg/blocks/{$block_slug}/script.ts",
+                        "resources/blocks/{$block_slug}/script.ts",
                         [
                             'handle' => "{$block_slug}/js/frontend",
                         ]
@@ -51,7 +51,7 @@ function register_frontend_blocks_assets($block_json_files = null, $manifest = n
                 if (!empty($block_css[0]) && strpos($block_css[0], $manifest_src) !== false) {
                     $assets = \Kucrut\Vite\register_asset(
                         $public_path,
-                        "resources/gutenberg/blocks/{$block_slug}/style.css",
+                        "resources/blocks/{$block_slug}/style.css",
                         [
                             'handle' => "{$block_slug}/css/frontend",
                             'css-only' => true,
@@ -91,7 +91,7 @@ add_filter('block_type_metadata', function ($metadata) {
  */
 add_action('init', function () {
     // Register all theme blocks that were found
-    $theme_block_json_files = glob(get_template_directory() . '/resources/gutenberg/blocks/**/block.json');
+    $theme_block_json_files = glob(get_template_directory() . '/resources/blocks/**/block.json');
     if (!empty($theme_block_json_files)) {
         register_frontend_blocks_assets($theme_block_json_files, 'parent');
         foreach ($theme_block_json_files as $filename) {
@@ -100,7 +100,7 @@ add_action('init', function () {
     }
 
     // Register all core blocks that were found
-    $core_block_json_files = glob(WEBENTOR_CORE_RESOURCES_PATH . '/gutenberg/blocks/**/block.json');
+    $core_block_json_files = glob(WEBENTOR_CORE_RESOURCES_PATH . '/blocks/**/block.json');
     if (!empty($core_block_json_files)) {
         register_frontend_blocks_assets($core_block_json_files, 'webentor-core-php');
         foreach ($core_block_json_files as $filename) {
@@ -218,8 +218,8 @@ function render_block_blade($block)
 
     // Get the blade view and pass all necessary data
     // check if file exists
-    if (\Roots\view()->exists("gutenberg/blocks/{$block_slug}/view")) {
-        return \Roots\view("gutenberg/blocks/{$block_slug}/view", [
+    if (\Roots\view()->exists("blocks/{$block_slug}/view")) {
+        return \Roots\view("blocks/{$block_slug}/view", [
             'attributes' => $block->attributes,
             'innerBlocksContent' => $inner_blocks_html,
             'anchor' => $anchor,
@@ -255,8 +255,8 @@ function render_inner_block_blade($block)
     $classes = prepareBlockClassesFromSettings($block->attributes);
     $bg_classes = prepareBgBlockClassesFromSettings($block->attributes);
 
-    return $is_custom && \Roots\view()->exists("gutenberg/blocks/{$block_slug}/view") ?
-        \Roots\view("gutenberg/blocks/{$block_slug}/view", [
+    return $is_custom && \Roots\view()->exists("blocks/{$block_slug}/view") ?
+        \Roots\view("blocks/{$block_slug}/view", [
             'attributes' => $block->attributes,
             'anchor' => $anchor,
             'block_classes' => $classes,

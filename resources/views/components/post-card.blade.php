@@ -15,7 +15,7 @@
   $target = !empty($in_new) && $in_new ? 'target=_blank' : '';
 @endphp
 
-<div class="wbtr:bg-grey-50 wbtr:flex wbtr:h-full wbtr:flex-col wbtr:gap-4">
+<div class="wbtr:bg-gray-50 wbtr:flex wbtr:h-full wbtr:flex-col wbtr:gap-4">
   @notempty($url)
     <a
       href="{{ $url }}"
@@ -48,7 +48,7 @@
           @endnotempty
 
           @notempty($title)
-            <h2 class="wbtr:text-grey-700 wbtr:text-title">{!! $title !!}</h2>
+            <h2 class="wbtr:text-gray-700 wbtr:text-title">{!! $title !!}</h2>
           @endnotempty
 
           @notempty($url)
@@ -56,13 +56,13 @@
         @endnotempty
 
         @notempty($date)
-          <div class="wbtr:text-12 wbtr:text-grey-200">{{ $date }}</div>
+          <div class="wbtr:text-12 wbtr:text-gray-200">{{ $date }}</div>
         @endnotempty
 
       </div>
 
       @notempty($excerpt)
-        <div class="wbtr:text-16 wbtr:leading-150 wbtr:text-grey-200">{!! $excerpt !!}</div>
+        <div class="wbtr:text-16 wbtr:leading-150 wbtr:text-gray-200">{!! $excerpt !!}</div>
       @endnotempty
     </div>
     @notempty($url)

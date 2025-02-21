@@ -1,7 +1,7 @@
 @import 'tailwindcss' prefix(wbtr);
 @source "../views/";
 @source "../core-components/";
-@source "../gutenberg/";
+@source "../blocks/";
 @source "../../app/";
 
 /* Tailwind Config */

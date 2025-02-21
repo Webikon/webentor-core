@@ -24,19 +24,19 @@ add_filter('block_type_metadata_settings', function ($settings, $metadata) {
     //     ];
     // }
 
-    // if (!empty($metadata['supports']['webentor']['display'])) {
-    //     $settings['attributes']['display'] = [
-    //         'type' => 'object',
-    //         'default' => [
-    //             // Default display must be FLEX!
-    //             'display' => [
-    //                 'value' => [
-    //                     'basic' => 'flex'
-    //                 ]
-    //             ]
-    //         ],
-    //     ];
-    // }
+    if (!empty($metadata['supports']['webentor']['display'])) {
+        $settings['attributes']['display'] = [
+            'type' => 'object',
+            'default' => [
+                // Default display must be FLEX!
+                'display' => [
+                    'value' => [
+                        'basic' => 'flex'
+                    ]
+                ]
+            ],
+        ];
+    }
 
     if ($metadata['name'] === 'webentor/e-slider') {
         $settings['attributes']['slider'] = [
@@ -203,6 +203,7 @@ function prepareBgBlockClassesFromSettings($attributes, $block = null)
  */
 function prepareBlockClassesFromSettings($attributes, $block = null)
 {
+
     // Create classes attribute allowing for custom "className" and "align" values.
     $classes = '';
     if (!empty($attributes['className'])) {

@@ -47,11 +47,11 @@ add_filter('vite_for_wp__development_assets', function ($assets, $manifest, $ent
  * Enqueue core Gutenberg editor assets
  */
 add_action('enqueue_block_editor_assets', function (): void {
-    $dependencies = File::exists(get_template_directory() . '/webentor-core-php/public/editor.deps.json') ? File::json(get_template_directory() . '/webentor-core-php/public/editor.deps.json') : [];
+    $dependencies = File::exists(WEBENTOR_CORE_PUBLIC_PATH . '/editor.deps.json') ? File::json(WEBENTOR_CORE_PUBLIC_PATH . '/editor.deps.json') : [];
 
     Vite\enqueue_asset(
         WEBENTOR_CORE_VITE_MANIFEST_DIR,
-        'resources/gutenberg/editor.ts',
+        'resources/scripts/editor.ts',
         [
             'handle' => 'webentor-core-editor-js',
             'dependencies' => [...$dependencies, 'react', 'react-dom'],

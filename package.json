@@ -22,7 +22,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "npm run lint:js && npm run lint:css",
-    "lint:js": "eslint resources/gutenberg",
+    "lint:js": "eslint resources/scripts resources/blocks",
     "lint:css": "stylelint \"resources/**/*.{vue,css,sass,scss,less}\"",
     "prettier-check": "prettier --check 'resources/**/*.{js,ts,tsx,css}'",
     "prettier-check:js": "prettier --check 'resources/**/*.{js,ts,tsx}'",

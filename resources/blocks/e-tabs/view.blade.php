@@ -18,7 +18,7 @@
     class="e-tabs wbtr:w-full"
   >
     <div class="e-tabs__navigation tabs-navigation">
-      <ul class="wbtr:border-grey-100 wbtr:flex wbtr:flex-wrap wbtr:border-b wbtr:text-center">
+      <ul class="wbtr:border-gray-100 wbtr:flex wbtr:flex-wrap wbtr:border-b wbtr:text-center">
         @foreach ($additional_data['tabs_nav'] as $index => $tab)
           <li class="e-tabs__navigation-item">
             <button
