@@ -8,11 +8,10 @@ define('WEBENTOR_CORE_VITE_MANIFEST_DIR', __DIR__ . '/public/build');
 define('WEBENTOR_CORE_RESOURCES_DIR', __DIR__ . '/resources');
 
 // Autoload composer dependencies
-if (!file_exists($composer = __DIR__ . '/vendor/autoload.php')) {
-    wp_die(__('Error locating autoloader. Please run <code>composer install</code>.', 'sage'));
+if (file_exists($composer = __DIR__ . '/vendor/autoload.php')) {
+    require $composer;
 }
 
-require $composer;
 
 // Load core files
 require_once __DIR__ . '/app/acf.php';
