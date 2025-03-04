@@ -67,7 +67,7 @@ add_action('enqueue_block_editor_assets', function (): void {
             'css-only' => true,
         ]
     );
-});
+}, 5);
 
 /**
  * Enqueue core frontend assets
@@ -127,4 +127,4 @@ add_action('wp_enqueue_scripts', function () {
     //         );
     //     }
     // }
-}, 99);
+}, 5);
