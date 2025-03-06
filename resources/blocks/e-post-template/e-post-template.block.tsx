@@ -37,7 +37,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
    */
   const allowedBlocks: string[] = applyFilters(
     'webentor.core.e-post-template.allowedBlocks',
-    [],
+    ['webentor/l-post-card'],
     blockProps,
     parentBlockProps,
   );
@@ -47,7 +47,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
    */
   const template: TemplateArray = applyFilters(
     'webentor.core.e-post-template.template',
-    [],
+    [['webentor/l-post-card']],
     blockProps,
     parentBlockProps,
   );
