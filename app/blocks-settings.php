@@ -353,3 +353,18 @@ function prepareBlockClassesFromSettings($attributes, $block = null)
 
     return $classes;
 }
+
+/**
+ * Add Custom Typography classes to Post Title block
+ *
+ * @param string $block_content
+ * @param array $block
+ * @return string
+ */
+add_filter('render_block_core/post-title', function ($block_content, $block) {
+    if (!empty($block['attrs']['customTypography'])) {
+        $block_content = str_replace('wp-block-post-title', 'wp-block-post-title ' . $block['attrs']['customTypography'], $block_content);
+    }
+
+    return $block_content;
+}, 10, 2);
