@@ -17,4 +17,5 @@
   variant="{{ $attributes['button']['variant'] ?? '' }}"
   size="{{ $attributes['button']['size'] ?? '' }}"
   asPill="{{ $attributes['button']['asPill'] ?? false }}"
+  classes="{{ $block_classes ?? '' }}"
 />
