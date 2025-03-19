@@ -6681,7 +6681,7 @@ vscode-textmate@^7.0.1:
 
 webentor-core-js@webikon/webentor-core-js#main:
   version "0.9.0"
-  resolved "https://codeload.github.com/webikon/webentor-core-js/tar.gz/e3d08a1687ab661e62028759025c2ee00d86a28e"
+  resolved "https://codeload.github.com/webikon/webentor-core-js/tar.gz/b3a692c16dd15a6d7f838d2249a4018af696b221"
   dependencies:
     "@alpinejs/collapse" "^3.14.8"
     alpinejs "^3.14.8"
