@@ -49,7 +49,11 @@
       "background": true
     },
     "webentor": {
-      "spacing": true
+      "spacing": true,
+      "display": {
+        "height": true,
+        "minHeight": true
+      }
     }
   }
 }
