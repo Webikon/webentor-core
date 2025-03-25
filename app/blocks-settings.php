@@ -26,22 +26,22 @@ add_filter('block_type_metadata_settings', function ($settings, $metadata) {
 
     if (!empty($metadata['supports']['webentor']['display'])) {
         // Check if actual "display" property support is true
-        $display_support = (isset($settings['supports']['webentor']['display']) && $settings['supports']['webentor']['display'] === true)
+        $display_property_support = (isset($settings['supports']['webentor']['display']) && $settings['supports']['webentor']['display'] === true)
             || (isset($settings['supports']['webentor']['display']['display']) && $settings['supports']['webentor']['display']['display'] === true);
+
+        $display_default = $settings['attributes']['display']['default'] ?? [];
 
         $settings['attributes']['display'] = [
             'type' => 'object',
             'default' => [
-                // Default display must be FLEX!
-                ...($display_support
-                    ? [
-                        'display' => [
-                            'value' => [
-                                'basic' => 'flex'
-                            ]
-                        ]
+                ...$display_default ?? [],
+                'display' => [
+                    'value' => [
+                        // Default display property must be FLEX!
+                        ...$display_property_support ? ['basic' => 'flex'] : [],
+                        ...$display_default['display']['value'] ?? []
                     ]
-                    : []),
+                ],
             ],
         ];
     }
@@ -365,8 +365,8 @@ function prepareBlockClassesFromSettings($attributes, $block = null)
 /**
  * Add Custom Typography classes to Post Title block
  *
- * @param string $block_content
- * @param array $block
+ * @param  string $block_content
+ * @param  array  $block
  * @return string
  */
 add_filter('render_block_core/post-title', function ($block_content, $block) {

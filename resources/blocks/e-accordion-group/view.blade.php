@@ -12,11 +12,7 @@
 
 <div
   x-data="{ active: null }"
-  @class([
-      'e-accordion-group wbtr:relative wbtr:w-full',
-      'md:wbtr:min-h-140 lg:wbtr:min-h-165 xl:wbtr:min-h-175' =>
-          $attributes['minHeightEnabled'] ?? false,
-  ])`
+  class="e-accordion-group {{ $block_classes }} wbtr:relative"
 >
   {!! $innerBlocksContent ?? '' !!}
 </div>

@@ -1,1 +1,1 @@
-console.log('nieco');
+// console.log('accordion script');

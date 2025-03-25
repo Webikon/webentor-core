@@ -1,11 +1,9 @@
 import {
   InnerBlocks,
-  InspectorControls,
   useBlockProps,
   useInnerBlocksProps,
 } from '@wordpress/block-editor';
 import { BlockEditProps, registerBlockType } from '@wordpress/blocks';
-import { PanelBody, PanelRow, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 import block from './block.json';
@@ -20,15 +18,15 @@ import block from './block.json';
 
 type AttributesType = {
   coverImage: string;
-  minHeightEnabled: boolean;
 };
 
 const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
-  const { attributes, setAttributes } = props;
+  const { attributes } = props;
 
   const blockProps = useBlockProps();
-  const innerBlocksProps = useInnerBlocksProps(blockProps, {
+  const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
     allowedBlocks: ['webentor/e-accordion'],
+    template: [['webentor/e-accordion']],
   });
 
   // Preview image for block inserter
@@ -38,24 +36,16 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
 
   return (
     <>
-      <InspectorControls>
-        <PanelBody title="Block Settings" initialOpen={true}>
-          <PanelRow>
-            <ToggleControl
-              label={__('Enable minimal height', 'webentor')}
-              checked={attributes.minHeightEnabled}
-              onChange={(minHeightEnabled) =>
-                setAttributes({ minHeightEnabled })
-              }
-            />
-          </PanelRow>
-        </PanelBody>
-      </InspectorControls>
-
       <div
         {...innerBlocksProps}
-        className={`${blockProps.className} ${innerBlocksProps.className} e-accordion-group wbtr:border wbtr:border-dashed wbtr:border-editor-border wbtr:p-2`}
-      />
+        className={`${innerBlocksProps.className} e-accordion-group wbtr:relative wbtr:border wbtr:border-dashed wbtr:border-editor-border wbtr:p-2`}
+      >
+        <div className="wbtr:absolute wbtr:top-[2px] wbtr:left-2 wbtr:mb-1 wbtr:text-10 wbtr:opacity-50">
+          {__('Accordion Group', 'webentor')}
+        </div>
+
+        {children}
+      </div>
     </>
   );
 };

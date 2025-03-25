@@ -4,7 +4,11 @@ import {
   useBlockProps,
   useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { BlockEditProps, registerBlockType } from '@wordpress/blocks';
+import {
+  BlockEditProps,
+  registerBlockType,
+  TemplateArray,
+} from '@wordpress/blocks';
 import {
   __experimentalNumberControl as NumberControl,
   PanelBody,
@@ -13,8 +17,10 @@ import {
   __experimentalToolsPanel as ToolsPanel,
   __experimentalToolsPanelItem as ToolsPanelItem,
 } from '@wordpress/components';
+import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 
+import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 import { usePostTypes } from '@webentorCore/blocks-utils/_use-post-types';
 
 import block from './block.json';
@@ -55,10 +61,32 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   } = query;
 
   const blockProps = useBlockProps();
-  const innerBlocksProps = useInnerBlocksProps(blockProps, {
+  const parentBlockProps = useBlockParent();
+
+  /**
+   * Filter allowed blocks used in webentor/e-post-template inner block
+   */
+  const allowedBlocks: string[] = applyFilters(
+    'webentor.core.e-query-loop.allowedBlocks',
     // Allow only singular 'e-post-template' block to be added as child.
-    allowedBlocks: ['webentor/e-post-template'],
-    template: [['webentor/e-post-template', ['webentor/l-post-card']]],
+    ['webentor/e-post-template'],
+    blockProps,
+    parentBlockProps,
+  );
+
+  /**
+   * Filter template used in webentor/e-post-template inner block
+   */
+  const template: TemplateArray = applyFilters(
+    'webentor.core.e-query-loop.template',
+    [['webentor/e-post-template', ['webentor/l-post-card']]],
+    blockProps,
+    parentBlockProps,
+  );
+
+  const innerBlocksProps = useInnerBlocksProps(blockProps, {
+    allowedBlocks,
+    template,
     templateLock: 'all',
   });
 

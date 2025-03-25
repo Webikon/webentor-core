@@ -51,20 +51,25 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
         </PanelBody>
       </InspectorControls>
 
-      <div {...blockProps} className={`${blockProps.className}`}>
-        <div className="md:wbtr:pt-8 wbtr:flex wbtr:w-full wbtr:flex-col wbtr:border wbtr:border-editor-border wbtr:px-4 wbtr:pt-5 wbtr:pb-4">
-          <RichText
-            tagName="h2"
-            placeholder={__('Accordion Title (required)', 'webentor')}
-            value={attributes.title}
-            onChange={(title) => setAttributes({ title })}
-          />
-
-          <div
-            {...innerBlocksProps}
-            className={`${innerBlocksProps.className} wbtr:border wbtr:border-editor-border wbtr:p-4`}
-          />
+      <div
+        {...blockProps}
+        className={`${blockProps.className} md:wbtr:pt-8 wbtr:flex wbtr:w-full wbtr:flex-col wbtr:border wbtr:border-editor-border wbtr:px-4 wbtr:pt-5 wbtr:pb-4`}
+      >
+        <div className="wbtr:absolute wbtr:top-[2px] wbtr:left-2 wbtr:mb-1 wbtr:text-10 wbtr:opacity-50">
+          {__('Accordion', 'webentor')}
         </div>
+
+        <RichText
+          tagName="h2"
+          placeholder={__('Accordion Title (required)', 'webentor')}
+          value={attributes.title}
+          onChange={(title) => setAttributes({ title })}
+        />
+
+        <div
+          {...innerBlocksProps}
+          className={`${innerBlocksProps.className} wbtr:w-full wbtr:border wbtr:border-editor-border wbtr:p-4`}
+        />
       </div>
     </>
   );

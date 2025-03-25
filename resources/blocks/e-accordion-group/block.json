@@ -3,21 +3,50 @@
   "apiVersion": 3,
   "name": "webentor/e-accordion-group",
   "title": "Accordion Group",
-  "description": "Accordion group block.",
+  "description": "Allows grouping of multiple accordions and enables to have only one accordion opened at a time.",
   "category": "webentor-elements",
   "icon": "list-view",
-  "keywords": [
-    "accordion",
-    "toggle",
-    "elements"
-  ],
+  "keywords": ["accordion", "toggle", "elements"],
   "attributes": {
-    "minHeightEnabled": {
-      "type": "boolean",
-      "default": false
+    "display": {
+      "type": "object",
+      "default": {
+        "width": {
+          "value": {
+            "basic": "w-full"
+          }
+        }
+      }
+    },
+    "flexbox": {
+      "type": "object",
+      "default": {
+        "flex-direction": {
+          "value": {
+            "basic": "flex-col"
+          }
+        },
+        "gap": {
+          "value": {
+            "basic": "gap-5"
+          }
+        }
+      }
     }
   },
   "supports": {
-    "anchor": true
+    "anchor": true,
+    "webentor": {
+      "display": {
+        "display": true,
+        "minHeight": true,
+        "width": true
+      },
+      "grid": true,
+      "gridItem": true,
+      "flexbox": true,
+      "flexboxItem": true,
+      "spacing": true
+    }
   }
 }
