@@ -128,3 +128,16 @@ add_action('wp_enqueue_scripts', function () {
     //     }
     // }
 }, 5);
+
+/**
+ * Add the WordPress AJAX URL to the window object.
+ *
+ * This allows JavaScript to make AJAX requests to the WordPress admin-ajax.php endpoint.
+ */
+add_action('wp_head', function () {
+    if (!apply_filters('webentor/add_head_ajax_url', true)) {
+        return;
+    }
+
+    echo '<script>window.wpAjaxUrl = "' . admin_url('admin-ajax.php') . '";</script>';
+});
