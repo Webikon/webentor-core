@@ -63,7 +63,7 @@ Facades\View::composer('blocks.e-query-loop.view', function (View $view) {
         $query->the_post();
 
         // Render post template block
-        $block_content .= (new \WP_Block($post_template_block))->render([ 'dynamic' => false ]);
+        $block_content .= (new \WP_Block($post_template_block, ['itemNumber' => $query->current_post]))->render([ 'dynamic' => false ]);
     }
 
     $view->with('block_content', $block_content);

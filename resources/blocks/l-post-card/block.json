@@ -6,6 +6,7 @@
   "category": "webentor-layout",
   "icon": "embed-post",
   "keywords": ["post-card", "post", "post-template"],
+  "usesContext": ["itemNumber"],
   "attributes": {},
   "supports": {}
 }
