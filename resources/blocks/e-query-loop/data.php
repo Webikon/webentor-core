@@ -17,6 +17,7 @@ Facades\View::composer('blocks.e-query-loop.view', function (View $view) {
 
     $query_args = [
         'post_type' => $query_attributes['postType'] ?? 'post',
+        'post__not_in' => [get_the_ID()], // Ignore current post
     ];
     if (!empty($query_attributes['perPage'])) {
         $query_args['posts_per_page'] = $query_attributes['perPage'];
@@ -59,11 +60,15 @@ Facades\View::composer('blocks.e-query-loop.view', function (View $view) {
     // in this way every post will be rendered with the same template
     // Inspired by: https://github.com/WordPress/gutenberg/blob/trunk/packages/block-library/src/post-template/index.php
     $block_content = '';
-    while ($query->have_posts()) {
-        $query->the_post();
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
 
-        // Render post template block
-        $block_content .= (new \WP_Block($post_template_block, ['itemNumber' => $query->current_post]))->render([ 'dynamic' => false ]);
+            // Render post template block
+            $block_content .= (new \WP_Block($post_template_block, ['itemNumber' => $query->current_post]))->render(['dynamic' => false]);
+        }
+
+        wp_reset_postdata();
     }
 
     $view->with('block_content', $block_content);
