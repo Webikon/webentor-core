@@ -1,6 +1,5 @@
 import {
   InnerBlocks,
-  RichText,
   useBlockProps,
   useInnerBlocksProps,
 } from '@wordpress/block-editor';
@@ -27,7 +26,6 @@ import block from './block.json';
 // TODO extend with slider/responsive settings
 type AttributesType = {
   coverImage: string;
-  sliderTitle: string;
   template?: TemplateArray;
 };
 
@@ -58,13 +56,10 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
     parentBlockProps,
   );
 
-  const innerBlocksProps = useInnerBlocksProps(
-    {},
-    {
-      allowedBlocks,
-      template,
-    },
-  );
+  const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
+    allowedBlocks,
+    template,
+  });
 
   // Preview image for block inserter
   if (attributes.coverImage) {
@@ -72,19 +67,15 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   }
 
   return (
-    <div {...blockProps}>
-      <RichText
-        className="mb-4 text-h2"
-        label={__('Slider Title', 'webentor')}
-        value={attributes.sliderTitle}
-        onChange={(value) => props.setAttributes({ sliderTitle: value })}
-        placeholder={__('Enter slider title', 'webentor')}
-      />
+    <div
+      {...innerBlocksProps}
+      className={`${innerBlocksProps.className} slider-content wbtr:relative wbtr:border wbtr:border-editor-border wbtr:p-2 wbtr:pt-4`}
+    >
+      <div className="wbtr:absolute wbtr:top-[2px] wbtr:left-2 wbtr:mb-1 wbtr:text-10 wbtr:opacity-50">
+        {__('Slider', 'webentor')}
+      </div>
 
-      <div
-        {...innerBlocksProps}
-        className={`${innerBlocksProps.className} slider-content border border-editor-border p-4`}
-      />
+      {children}
     </div>
   );
 };

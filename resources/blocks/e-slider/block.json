@@ -16,10 +16,6 @@
     }
   },
   "attributes": {
-    "sliderTitle": {
-      "type": "string",
-      "default": ""
-    },
     "slider": {
       "type": "object",
       "default": {}

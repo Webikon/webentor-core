@@ -53,5 +53,4 @@
     'space_between' => $space_between,
     'centered_slides' => $centered_slides,
     'slider_breakpoints' => $slider_breakpoints_data,
-    'title' => $attributes['sliderTitle'] ?? '',
 ])
