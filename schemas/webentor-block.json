@@ -631,8 +631,38 @@
               "type": "boolean"
             },
             "display": {
-              "description": "When set to true, the block will have additional Display controls (for flex, grid, etc.).",
-              "type": "boolean"
+              "description": "When set to true, the block will have all additional Display controls (for display, width, height, etc.). You can also granularily show controls for exact properties, e.g. instead of using `true` use object like { display: true, width: true, minWidth: true } to enable display and width controls only.",
+              "type": ["boolean", "object"],
+              "properties": {
+                "display": {
+                  "description": "Show display controls, e.g. none, block, flex, grid, etc.",
+                  "type": "boolean"
+                },
+                "width": {
+                  "description": "Show width controls.",
+                  "type": "boolean"
+                },
+                "minWidth": {
+                  "description": "Show minWidth controls.",
+                  "type": "boolean"
+                },
+                "maxWidth": {
+                  "description": "Show maxWidth controls.",
+                  "type": "boolean"
+                },
+                "height": {
+                  "description": "Show height controls.",
+                  "type": "boolean"
+                },
+                "minHeight": {
+                  "description": "Show minHeight controls.",
+                  "type": "boolean"
+                },
+                "maxHeight": {
+                  "description": "Show maxHeight controls.",
+                  "type": "boolean"
+                }
+              }
             },
             "grid": {
               "description": "When set to true, the block will have additional Grid controls.",

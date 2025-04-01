@@ -4,11 +4,17 @@ import {
   useBlockProps,
   useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { BlockEditProps, registerBlockType } from '@wordpress/blocks';
+import {
+  BlockEditProps,
+  registerBlockType,
+  TemplateArray,
+} from '@wordpress/blocks';
 import { PanelBody, PanelRow, ToggleControl } from '@wordpress/components';
+import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 
 import { WebentorBlockAppender } from '@webentorCore/blocks-components';
+import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 
 import block from './block.json';
 
@@ -24,14 +30,41 @@ type AttributesType = {
   coverImage: string;
   borderTop: boolean;
   borderBottom: boolean;
+  template?: TemplateArray;
 };
 
 const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   const { attributes, setAttributes, isSelected } = props;
+
   const blockProps = useBlockProps();
+  const parentBlockProps = useBlockParent();
+
+  /**
+   * Filter allowed blocks used in webentor/l-section inner block
+   */
+  const allowedBlocks: string[] = applyFilters(
+    'webentor.core.l-section.allowedBlocks',
+    [],
+    blockProps,
+    parentBlockProps,
+  );
+
+  /**
+   * Filter template used in webentor/l-section inner block
+   */
+  const defaultTemplate: TemplateArray = attributes?.template ?? [];
+  const template: TemplateArray = applyFilters(
+    'webentor.core.l-section.template',
+    defaultTemplate,
+    blockProps,
+    parentBlockProps,
+  );
+
   const { children, ...innerBlocksProps } = useInnerBlocksProps(
     {},
     {
+      allowedBlocks,
+      template,
       renderAppender: false, // Disable default appender
     },
   );

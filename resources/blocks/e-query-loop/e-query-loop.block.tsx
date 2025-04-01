@@ -44,6 +44,7 @@ type AttributesType = {
     taxQuery: Record<string, string[]>;
     parents: number[];
   };
+  template?: TemplateArray;
 };
 
 const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
@@ -64,7 +65,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   const parentBlockProps = useBlockParent();
 
   /**
-   * Filter allowed blocks used in webentor/e-post-template inner block
+   * Filter allowed blocks used in webentor/e-query-loop inner block
    */
   const allowedBlocks: string[] = applyFilters(
     'webentor.core.e-query-loop.allowedBlocks',
@@ -75,11 +76,14 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   );
 
   /**
-   * Filter template used in webentor/e-post-template inner block
+   * Filter template used in webentor/e-query-loop inner block
    */
+  const defaultTemplate: TemplateArray = attributes?.template ?? [
+    ['webentor/e-post-template', ['webentor/l-post-card']],
+  ];
   const template: TemplateArray = applyFilters(
     'webentor.core.e-query-loop.template',
-    [['webentor/e-post-template', ['webentor/l-post-card']]],
+    defaultTemplate,
     blockProps,
     parentBlockProps,
   );

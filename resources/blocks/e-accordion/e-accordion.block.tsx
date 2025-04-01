@@ -5,9 +5,16 @@ import {
   useBlockProps,
   useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { BlockEditProps, registerBlockType } from '@wordpress/blocks';
+import {
+  BlockEditProps,
+  registerBlockType,
+  TemplateArray,
+} from '@wordpress/blocks';
 import { PanelBody, PanelRow, ToggleControl } from '@wordpress/components';
+import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
+
+import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 
 import block from './block.json';
 
@@ -23,13 +30,40 @@ type AttributesType = {
   coverImage: string;
   defaultOpen: boolean;
   title: string;
+  template?: TemplateArray;
 };
 
 const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   const { attributes, setAttributes } = props;
 
   const blockProps = useBlockProps();
-  const innerBlocksProps = useInnerBlocksProps(blockProps, {});
+  const parentBlockProps = useBlockParent();
+
+  /**
+   * Filter allowed blocks used in webentor/e-accordion inner block
+   */
+  const allowedBlocks: string[] = applyFilters(
+    'webentor.core.e-accordion.allowedBlocks',
+    [],
+    blockProps,
+    parentBlockProps,
+  );
+
+  /**
+   * Filter template used in webentor/e-accordion inner block
+   */
+  const defaultTemplate: TemplateArray = attributes?.template;
+  const template: TemplateArray = applyFilters(
+    'webentor.core.e-accordion.template',
+    defaultTemplate,
+    blockProps,
+    parentBlockProps,
+  );
+
+  const innerBlocksProps = useInnerBlocksProps(blockProps, {
+    allowedBlocks,
+    template,
+  });
 
   // Preview image for block inserter
   if (attributes.coverImage) {

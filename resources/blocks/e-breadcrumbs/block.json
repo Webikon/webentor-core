@@ -1,5 +1,5 @@
 {
-  "$schema": "../../../../schemas/webentor-block.json",
+  "$schema": "../../../schemas/webentor-block.json",
   "name": "webentor/e-breadcrumbs",
   "apiVersion": 3,
   "title": "Breadcrumbs",

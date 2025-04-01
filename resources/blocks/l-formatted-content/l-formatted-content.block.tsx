@@ -3,7 +3,14 @@ import {
   useBlockProps,
   useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { BlockEditProps, registerBlockType } from '@wordpress/blocks';
+import {
+  BlockEditProps,
+  registerBlockType,
+  TemplateArray,
+} from '@wordpress/blocks';
+import { applyFilters } from '@wordpress/hooks';
+
+import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 
 import block from './block.json';
 
@@ -17,13 +24,40 @@ import block from './block.json';
 
 type AttributesType = {
   coverImage: string;
+  template?: TemplateArray;
 };
 
 const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   const { attributes } = props;
 
   const blockProps = useBlockProps();
-  const innerBlocksProps = useInnerBlocksProps(blockProps, {});
+  const parentBlockProps = useBlockParent();
+
+  /**
+   * Filter allowed blocks used in webentor/l-formatted-content inner block
+   */
+  const allowedBlocks: string[] = applyFilters(
+    'webentor.core.l-formatted-content.allowedBlocks',
+    [],
+    blockProps,
+    parentBlockProps,
+  );
+
+  /**
+   * Filter template used in webentor/l-formatted-content inner block
+   */
+  const defaultTemplate: TemplateArray = attributes?.template ?? [];
+  const template: TemplateArray = applyFilters(
+    'webentor.core.l-formatted-content.template',
+    defaultTemplate,
+    blockProps,
+    parentBlockProps,
+  );
+
+  const innerBlocksProps = useInnerBlocksProps(blockProps, {
+    allowedBlocks,
+    template,
+  });
 
   const classes = [];
 
@@ -35,7 +69,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   return (
     <div
       {...blockProps}
-      className={`${blockProps.className} w-flexible-container ${classes.join(' ')} border border-dashed border-editor-border p-2`}
+      className={`${blockProps.className} ${classes.join(' ')} border border-dashed border-editor-border p-2`}
     >
       <div
         {...innerBlocksProps}

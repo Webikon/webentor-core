@@ -15,6 +15,6 @@
 @include('components.tab-container', [
     'title' => $attributes['title'] ? $attributes['title'] : '',
     'id' => $attributes['title'] ? Str::slug($attributes['title']) : '',
-    'tab_content' => $innerBlocksContent,
+    'tab_content' => $innerBlocksContent ?? '',
     'hide_title' => $attributes['hideTitle'] ?? false,
 ])

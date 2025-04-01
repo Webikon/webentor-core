@@ -4,8 +4,15 @@ import {
   useBlockProps,
   useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { BlockEditProps, registerBlockType } from '@wordpress/blocks';
+import {
+  BlockEditProps,
+  registerBlockType,
+  TemplateArray,
+} from '@wordpress/blocks';
+import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
+
+import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 
 import block from './block.json';
 
@@ -21,16 +28,41 @@ import block from './block.json';
 type AttributesType = {
   coverImage: string;
   sliderTitle: string;
+  template?: TemplateArray;
 };
 
 const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   const { attributes } = props;
 
   const blockProps = useBlockProps();
+  const parentBlockProps = useBlockParent();
+
+  /**
+   * Filter allowed blocks used in webentor/e-slider inner block
+   */
+  const allowedBlocks: string[] = applyFilters(
+    'webentor.core.e-slider.allowedBlocks',
+    ['webentor/l-flexible-container', 'webentor/e-query-loop'],
+    blockProps,
+    parentBlockProps,
+  );
+
+  /**
+   * Filter template used in webentor/e-slider inner block
+   */
+  const defaultTemplate: TemplateArray = attributes?.template;
+  const template: TemplateArray = applyFilters(
+    'webentor.core.e-slider.template',
+    defaultTemplate,
+    blockProps,
+    parentBlockProps,
+  );
+
   const innerBlocksProps = useInnerBlocksProps(
     {},
     {
-      allowedBlocks: ['webentor/l-flexible-container', 'webentor/e-query-loop'],
+      allowedBlocks,
+      template,
     },
   );
 

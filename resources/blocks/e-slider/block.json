@@ -1,5 +1,5 @@
 {
-  "$schema": "../../../../schemas/webentor-block.json",
+  "$schema": "../../../schemas/webentor-block.json",
   "apiVersion": 3,
   "name": "webentor/e-slider",
   "title": "Slider",
@@ -23,6 +23,10 @@
     "slider": {
       "type": "object",
       "default": {}
+    },
+    "template": {
+      "type": "array",
+      "default": null
     }
   },
   "supports": {

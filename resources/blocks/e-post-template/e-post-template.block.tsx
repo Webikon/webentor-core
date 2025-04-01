@@ -24,6 +24,7 @@ import block from './block.json';
 
 type AttributesType = {
   coverImage: string;
+  template?: TemplateArray;
 };
 
 const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
@@ -45,9 +46,12 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   /**
    * Filter template used in webentor/e-post-template inner block
    */
+  const defaultTemplate: TemplateArray = attributes?.template ?? [
+    ['webentor/l-post-card'],
+  ];
   const template: TemplateArray = applyFilters(
     'webentor.core.e-post-template.template',
-    [['webentor/l-post-card']],
+    defaultTemplate,
     blockProps,
     parentBlockProps,
   );

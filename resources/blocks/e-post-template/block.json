@@ -1,13 +1,18 @@
 {
-  "$schema": "../../../../schemas/webentor-block.json",
+  "$schema": "../../../schemas/webentor-block.json",
   "apiVersion": 3,
   "name": "webentor/e-post-template",
-  "title": "Post Template (Webentor)",
-  "description": "Post template used in query.",
+  "title": "Webentor Post Template",
+  "description": "Post template used in Webentor Query Loop.",
   "category": "webentor-elements",
   "icon": "layout",
   "keywords": ["query"],
-  "attributes": {},
+  "attributes": {
+    "template": {
+      "type": "array",
+      "default": null
+    }
+  },
   "example": {
     "attributes": {
       "mode": "preview",

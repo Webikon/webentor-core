@@ -1,5 +1,5 @@
 {
-  "$schema": "../../../../schemas/webentor-block.json",
+  "$schema": "../../../schemas/webentor-block.json",
   "name": "webentor/l-mobile-nav",
   "title": "Mobile Navigation Wrapper",
   "description": "Navigation menu block",

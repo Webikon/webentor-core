@@ -3,10 +3,16 @@ import {
   useBlockProps,
   useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { BlockEditProps, registerBlockType } from '@wordpress/blocks';
+import {
+  BlockEditProps,
+  registerBlockType,
+  TemplateArray,
+} from '@wordpress/blocks';
+import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 
 import { WebentorBlockAppender } from '@webentorCore/blocks-components';
+import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 
 import block from './block.json';
 
@@ -23,28 +29,51 @@ import block from './block.json';
 
 type AttributesType = {
   coverImage: string;
+  template?: TemplateArray;
 };
 
 const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   const { attributes } = props;
 
   const blockProps = useBlockProps();
-  const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
-    allowedBlocks: ['webentor/e-table-row'],
-    template: [
-      [
-        'webentor/e-table-row',
-        [['webentor/e-table-cell', 'webentor/e-table-cell']],
-      ],
-      [
-        'webentor/e-table-row',
-        ['webentor/e-table-cell', 'webentor/e-table-cell'],
-      ],
-      [
-        'webentor/e-table-row',
-        ['webentor/e-table-cell', 'webentor/e-table-cell'],
-      ],
+  const parentBlockProps = useBlockParent();
+  /**
+   * Filter allowed blocks used in webentor/e-table inner block
+   */
+  const allowedBlocks: string[] = applyFilters(
+    'webentor.core.e-table.allowedBlocks',
+    ['webentor/e-table-row'],
+    blockProps,
+    parentBlockProps,
+  );
+
+  /**
+   * Filter template used in webentor/e-table inner block
+   */
+  const defaultTemplate: TemplateArray = attributes?.template ?? [
+    [
+      'webentor/e-table-row',
+      [['webentor/e-table-cell', 'webentor/e-table-cell']],
     ],
+    [
+      'webentor/e-table-row',
+      ['webentor/e-table-cell', 'webentor/e-table-cell'],
+    ],
+    [
+      'webentor/e-table-row',
+      ['webentor/e-table-cell', 'webentor/e-table-cell'],
+    ],
+  ];
+  const template: TemplateArray = applyFilters(
+    'webentor.core.e-table.template',
+    defaultTemplate,
+    blockProps,
+    parentBlockProps,
+  );
+
+  const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
+    allowedBlocks,
+    template,
     renderAppender: false, // Disable the default appender
   });
 

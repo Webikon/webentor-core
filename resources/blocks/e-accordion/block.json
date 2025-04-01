@@ -1,5 +1,5 @@
 {
-  "$schema": "../../../../schemas/webentor-block.json",
+  "$schema": "../../../schemas/webentor-block.json",
   "apiVersion": 3,
   "name": "webentor/e-accordion",
   "title": "Accordion",
@@ -19,6 +19,10 @@
     "defaultOpen": {
       "type": "boolean",
       "default": false
+    },
+    "template": {
+      "type": "array",
+      "default": null
     }
   },
   "supports": {

@@ -1,9 +1,9 @@
 {
-  "$schema": "../../../../schemas/webentor-block.json",
+  "$schema": "../../../schemas/webentor-block.json",
   "apiVersion": 3,
   "name": "webentor/e-query-loop",
   "title": "Webentor Query Loop",
-  "description": "Loop with various query configuration",
+  "description": "Loop with various query configuration. Don't work with pagination!",
   "category": "webentor-elements",
   "icon": "update",
   "keywords": [
@@ -30,6 +30,10 @@
         "parents": [],
         "queryId": ""
       }
+    },
+    "template": {
+      "type": "array",
+      "default": null
     }
   },
   "supports": {}

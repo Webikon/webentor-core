@@ -3,8 +3,15 @@ import {
   useBlockProps,
   useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { BlockEditProps, registerBlockType } from '@wordpress/blocks';
+import {
+  BlockEditProps,
+  registerBlockType,
+  TemplateArray,
+} from '@wordpress/blocks';
+import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
+
+import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 
 import block from './block.json';
 
@@ -18,15 +25,39 @@ import block from './block.json';
 
 type AttributesType = {
   coverImage: string;
-  template: [];
+  template: TemplateArray;
 };
 
 const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   const { attributes } = props;
 
   const blockProps = useBlockProps();
+  const parentBlockProps = useBlockParent();
+
+  /**
+   * Filter allowed blocks used in webentor/l-flexible-container inner block
+   */
+  const allowedBlocks: string[] = applyFilters(
+    'webentor.core.l-flexible-container.allowedBlocks',
+    [],
+    blockProps,
+    parentBlockProps,
+  );
+
+  /**
+   * Filter template used in webentor/l-flexible-container inner block
+   */
+  const defaultTemplate: TemplateArray = attributes?.template ?? [];
+  const template: TemplateArray = applyFilters(
+    'webentor.core.l-flexible-container.template',
+    defaultTemplate,
+    blockProps,
+    parentBlockProps,
+  );
+
   const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
-    template: attributes?.template,
+    allowedBlocks,
+    template,
   });
 
   // Preview image for block inserter

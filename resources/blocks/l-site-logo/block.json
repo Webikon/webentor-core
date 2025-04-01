@@ -1,5 +1,5 @@
 {
-  "$schema": "../../../../schemas/webentor-block.json",
+  "$schema": "../../../schemas/webentor-block.json",
   "name": "webentor/l-site-logo",
   "title": "Site Logo",
   "description": "Website logo with link to homepage",

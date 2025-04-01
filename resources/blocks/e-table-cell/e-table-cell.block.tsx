@@ -4,14 +4,21 @@ import {
   useBlockProps,
   useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { BlockEditProps, registerBlockType } from '@wordpress/blocks';
+import {
+  BlockEditProps,
+  registerBlockType,
+  TemplateArray,
+} from '@wordpress/blocks';
 import {
   __experimentalNumberControl as NumberControl,
   PanelBody,
   PanelRow,
   ToggleControl,
 } from '@wordpress/components';
+import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
+
+import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 
 import block from './block.json';
 
@@ -31,6 +38,7 @@ type AttributesType = {
   colSpan: number;
   showAsTh: boolean;
   coverImage: string;
+  template?: TemplateArray;
 };
 
 const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
@@ -38,11 +46,34 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   const { rowSpan, colSpan, showAsTh } = attributes;
 
   const blockProps = useBlockProps();
+  const parentBlockProps = useBlockParent();
+
+  /**
+   * Filter allowed blocks used in webentor/e-table-cell inner block
+   */
+  const allowedBlocks: string[] = applyFilters(
+    'webentor.core.e-table-cell.allowedBlocks',
+    ['core/paragraph', 'core/heading', 'core/list'],
+    blockProps,
+    parentBlockProps,
+  );
+
+  /**
+   * Filter template used in webentor/e-table-cell inner block
+   */
+  const defaultTemplate: TemplateArray = attributes?.template ?? [
+    ['core/paragraph', { placeholder: __('Add cell content', 'webentor') }],
+  ];
+  const template: TemplateArray = applyFilters(
+    'webentor.core.e-table-cell.template',
+    defaultTemplate,
+    blockProps,
+    parentBlockProps,
+  );
+
   const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
-    allowedBlocks: ['core/paragraph', 'core/heading', 'core/list'],
-    template: [
-      ['core/paragraph', { placeholder: __('Add cell content', 'webentor') }],
-    ],
+    allowedBlocks,
+    template,
   });
 
   // Preview image for block inserter

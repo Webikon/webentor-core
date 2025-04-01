@@ -1,5 +1,5 @@
 {
-  "$schema": "../../../../schemas/webentor-block.json",
+  "$schema": "../../../schemas/webentor-block.json",
   "name": "webentor/l-flexible-container",
   "apiVersion": 3,
   "title": "Flexible Container",
@@ -14,7 +14,7 @@
   "attributes": {
     "template":{
       "type":"array",
-      "default": []
+      "default": null
     }
   },
   "supports": {

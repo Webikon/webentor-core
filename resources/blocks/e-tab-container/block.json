@@ -1,5 +1,5 @@
 {
-  "$schema": "../../../../schemas/webentor-block.json",
+  "$schema": "../../../schemas/webentor-block.json",
   "apiVersion": 3,
   "name": "webentor/e-tab-container",
   "title": "Single Tab",
@@ -19,6 +19,10 @@
     "hideTitle": {
       "type": "boolean",
       "default": false
+    },
+    "template": {
+      "type": "array",
+      "default": null
     }
   },
   "supports": {
