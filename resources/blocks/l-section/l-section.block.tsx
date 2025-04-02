@@ -44,7 +44,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
    */
   const allowedBlocks: string[] = applyFilters(
     'webentor.core.l-section.allowedBlocks',
-    [],
+    null,
     blockProps,
     parentBlockProps,
   );
