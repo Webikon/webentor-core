@@ -29,79 +29,13 @@
   }
 
   svg {
-    transition: fill 0.15s ease-out;
-  }
-
-  p > a {
-    text-decoration: none;
-    color: var(--color-primary);
-  }
-
-  p > a:hover {
-    text-decoration: underline;
-  }
-}
-
-/* Content lists styles */
-.format-content {
-  ul,
-  ol {
-    list-style: outside;
-    margin-left: 24px;
-    margin-bottom: 16px;
-  }
-
-  ol {
-    list-style-type: decimal;
-  }
-
-  table a,
-  ul li a,
-  ol li a {
-    color: var(--color-primary);
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  li::marker {
-    font-family: var(--font-primary);
-  }
-
-  p {
-    margin-bottom: 16px;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin-bottom: 16px;
+    transition: fill 0.15s ease-out, stroke 0.15s ease-out;
   }
 }
 
 .tabs-navigation ul {
   list-style: none;
   margin-left: 0;
-}
-
-.wp-block-query {
-  display: flex;
-  flex-direction: column;
-  gap: 56px;
-  align-items: center;
-}
-
-.caption p a {
-  text-decoration: underline;
-  color: var(--color-primary);
-
-  &:hover {
-    text-decoration: underline;
-  }
 }
 
 /* Fix for AlpineJS blip when page loads and we use x-show */
