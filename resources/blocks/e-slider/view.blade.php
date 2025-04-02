@@ -19,10 +19,6 @@
   foreach ($breakpoints as $bp_key => $bp_value) {
       $slider_breakpoints_data[$bp_value]['enabled'] = $attributes['slider']['enabled']['value'][$bp_key] ?? true;
 
-      if ($bp_key === 'basic') {
-          continue;
-      }
-
       if (!empty($attributes['slider']['slidesPerView']['value'][$bp_key])) {
           $slider_breakpoints_data[$bp_value]['slidesPerView'] =
               $attributes['slider']['slidesPerView']['value'][$bp_key] ?? '';

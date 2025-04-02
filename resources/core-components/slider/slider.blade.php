@@ -63,7 +63,7 @@
 
       @if (!empty($show_arrows))
         <div
-          class="slider-arrows slider-arrows--prev {{ !empty($arrows_inside) ? 'slider-arrows--inside wbtr:absolute wbtr:left-3 wbtr:z-10 wbtr:-translate-y-1/2 wbtr:top-1/2 wbtr:hidden wbtr:items-center wbtr:justify-center group-[.slider-enabled]:wbtr:flex' : 'slider-arrows--outside flex items-center' }}"
+          class="slider-arrows slider-arrows--prev {{ !empty($arrows_inside) ? 'slider-arrows--inside wbtr:absolute wbtr:left-3 wbtr:z-10 wbtr:-translate-y-1/2 wbtr:top-1/2 wbtr:hidden wbtr:items-center wbtr:justify-center wbtr:group-[.slider-enabled]:flex' : 'slider-arrows--outside flex items-center' }}"
         >
           <button class="slider-arrow-btn js-slider-button-prev wbtr:outline-none">
             <svg
@@ -92,7 +92,7 @@
 
       @if (!empty($show_arrows))
         <div
-          class="slider-arrows slider-arrows--next {{ !empty($arrows_inside) ? 'slider-arrows--inside wbtr:absolute wbtr:right-3 wbtr:z-10 wbtr:-translate-y-1/2 wbtr:top-1/2 wbtr:hidden wbtr:items-center wbtr:justify-center group-[.slider-enabled]:wbtr:flex' : 'slider-arrows--outside flex items-center' }}"
+          class="slider-arrows slider-arrows--next {{ !empty($arrows_inside) ? 'slider-arrows--inside wbtr:absolute wbtr:right-3 wbtr:z-10 wbtr:-translate-y-1/2 wbtr:top-1/2 wbtr:hidden wbtr:items-center wbtr:justify-center wbtr:group-[.slider-enabled]:flex' : 'slider-arrows--outside flex items-center' }}"
         >
           <button class="slider-arrow-btn js-slider-button-next wbtr:outline-none">
             <svg
@@ -114,10 +114,10 @@
 
     @if (!empty($show_pagination))
       <div
-        class="slider-pagination {{ $pagination_inside ? 'slider-pagination--inside wbtr:absolute wbtr:bottom-0 wbtr:z-10 wbtr:mb-3' : 'slider-pagination--outside' }} wbtr:mt-5 wbtr:hidden wbtr:w-full wbtr:items-center wbtr:justify-center wbtr:gap-2 group-[.slider-enabled]:wbtr:flex"
+        class="slider-pagination {{ $pagination_inside ? 'slider-pagination--inside wbtr:absolute wbtr:bottom-0 wbtr:z-10 wbtr:mb-3' : 'slider-pagination--outside' }} wbtr:mt-5 wbtr:hidden wbtr:w-full wbtr:items-center wbtr:justify-center wbtr:gap-2 wbtr:group-[.slider-enabled]:flex"
       >
         <div
-          class="js-slider-pagination js-slider-pagination-{{ $slider_id }} wbtr:hidden wbtr:items-center wbtr:justify-center wbtr:gap-2 group-[.slider-enabled]:wbtr:flex"
+          class="js-slider-pagination js-slider-pagination-{{ $slider_id }} wbtr:hidden wbtr:items-center wbtr:justify-center wbtr:gap-2 wbtr:group-[.slider-enabled]:flex"
         ></div>
 
         @if (!empty($show_autoplay_control))
