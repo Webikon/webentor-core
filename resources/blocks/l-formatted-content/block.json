@@ -21,6 +21,9 @@
     "color": {
       "background": true,
       "text": true
+    },
+    "webentor": {
+      "spacing": true
     }
   }
 }
