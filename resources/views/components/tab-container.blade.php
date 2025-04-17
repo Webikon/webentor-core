@@ -23,7 +23,7 @@
   x-transition:enter-end="wbtr:opacity-100 wbtr:scale-100"
 >
   <div
-    class="tab-container__content wbtr:flex wbtr:w-full wbtr:flex-col wbtr:items-start wbtr:justify-start wbtr:pb-4 wbtr:pt-5 md:wbtr:pt-8"
+    class="{{ $classes ?? '' }} tab-container__content wbtr:flex wbtr:w-full wbtr:flex-col wbtr:items-start wbtr:justify-start"
   >
     @if (!empty($title) && empty($hide_title))
       <h2 class="text-h2">{{ $title }}</h2>

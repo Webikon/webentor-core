@@ -26,5 +26,9 @@
       }
     }
   },
-  "supports": {}
+  "supports": {
+    "webentor": {
+      "spacing": true
+    }
+  }
 }

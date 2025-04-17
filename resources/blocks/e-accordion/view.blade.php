@@ -15,4 +15,5 @@
     'id' => $block->clientId,
     'open' => $attributes['defaultOpen'] ?? false,
     'accordion_content' => $innerBlocksContent ?? '',
+    'accordion_classes' => $block_classes,
 ])

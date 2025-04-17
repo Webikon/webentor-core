@@ -15,7 +15,7 @@
   <div
     {!! $anchor !!}
     x-data="{ activeTab: '{{ $additional_data['tabs_nav'][0]['id'] ?? 0 }}' }"
-    class="e-tabs wbtr:w-full"
+    class="e-tabs wbtr:w-full {{ $block_classes }}"
   >
     <div class="e-tabs__navigation tabs-navigation">
       <ul class="wbtr:border-gray-100 wbtr:flex wbtr:flex-wrap wbtr:border-b wbtr:text-center">

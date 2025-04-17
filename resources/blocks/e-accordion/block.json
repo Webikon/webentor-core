@@ -26,6 +26,9 @@
     }
   },
   "supports": {
-    "anchor": true
+    "anchor": true,
+    "webentor": {
+      "spacing": true
+    }
   }
 }

@@ -8,7 +8,7 @@
 
 @if (!empty($path))
   <div
-    class="{{ $block_classes }} wbtr:flex wbtr:flex-row wbtr:flex-wrap wbtr:items-center wbtr:gap-2 wbtr:py-3.5 lg:wbtr:py-4"
+    class="{{ $classes ?? '' }} wbtr:flex wbtr:flex-row wbtr:flex-wrap wbtr:items-center wbtr:gap-2"
   >
     @foreach ($path as $item)
       @if ($item[1] !== '')

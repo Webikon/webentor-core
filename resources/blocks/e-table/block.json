@@ -22,7 +22,8 @@
   },
   "supports": {
     "html": false,
-    "multiple": true,
-    "customClassName": false
+    "webentor": {
+      "spacing": true
+    }
   }
 }

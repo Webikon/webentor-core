@@ -11,6 +11,6 @@
    **/
 @endphp
 
-<div class="format-content">
+<div class="format-content {{ $block_classes }}">
   {!! $innerBlocksContent !!}
 </div>

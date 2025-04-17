@@ -13,4 +13,7 @@
   $path = [[__('Home', 'webentor'), '/'], [get_the_title(), '']];
 @endphp
 
-@include('components.breadcrumbs', ['path' => $path])
+<div class="{{ $block_classes }}">
+  @include('components.breadcrumbs', ['path' => $path])
+</div>
+
