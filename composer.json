@@ -1,8 +1,8 @@
 {
-  "name": "webikon/webentor-core-php",
+  "name": "webikon/webentor-core",
   "version": "0.9.4",
   "license": "MIT",
-  "description": "Webentor Core PHP package",
+  "description": "Webentor Core package",
   "homepage": "https://webikon.sk",
   "authors": [
     {

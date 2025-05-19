@@ -17,9 +17,9 @@ function register_frontend_blocks_assets($block_json_files = null, $manifest = n
         return;
     }
 
-    $manifest_path = $manifest === 'webentor-core-php' ? WEBENTOR_CORE_MANIFEST_PATH : get_template_directory() . '/public/build/manifest.json';
-    $public_path = $manifest === 'webentor-core-php' ? WEBENTOR_CORE_PUBLIC_PATH : get_template_directory() . '/public/build';
-    $resources_path = $manifest === 'webentor-core-php' ? WEBENTOR_CORE_RESOURCES_PATH : get_template_directory() . '/resources';
+    $manifest_path = $manifest === 'webentor-core' ? WEBENTOR_CORE_MANIFEST_PATH : get_template_directory() . '/public/build/manifest.json';
+    $public_path = $manifest === 'webentor-core' ? WEBENTOR_CORE_PUBLIC_PATH : get_template_directory() . '/public/build';
+    $resources_path = $manifest === 'webentor-core' ? WEBENTOR_CORE_RESOURCES_PATH : get_template_directory() . '/resources';
 
     // Auto register all blocks that were found.
     foreach ($block_json_files as $filename) {
@@ -93,7 +93,7 @@ add_action('init', function () {
     // Register all theme blocks that were found
     $theme_block_json_files = glob(get_template_directory() . '/resources/blocks/**/block.json');
     if (!empty($theme_block_json_files)) {
-        register_frontend_blocks_assets($theme_block_json_files, 'parent');
+        register_frontend_blocks_assets($theme_block_json_files, 'theme');
         foreach ($theme_block_json_files as $filename) {
             register_block_from_filename($filename);
         }
@@ -102,7 +102,7 @@ add_action('init', function () {
     // Register all core blocks that were found
     $core_block_json_files = glob(WEBENTOR_CORE_RESOURCES_PATH . '/blocks/**/block.json');
     if (!empty($core_block_json_files)) {
-        register_frontend_blocks_assets($core_block_json_files, 'webentor-core-php');
+        register_frontend_blocks_assets($core_block_json_files, 'webentor-core');
         foreach ($core_block_json_files as $filename) {
             register_block_from_filename($filename);
         }

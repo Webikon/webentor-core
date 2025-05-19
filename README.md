@@ -19,16 +19,16 @@ Add to composer.json:
 "repositories": [
   {
     "type": "github",
-    "url": "https://github.com/webikon/webentor-core-php.git"
+    "url": "https://github.com/webikon/webentor-core.git"
   }
 ],
 ```
 
-Then run `composer require webikon/webentor-core-php:dev-main`
+Then run `composer require webikon/webentor-core:dev-main`
 
 ### Install node package
 
-Run `yarn add -D webikon/webentor-core-php`
+Run `yarn add -D webikon/webentor-core`
 
 TODO :)
 
