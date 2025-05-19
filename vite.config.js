@@ -2,12 +2,11 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { v4wp } from '@kucrut/vite-for-wp';
 import { wp_scripts } from '@kucrut/vite-for-wp/plugins';
+// import { wordpressPlugin } from '@roots/vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { glob } from 'glob';
 import { defineConfig } from 'vite';
-
-import { wordpressPlugin } from './resources/scripts/build/vite-wordpress';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -57,7 +56,9 @@ export default defineConfig({
     react({
       jsxRuntime: 'classic',
     }),
-    wordpressPlugin(),
+
+    // NOT USED as we use v4wp plugin
+    // wordpressPlugin(),
   ],
   optimizeDeps: {
     // Fix imports from webpack built libraries
@@ -73,7 +74,7 @@ export default defineConfig({
       '@fonts': '/resources/fonts',
       '@images': '/resources/images',
       '@blocks': '/resources/blocks',
-      '@webentorCore': '/node_modules/webentor-core-js/src',
+      '@webentorCore': '/core-js',
     },
   },
 });

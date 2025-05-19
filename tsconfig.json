@@ -18,7 +18,7 @@
      * Resolve aliases
      */
     "paths": {
-      "@webentorCore/*": ["./node_modules/webentor-core-js/src/*"]
+      "@webentorCore/*": ["./core-js/*"]
     },
 
     // Enable React JSX support

@@ -1,7 +1,7 @@
 {
   "name": "webentor-core-php",
   "homepage": "https://webikon.sk",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "license": "MIT",
   "author": "Webikon s.r.o.",
   "maintainers": [
@@ -31,14 +31,14 @@
     "prettier-fix": "prettier --write 'resources/**/*.{js,ts,tsx,css}'",
     "prettier-fix:js": "prettier --write 'resources/**/*.{js,ts,tsx}'",
     "prettier-fix:css": "prettier --write 'resources/**/*.css'",
-    "prettier-fix:blade": "prettier --write 'resources/**/*.blade.php'",
-    "postinstall": "patch-package"
+    "prettier-fix:blade": "prettier --write 'resources/**/*.blade.php'"
   },
   "devDependencies": {
     "@10up/block-components": "^1.20.0",
     "@eslint/js": "^9.23.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
     "@kucrut/vite-for-wp": "^0.11.4",
+    "@roots/vite-plugin": "^1.0.4",
     "@shufo/prettier-plugin-blade": "^1.15.3",
     "@tailwindcss/postcss": "^4.0.15",
     "@tailwindcss/vite": "^4.0.15",
@@ -70,8 +70,12 @@
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.28.0",
     "vite": "^6.2.3",
-    "vite-plugin-external": "^6.0.1",
-    "webentor-core-js": "webikon/webentor-core-js#main"
+    "vite-plugin-external": "^6.0.1"
+  },
+  "dependencies": {
+    "@alpinejs/collapse": "^3.14.9",
+    "alpinejs": "^3.14.9",
+    "swiper": "^11.2.6"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": "npm run lint:js --",

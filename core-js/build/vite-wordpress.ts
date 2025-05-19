@@ -66,12 +66,7 @@ export function wordpressPlugin() {
     config(config) {
       return {
         ...config,
-        resolve: {
-          ...config.resolve,
-          alias: {
-            ...config.resolve?.alias,
-          },
-        },
+        resolve: { ...config.resolve, alias: { ...config.resolve?.alias } },
       };
     },
     resolveId(id) {
@@ -82,10 +77,7 @@ export function wordpressPlugin() {
 
         if (external && handle) {
           dependencies.add(handle);
-          return {
-            id,
-            external: true,
-          };
+          return { id, external: true };
         }
       }
     },
@@ -328,11 +320,7 @@ export function wordpressThemeJson({
               });
             }
           } else {
-            colors.push({
-              name: name,
-              slug: name.toLowerCase(),
-              color: value,
-            });
+            colors.push({ name: name, slug: name.toLowerCase(), color: value });
           }
         });
 
@@ -381,22 +369,15 @@ export function wordpressThemeJson({
             ...baseThemeJson.settings,
             ...(!disableTailwindColors &&
               colors.length > 0 && {
-                color: {
-                  ...baseThemeJson.settings?.color,
-                  palette: colors,
-                },
+                color: { ...baseThemeJson.settings?.color, palette: colors },
               }),
             typography: {
               defaultFontSizes: false,
               customFontSize: false,
               ...(!disableTailwindFonts &&
-                fontFamilies.length > 0 && {
-                  fontFamilies,
-                }),
+                fontFamilies.length > 0 && { fontFamilies }),
               ...(!disableTailwindFontSizes &&
-                fontSizes.length > 0 && {
-                  fontSizes,
-                }),
+                fontSizes.length > 0 && { fontSizes }),
             },
           },
         };
