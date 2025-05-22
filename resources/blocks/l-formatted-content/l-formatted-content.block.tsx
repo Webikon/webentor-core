@@ -9,6 +9,7 @@ import {
   TemplateArray,
 } from '@wordpress/blocks';
 import { applyFilters } from '@wordpress/hooks';
+import { __ } from '@wordpress/i18n';
 
 import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 
@@ -54,12 +55,10 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
     parentBlockProps,
   );
 
-  const innerBlocksProps = useInnerBlocksProps(blockProps, {
+  const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
     allowedBlocks,
     template,
   });
-
-  const classes = [];
 
   // Preview image for block inserter
   if (attributes.coverImage) {
@@ -68,13 +67,16 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
 
   return (
     <div
-      {...blockProps}
-      className={`${blockProps.className} ${classes.join(' ')} border border-dashed border-editor-border p-2`}
+      {...innerBlocksProps}
+      className={`${innerBlocksProps.className} format-content wbtr:relative wbtr:p-2 wbtr:pt-4`}
     >
-      <div
-        {...innerBlocksProps}
-        className={`${innerBlocksProps.className} wbtr-border wbtr-border-editor-border wbtr-p-4 format-content`}
-      />
+      <div className="wbtr:absolute wbtr:inset-0 wbtr:h-full wbtr:w-full wbtr:border wbtr:border-dashed wbtr:border-editor-border wbtr:p-2 wbtr:pt-4"></div>
+
+      <div className="wbtr:absolute wbtr:top-[2px] wbtr:left-2 wbtr:mb-1 wbtr:text-10 wbtr:opacity-50">
+        {__('Formatted Content', 'webentor')}
+      </div>
+
+      {children}
     </div>
   );
 };

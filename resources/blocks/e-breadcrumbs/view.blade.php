@@ -10,10 +10,9 @@
    * @param object $product The product instance.
    **/
 
-  $path = [[__('Home', 'webentor'), '/'], [get_the_title(), '']];
+  $path = apply_filters('webentor/breadcrumbs/path', [[__('Home', 'webentor'), '/'], [get_the_title(), '']]);
 @endphp
 
 <div class="{{ $block_classes }}">
   @include('components.breadcrumbs', ['path' => $path])
 </div>
-

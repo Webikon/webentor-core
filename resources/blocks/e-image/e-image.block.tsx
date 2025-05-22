@@ -40,7 +40,6 @@ type AttributesType = {
   openInLightbox: boolean;
   fullWidth: boolean;
   rounded: boolean;
-  border: boolean;
   objectFit: string;
   objectPosition: string;
   imageSize: string;
@@ -190,15 +189,6 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
               label={__('Make image full rounded', 'webentor')}
               checked={attributes.rounded}
               onChange={(rounded) => setAttributes({ rounded })}
-            />
-          </PanelRow>
-
-          {/* Border */}
-          <PanelRow>
-            <ToggleControl
-              label={__('Enable image border', 'webentor')}
-              checked={attributes.border}
-              onChange={(border) => setAttributes({ border })}
             />
           </PanelRow>
 

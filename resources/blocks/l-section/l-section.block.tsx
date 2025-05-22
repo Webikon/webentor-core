@@ -1,6 +1,5 @@
 import {
   InnerBlocks,
-  InspectorControls,
   useBlockProps,
   useInnerBlocksProps,
 } from '@wordpress/block-editor';
@@ -9,7 +8,6 @@ import {
   registerBlockType,
   TemplateArray,
 } from '@wordpress/blocks';
-import { PanelBody, PanelRow, ToggleControl } from '@wordpress/components';
 import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 
@@ -28,8 +26,6 @@ import block from './block.json';
 
 type AttributesType = {
   coverImage: string;
-  borderTop: boolean;
-  borderBottom: boolean;
   template?: TemplateArray;
 };
 
@@ -78,35 +74,10 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
 
   return (
     <>
-      <InspectorControls>
-        <PanelBody title="Block Settings" initialOpen={true}>
-          <PanelRow>
-            <ToggleControl
-              label={__('Show top border', 'webentor')}
-              checked={attributes.borderTop}
-              onChange={(borderTop) => setAttributes({ borderTop })}
-            />
-          </PanelRow>
-
-          <PanelRow>
-            <ToggleControl
-              label={__('Show bottom border', 'webentor')}
-              checked={attributes.borderBottom}
-              onChange={(borderBottom) => setAttributes({ borderBottom })}
-            />
-          </PanelRow>
-        </PanelBody>
-      </InspectorControls>
-
-      <div
-        {...blockProps}
-        className={`w-section ${blockProps.className} ${attributes.borderTop || attributes.borderBottom ? 'wbtr:border-border' : ''} ${
-          attributes.borderTop ? 'wbtr:border-t-2' : ''
-        } ${attributes.borderBottom ? 'wbtr:border-b-2' : ''}`}
-      >
+      <div {...blockProps} className={`w-section ${blockProps.className}`}>
         <div
           {...innerBlocksProps}
-          className={`${innerBlocksProps.className} container wbtr:flex wbtr:flex-col`}
+          className={`${innerBlocksProps.className} container wbtr:relative wbtr:flex wbtr:flex-col`}
         >
           {children}
 

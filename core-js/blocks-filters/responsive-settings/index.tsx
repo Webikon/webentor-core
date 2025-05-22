@@ -7,6 +7,7 @@ import { WebentorConfig } from '@webentorCore/types/_webentor-config';
 
 import { includedBlocks } from './constants';
 import { BlockLinkPanel } from './settings/block-link';
+import { BorderPanel } from './settings/border';
 import { ContainerPanel } from './settings/container';
 import { SpacingPanel } from './settings/spacing';
 import { generateClassNames, inlineStyleGenerator } from './utils';
@@ -135,6 +136,21 @@ const initResponsiveSettings = () => {
         };
       }
 
+      if (
+        includedBlocks['border'].includes(name) ||
+        settings?.supports?.webentor?.border
+      ) {
+        settings.attributes = {
+          ...settings.attributes,
+          ...{
+            border: {
+              type: 'object',
+              default: settings.attributes?.border?.default || {},
+            },
+          },
+        };
+      }
+
       return settings;
     },
   );
@@ -163,6 +179,7 @@ const BlockEdit = (props) => {
     <Fragment>
       <InspectorControls>
         <SpacingPanel {...props} breakpoints={breakpoints} twTheme={twTheme} />
+        <BorderPanel {...props} breakpoints={breakpoints} twTheme={twTheme} />
         <ContainerPanel
           {...props}
           breakpoints={breakpoints}

@@ -6,14 +6,10 @@
   "description": "Container block with a lot of flexible options.",
   "category": "webentor-layout",
   "icon": "layout",
-  "keywords": [
-    "section",
-    "container",
-    "layout"
-  ],
+  "keywords": ["section", "container", "layout"],
   "attributes": {
-    "template":{
-      "type":"array",
+    "template": {
+      "type": "array",
       "default": null
     }
   },
@@ -30,7 +26,8 @@
       "gridItem": true,
       "flexbox": true,
       "flexboxItem": true,
-      "blockLink": true
+      "blockLink": true,
+      "border": true
     }
   }
 }

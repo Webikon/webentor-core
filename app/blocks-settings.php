@@ -211,7 +211,6 @@ function prepareBgBlockClassesFromSettings($attributes, $block = null)
  */
 function prepareBlockClassesFromSettings($attributes, $block = null)
 {
-
     // Create classes attribute allowing for custom "className" and "align" values.
     $classes = '';
     if (!empty($attributes['className'])) {
@@ -353,6 +352,44 @@ function prepareBlockClassesFromSettings($attributes, $block = null)
                         // Transform to Tailwind classes
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
+                    }
+                }
+            }
+        }
+    }
+
+
+    if (!empty($attributes['border'])) {
+        $border_mapping = [
+            'top' => 'border-t',
+            'right' => 'border-r',
+            'bottom' => 'border-b',
+            'left' => 'border-l'
+        ];
+
+        foreach ($attributes['border'] as $property_name => $property_data) {
+            if (!empty($property_data['value'])) {
+                foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
+                    if (!empty($breakpoint_property_value)) {
+                        var_dump($breakpoint_property_value);
+                        foreach ($breakpoint_property_value as $side => $side_value) {
+                            if (!empty($side_value) && is_array($side_value)) {
+                                // Transform to Tailwind classes
+                                $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
+
+                                if (!empty($side_value['width'])) {
+                                    $classes .= ' ' . $tw_breakpoint . $border_mapping[$side] . '-' . $side_value['width'];
+                                }
+
+                                if (!empty($side_value['color'])) {
+                                    $classes .= ' ' . $tw_breakpoint . $border_mapping[$side] . '-' . $side_value['color'];
+                                }
+
+                                if (!empty($side_value['style'])) {
+                                    $classes .= ' ' . $tw_breakpoint . $border_mapping[$side] . '-' . $side_value['style'];
+                                }
+                            }
+                        }
                     }
                 }
             }

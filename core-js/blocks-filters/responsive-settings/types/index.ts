@@ -15,6 +15,35 @@ export interface ResponsiveAttribute {
   [key: string]: ResponsiveValue;
 }
 
+export interface BorderValue {
+  top: {
+    width: string;
+    color: string;
+    style: string;
+  };
+  right: {
+    width: string;
+    color: string;
+    style: string;
+  };
+  bottom: {
+    width: string;
+    color: string;
+    style: string;
+  };
+  left: {
+    width: string;
+    color: string;
+    style: string;
+  };
+}
+
+export interface ResponsiveBorderValue {
+  value: {
+    [key: string]: BorderValue;
+  };
+}
+
 export interface BlockAttributes {
   blockLink?: any;
   spacing?: ResponsiveAttribute;
@@ -23,6 +52,7 @@ export interface BlockAttributes {
   gridItem?: ResponsiveAttribute;
   flexbox?: ResponsiveAttribute;
   flexboxItem?: ResponsiveAttribute;
+  border?: ResponsiveBorderValue;
   slider?: {
     enabled?: ResponsiveValue;
   };

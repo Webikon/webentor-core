@@ -6,10 +6,7 @@
   "description": "Use this block to wrap your content to apply formatting styles.",
   "category": "webentor-layout",
   "icon": "text-page",
-  "keywords": [
-    "formatted",
-    "content"
-  ],
+  "keywords": ["formatted", "content"],
   "attributes": {
     "anchor": {
       "type": "string",
@@ -23,7 +20,8 @@
       "text": true
     },
     "webentor": {
-      "spacing": true
+      "spacing": true,
+      "border": true
     }
   }
 }

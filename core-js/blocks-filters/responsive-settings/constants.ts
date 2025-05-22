@@ -6,4 +6,5 @@ export const includedBlocks = {
   gridItem: [],
   flexbox: [],
   flexboxItem: [],
+  border: [],
 };

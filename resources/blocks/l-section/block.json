@@ -6,20 +6,8 @@
   "description": "Section wrapper",
   "category": "webentor-layout",
   "icon": "align-wide",
-  "keywords": [
-    "section",
-    "container",
-    "layout"
-  ],
+  "keywords": ["section", "container", "layout"],
   "attributes": {
-    "borderTop": {
-      "type": "boolean",
-      "default": false
-    },
-    "borderBottom": {
-      "type": "boolean",
-      "default": false
-    },
     "spacing": {
       "type": "object",
       "default": {
@@ -53,7 +41,8 @@
       "display": {
         "height": true,
         "minHeight": true
-      }
+      },
+      "border": true
     }
   }
 }

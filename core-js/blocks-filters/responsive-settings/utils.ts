@@ -48,7 +48,7 @@ export const prepareTailwindClassesFromSettings = (
   settings: any,
   type: string,
 ): string[] => {
-  const classes = [];
+  const classes: string[] = [];
 
   if (settings[type]) {
     Object.entries(settings[type]).forEach(([, prop]: [string, any]) => {
@@ -84,6 +84,82 @@ export const prepareTailwindClassesFromSettings = (
   return classes;
 };
 
+export const prepareTailwindBorderClassesFromSettings = (
+  settings: any,
+  type: string,
+  side: string | string[],
+): string[] => {
+  const classes: string[] = [];
+
+  if (settings[type]) {
+    Object.entries(settings[type]).forEach(([, prop]: [string, any]) => {
+      if (prop?.value) {
+        Object.entries(prop?.value).forEach(
+          ([bpName, bpPropValue]: [string, object]) => {
+            if (bpPropValue) {
+              const twBreakpoint = bpName === 'basic' ? '' : `${bpName}:`;
+
+              Object.entries(bpPropValue).forEach(
+                ([valueSide, value]: [string, any]) => {
+                  // Check if side classes should be processed
+                  if (Array.isArray(side) && !side.includes(valueSide)) {
+                    return;
+                  }
+
+                  if (typeof side === 'string' && side !== valueSide) {
+                    return;
+                  }
+
+                  classes.push(
+                    ...prepareTailwindBorderClassesForSide(
+                      value,
+                      valueSide,
+                      twBreakpoint,
+                    ),
+                  );
+                },
+              );
+            }
+          },
+        );
+      }
+    });
+  }
+
+  return classes;
+};
+
+export const prepareTailwindBorderClassesForSide = (
+  value: any,
+  side: string,
+  twBreakpoint: string,
+): string[] => {
+  const classes: string[] = [];
+
+  const borderMapping = {
+    top: 'border-t',
+    right: 'border-r',
+    bottom: 'border-b',
+    left: 'border-l',
+  };
+
+  if (value) {
+    if (value?.width) {
+      classes.push(`${twBreakpoint}${borderMapping[side]}-${value.width}`);
+    }
+
+    if (value?.style) {
+      classes.push(`${twBreakpoint}${borderMapping[side]}-${value.style}`);
+    }
+
+    if (value?.color) {
+      classes.push(`${twBreakpoint}${borderMapping[side]}-${value.color}`);
+    }
+  }
+
+  return classes;
+};
+
 export const applyResponsiveSettings = (attributes: any): boolean => {
   if (
     !attributes?.blockLink &&
@@ -105,7 +181,7 @@ export const generateClassNames = (attributes: any): string => {
     return '';
   }
 
-  const classes = [];
+  const classes: string[] = [];
 
   // Prepare all Tailwind classes
   const spacingClasses = prepareTailwindClassesFromSettings(
@@ -130,12 +206,19 @@ export const generateClassNames = (attributes: any): string => {
     'gridItem',
   );
 
+  const borderClasses = prepareTailwindBorderClassesFromSettings(
+    attributes,
+    'border',
+    ['top', 'right', 'bottom', 'left'],
+  );
+
   classes.push(...spacingClasses);
   classes.push(...displayClasses);
   classes.push(...flexboxClasses);
   classes.push(...flexboxItemClasses);
   classes.push(...gridClasses);
   classes.push(...gridItemClasses);
+  classes.push(...borderClasses);
 
   return classes.join(' ') ?? '';
 };

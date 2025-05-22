@@ -2,7 +2,7 @@
 
 Core functionality and useful utilities for Webentor Stack.
 
-This package adds bunch of Gutenberg blocks and basic styling.
+This package adds bunch of Gutenberg blocks, extensions, basic styling, etc.
 
 ## Requirements
 
@@ -11,9 +11,11 @@ This package adds bunch of Gutenberg blocks and basic styling.
 
 ## Documentation
 
-### Install composer package
+To use both PHP and JS functionality, library needs to be installed both with Composer and NPM.
 
-Add to composer.json:
+### Install as composer package
+
+In Sage theme, add to composer.json:
 
 ```
 "repositories": [
@@ -26,15 +28,26 @@ Add to composer.json:
 
 Then run `composer require webikon/webentor-core:dev-main`
 
-### Install node package
+**Important info:**
 
-Run `yarn add -D webikon/webentor-core`
+- Autoloader is not working right now, so this package needs to be included manually
 
-TODO :)
+### Install as node package
 
-### How to start
+In Sage theme, run `yarn add -D webikon/webentor-core`
+
+**Important info:**
+
+- Package is not bundled yet, so theme has to have Typescript aliases configured for import to work properly
+
+### How to develop
 
 Run `composer install` and `yarn` to download dependencies.
-Then run `yarn build` or `yarn dev` to compile assets.
+Run `yarn build`.
+Run `yarn dev` to start DEV server.
+
+### Hooks
+
+TODO
 
 Made with <3 by [Webikon](https://webikon.sk)

@@ -23,7 +23,8 @@
   "supports": {
     "html": false,
     "webentor": {
-      "spacing": true
+      "spacing": true,
+      "border": true
     }
   }
 }

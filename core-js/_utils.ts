@@ -80,3 +80,19 @@ export function camelize(text: string) {
     .replace(/[-_\s.]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''));
   return a.substring(0, 1).toLowerCase() + a.substring(1);
 }
+
+/**
+ * Check if an object is empty
+ *
+ * @param {Object} obj - The object to check
+ * @return {boolean} True if the object is empty, false otherwise
+ */
+export function isEmpty(obj: object) {
+  for (const prop in obj) {
+    if (Object.hasOwn(obj, prop)) {
+      return false;
+    }
+  }
+
+  return true;
+}

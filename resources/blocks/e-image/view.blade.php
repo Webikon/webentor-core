@@ -30,12 +30,6 @@
       $block_classes .= " wbtr:object-{$attributes['objectPosition']}";
   }
 
-  // Enable border
-  $block_classes =
-      !empty($attributes['border']) && $attributes['border']
-          ? $block_classes . ' wbtr:border-4 wbtr:border-solid wbtr:border-sred-600'
-          : $block_classes;
-
   $img_attr = [
       'class' => $block_classes,
       'loading' => isset($attributes['lazyload']) && $attributes['lazyload'] === false ? 'eager' : 'lazy', // Defaults to 'lazy'
