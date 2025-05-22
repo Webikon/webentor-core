@@ -3,14 +3,10 @@
   "apiVersion": 3,
   "name": "webentor/e-query-loop",
   "title": "Webentor Query Loop",
-  "description": "Loop with various query configuration. Don't work with pagination!",
+  "description": "Display posts in a loop with various query configuration. Don't work with pagination yet!",
   "category": "webentor-elements",
   "icon": "update",
-  "keywords": [
-    "loop",
-    "query",
-    "slider"
-  ],
+  "keywords": ["loop", "query", "slider"],
   "attributes": {
     "query": {
       "type": "object",

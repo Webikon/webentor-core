@@ -1,6 +1,7 @@
 {
   "$schema": "../../../schemas/webentor-block.json",
   "name": "webentor/e-image",
+  "apiVersion": 3,
   "title": "Custom Responsive Image",
   "description": "Responsive image block.",
   "category": "webentor-elements",

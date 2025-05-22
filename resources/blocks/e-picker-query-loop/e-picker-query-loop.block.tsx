@@ -1,0 +1,165 @@
+import { ContentPicker } from '@10up/block-components';
+import {
+  InnerBlocks,
+  InspectorControls,
+  useBlockProps,
+  useInnerBlocksProps,
+} from '@wordpress/block-editor';
+import {
+  BlockEditProps,
+  registerBlockType,
+  TemplateArray,
+} from '@wordpress/blocks';
+import { PanelBody, SelectControl, TextControl } from '@wordpress/components';
+import { applyFilters } from '@wordpress/hooks';
+import { __ } from '@wordpress/i18n';
+
+import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
+import { usePostTypes } from '@webentorCore/blocks-utils/_use-post-types';
+
+import block from './block.json';
+
+/**
+ * Edit component.
+ * See https://wordpress.org/gutenberg/handbook/designers-developers/developers/block-api/block-edit-save/#edit
+ *
+ * @param {object}   props                      					The block props.
+ * @returns {Function}                                    Render the edit screen
+ */
+
+type AttributesType = {
+  coverImage: string;
+  query: {
+    postType: string;
+    posts: [];
+    queryId: string;
+  };
+  template?: TemplateArray;
+};
+
+const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
+  const { attributes, setAttributes } = props;
+  const { query } = attributes;
+  const { postType, posts, queryId } = query;
+
+  const blockProps = useBlockProps();
+  const parentBlockProps = useBlockParent();
+
+  /**
+   * Filter allowed blocks used in webentor/e-query-loop inner block
+   */
+  const allowedBlocks = applyFilters(
+    'webentor.core.e-picker-query-loop.allowedBlocks',
+    // Allow only singular 'e-post-template' block to be added as child.
+    ['webentor/e-post-template'],
+    blockProps,
+    parentBlockProps,
+  ) as string[];
+
+  /**
+   * Filter template used in webentor/e-query-loop inner block
+   */
+  const defaultTemplate: TemplateArray = attributes?.template ?? [
+    ['webentor/e-post-template', ['webentor/l-post-card']],
+  ];
+  const template = applyFilters(
+    'webentor.core.e-picker-query-loop.template',
+    defaultTemplate,
+    blockProps,
+    parentBlockProps,
+  ) as TemplateArray;
+
+  const innerBlocksProps = useInnerBlocksProps(blockProps, {
+    allowedBlocks,
+    template,
+    templateLock: 'all',
+  });
+
+  const { postTypesSelectOptions } = usePostTypes();
+
+  const setQuery = (newQuery) =>
+    setAttributes({ query: { ...query, ...newQuery } });
+
+  const onPostTypeChange = (newValue) => {
+    const updateQuery = { postType: newValue };
+
+    setQuery(updateQuery);
+  };
+
+  // Preview image for block inserter
+  if (attributes.coverImage) {
+    return <img src={attributes.coverImage} width="468" />;
+  }
+
+  return (
+    <>
+      <InspectorControls>
+        <PanelBody title="Loop Settings" initialOpen={true}>
+          <SelectControl
+            __nextHasNoMarginBottom
+            options={postTypesSelectOptions}
+            value={postType}
+            label={__('Post type')}
+            onChange={onPostTypeChange}
+            help={__(
+              'First select post type from which you would be able to pick posts',
+              'webentor',
+            )}
+          />
+
+          <div className="wbtr:mb-3 wbtr:w-full wbtr:border wbtr:border-editor-border wbtr:p-2">
+            <p>
+              {__('Posts which would be displayed in the loop', 'webentor')}
+            </p>
+            <ContentPicker
+              onPickChange={(pickedContent) => {
+                setQuery({
+                  posts: pickedContent,
+                });
+              }}
+              content={posts || []}
+              mode="post"
+              maxContentItems={10}
+              isOrderable
+              label={__('Select posts', 'webentor')}
+              contentTypes={[postType]}
+            />
+          </div>
+
+          <TextControl
+            label={__('Query ID', 'webentor')}
+            value={queryId}
+            onChange={(value) => {
+              setQuery({
+                queryId: value,
+              });
+            }}
+            help={__(
+              'This can be used to filter query params via `webentor/query_loop_args` hook.',
+            )}
+          />
+        </PanelBody>
+      </InspectorControls>
+
+      <div
+        {...innerBlocksProps}
+        className={`${blockProps.className} ${innerBlocksProps.className} wbtr:border wbtr:border-editor-border wbtr:p-4`}
+      />
+    </>
+  );
+};
+
+/**
+ * See https://wordpress.org/gutenberg/handbook/designers-developers/developers/block-api/block-edit-save/#save
+ *
+ * @return {null} Dynamic blocks do not save the HTML.
+ */
+const BlockSave = () => <InnerBlocks.Content />;
+
+/**
+ * Register block.
+ */
+registerBlockType(block, {
+  edit: BlockEdit,
+  save: BlockSave,
+});

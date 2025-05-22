@@ -5,6 +5,7 @@ import '@blocks/e-accordion-group/e-accordion-group.block';
 import '@blocks/e-breadcrumbs/e-breadcrumbs.block';
 import '@blocks/e-button/e-button.block';
 import '@blocks/e-image/e-image.block';
+import '@blocks/e-picker-query-loop/e-picker-query-loop.block';
 import '@blocks/e-post-template/e-post-template.block';
 import '@blocks/e-query-loop/e-query-loop.block';
 import '@blocks/e-slider/e-slider.block';
