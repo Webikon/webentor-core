@@ -255,6 +255,10 @@ function render_inner_block_blade($block)
     $classes = prepareBlockClassesFromSettings($block->attributes);
     $bg_classes = prepareBgBlockClassesFromSettings($block->attributes);
 
+    // Let's have ability to modify classes and additional data for specific blocks
+    $classes = apply_filters('webentor/block_classes', $classes, $block);
+    $bg_classes = apply_filters('webentor/block_bg_classes', $bg_classes, $block);
+
     return $is_custom && \Roots\view()->exists("blocks/{$block_slug}/view") ?
         \Roots\view("blocks/{$block_slug}/view", [
             'attributes' => $block->attributes,
