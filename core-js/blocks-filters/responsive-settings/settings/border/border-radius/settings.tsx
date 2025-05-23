@@ -36,7 +36,7 @@ const WebentorBorderRadiusControl = ({
   return (
     <SelectControl
       label={label}
-      value={value}
+      value={value ?? ''}
       options={values}
       onChange={onChange}
       className="wbtr:w-24"
@@ -141,7 +141,7 @@ export const BorderRadiusSettings = ({
             <div style={{ gridColumn: 'span 2', gridRow: 'span 2' }}>
               <WebentorBorderRadiusControl
                 label={__('All Corners', 'webentor')}
-                value={currentBorderRadius.topLeft}
+                value={currentBorderRadius?.topLeft}
                 onChange={(value) => onChange(value, 'topLeft')}
                 twTheme={twTheme}
               />
@@ -152,7 +152,7 @@ export const BorderRadiusSettings = ({
             <div style={{ gridColumn: '1', gridRow: '1' }}>
               <WebentorBorderRadiusControl
                 label={__('Top Left', 'webentor')}
-                value={currentBorderRadius.topLeft}
+                value={currentBorderRadius?.topLeft}
                 onChange={(value) => onChange(value, 'topLeft')}
                 twTheme={twTheme}
               />
@@ -160,7 +160,7 @@ export const BorderRadiusSettings = ({
             <div style={{ gridColumn: '2', gridRow: '1' }}>
               <WebentorBorderRadiusControl
                 label={__('Top Right', 'webentor')}
-                value={currentBorderRadius.topRight}
+                value={currentBorderRadius?.topRight}
                 onChange={(value) => onChange(value, 'topRight')}
                 twTheme={twTheme}
               />
@@ -168,7 +168,7 @@ export const BorderRadiusSettings = ({
             <div style={{ gridColumn: '2', gridRow: '2' }}>
               <WebentorBorderRadiusControl
                 label={__('Bottom Right', 'webentor')}
-                value={currentBorderRadius.bottomRight}
+                value={currentBorderRadius?.bottomRight}
                 onChange={(value) => onChange(value, 'bottomRight')}
                 twTheme={twTheme}
               />
@@ -176,7 +176,7 @@ export const BorderRadiusSettings = ({
             <div style={{ gridColumn: '1', gridRow: '2' }}>
               <WebentorBorderRadiusControl
                 label={__('Bottom Left', 'webentor')}
-                value={currentBorderRadius.bottomLeft}
+                value={currentBorderRadius?.bottomLeft}
                 onChange={(value) => onChange(value, 'bottomLeft')}
                 twTheme={twTheme}
               />
