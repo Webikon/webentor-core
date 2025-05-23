@@ -1,9 +1,8 @@
 import { __experimentalLinkControl as LinkControl } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 
+import { setImmutably } from '@webentorCore/_utils';
 import { BlockPanelProps } from '@webentorCore/block-filters/responsive-settings/types';
-
-import { setImmutably } from '../../utils';
 
 export const BlockLinkPanel = ({
   attributes,

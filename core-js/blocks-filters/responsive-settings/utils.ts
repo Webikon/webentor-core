@@ -6,17 +6,6 @@ export const getPixelFromRemValue = (value: string): string => {
   return value;
 };
 
-export const setImmutably = (obj: any, path: string[], value: any): any => {
-  const [head, ...rest] = path;
-  if (rest.length === 0) {
-    return { ...obj, [head]: value };
-  }
-  return {
-    ...obj,
-    [head]: setImmutably(obj[head] || {}, rest, value),
-  };
-};
-
 export const hasSpacingSettingsForBreakpoint = (
   attributes: any,
   breakpoint: string,
@@ -90,40 +79,76 @@ export const prepareTailwindBorderClassesFromSettings = (
   side: string | string[],
 ): string[] => {
   const classes: string[] = [];
-
   if (settings[type]) {
-    Object.entries(settings[type]).forEach(([, prop]: [string, any]) => {
-      if (prop?.value) {
-        Object.entries(prop?.value).forEach(
-          ([bpName, bpPropValue]: [string, object]) => {
-            if (bpPropValue) {
-              const twBreakpoint = bpName === 'basic' ? '' : `${bpName}:`;
+    Object.entries(settings[type]).forEach(
+      ([propName, prop]: [string, any]) => {
+        if (prop?.value) {
+          Object.entries(prop?.value).forEach(
+            ([bpName, bpPropValue]: [string, object]) => {
+              if (bpPropValue) {
+                const twBreakpoint = bpName === 'basic' ? '' : `${bpName}:`;
 
-              Object.entries(bpPropValue).forEach(
-                ([valueSide, value]: [string, any]) => {
-                  // Check if side classes should be processed
-                  if (Array.isArray(side) && !side.includes(valueSide)) {
-                    return;
-                  }
+                Object.entries(bpPropValue).forEach(
+                  ([valueSide, value]: [string, any]) => {
+                    if (valueSide === 'linked') {
+                      return;
+                    }
 
-                  if (typeof side === 'string' && side !== valueSide) {
-                    return;
-                  }
+                    if (propName === 'border') {
+                      // Check if side classes should be processed as we can in some cases get only one side of the border
+                      if (Array.isArray(side) && !side.includes(valueSide)) {
+                        return;
+                      }
 
-                  classes.push(
-                    ...prepareTailwindBorderClassesForSide(
-                      value,
-                      valueSide,
-                      twBreakpoint,
-                    ),
-                  );
-                },
-              );
-            }
-          },
-        );
-      }
-    });
+                      if (typeof side === 'string' && side !== valueSide) {
+                        return;
+                      }
+
+                      classes.push(
+                        ...prepareTailwindBorderClassesForSide(
+                          value,
+                          valueSide,
+                          twBreakpoint,
+                        ),
+                      );
+                    } else if (propName === 'borderRadius') {
+                      classes.push(
+                        ...prepareTailwindBorderRadiusClassesForCorner(
+                          value,
+                          valueSide,
+                          twBreakpoint,
+                        ),
+                      );
+                    }
+                  },
+                );
+              }
+            },
+          );
+        }
+      },
+    );
+  }
+
+  return classes;
+};
+
+const prepareTailwindBorderRadiusClassesForCorner = (
+  value: any,
+  corner: string,
+  twBreakpoint: string,
+): string[] => {
+  const classes: string[] = [];
+
+  const radiusMapping = {
+    topLeft: 'rounded-tl',
+    topRight: 'rounded-tr',
+    bottomRight: 'rounded-br',
+    bottomLeft: 'rounded-bl',
+  };
+
+  if (value) {
+    classes.push(`${twBreakpoint}${radiusMapping[corner]}-${value}`);
   }
 
   return classes;

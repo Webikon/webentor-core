@@ -39,7 +39,6 @@ type AttributesType = {
   lazyload: boolean;
   openInLightbox: boolean;
   fullWidth: boolean;
-  rounded: boolean;
   objectFit: string;
   objectPosition: string;
   imageSize: string;
@@ -183,25 +182,16 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
             />
           </PanelRow>
 
-          {/* Rounded */}
-          <PanelRow>
-            <ToggleControl
-              label={__('Make image full rounded', 'webentor')}
-              checked={attributes.rounded}
-              onChange={(rounded) => setAttributes({ rounded })}
-            />
-          </PanelRow>
-
           {/* Object fit select */}
           <PanelRow>
             <SelectControl
               label={__('Object Fit', 'webentor')}
               value={attributes.objectFit}
               options={[
+                { label: 'None', value: 'none' },
                 { label: 'Fill', value: 'fill' },
                 { label: 'Contain', value: 'contain' },
                 { label: 'Cover', value: 'cover' },
-                { label: 'None', value: 'none' },
                 { label: 'Scale down', value: 'scale-down' },
               ]}
               onChange={(objectFit) => setAttributes({ objectFit })}
@@ -417,6 +407,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
           id={attributes.imgId}
           size={attributes.imageSize}
           onSelect={handleImageSelect}
+          className="wbtr:rounded-[inherit]"
           // focalPoint={attributes.focalPoint}
           // onChangeFocalPoint={handleFocalPointChange}
           labels={{

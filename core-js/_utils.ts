@@ -96,3 +96,31 @@ export function isEmpty(obj: object) {
 
   return true;
 }
+
+/**
+ * Get color slug by color hex value.
+ * Usually we don't want to save hex value from WP color palette, we want to save slug.
+ *
+ * @param colors - Colors array
+ * @param color - Color string
+ * @returns Color slug
+ */
+export const getColorSlugByColor = (
+  colors: { color: string; slug: string }[],
+  color: string,
+) => {
+  return colors.find((c: any) => c.color === color)?.slug;
+};
+
+/**
+ * Get color by slug.
+ * This is the opposite of getColorSlugByColor.
+ * We want to use hex value for ColorPallete control, but we saved it as slug.
+ *
+ * @param colors - Colors array
+ * @param slug - Color slug
+ * @returns Color string
+ */
+export const getColorBySlug = (colors: any, slug: string) => {
+  return colors.find((color: any) => color.slug === slug)?.color;
+};

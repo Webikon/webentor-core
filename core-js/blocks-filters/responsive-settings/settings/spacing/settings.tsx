@@ -1,9 +1,10 @@
 import { SelectControl } from '@wordpress/components';
 
+import { setImmutably } from '@webentorCore/_utils';
 import { BlockPanelProps } from '@webentorCore/block-filters/responsive-settings/types';
 
 import { DisabledSliderInfo } from '../../components/DisabledSliderInfo';
-import { isSliderEnabledForBreakpoint, setImmutably } from '../../utils';
+import { isSliderEnabledForBreakpoint } from '../../utils';
 import { getSpacingProperties } from './properties';
 
 interface SpacingSettingsProps extends BlockPanelProps {

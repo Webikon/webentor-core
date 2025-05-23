@@ -367,26 +367,40 @@ function prepareBlockClassesFromSettings($attributes, $block = null)
             'left' => 'border-l'
         ];
 
+        $border_radius_mapping = [
+            'topLeft' => 'rounded-tl',
+            'topRight' => 'rounded-tr',
+            'bottomRight' => 'rounded-br',
+            'bottomLeft' => 'rounded-bl'
+        ];
+
         foreach ($attributes['border'] as $property_name => $property_data) {
             if (!empty($property_data['value'])) {
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     if (!empty($breakpoint_property_value)) {
-                        var_dump($breakpoint_property_value);
-                        foreach ($breakpoint_property_value as $side => $side_value) {
-                            if (!empty($side_value) && is_array($side_value)) {
-                                // Transform to Tailwind classes
-                                $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
+                        foreach ($breakpoint_property_value as $value_side => $value) {
+                            // Transform to Tailwind classes
+                            $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
 
-                                if (!empty($side_value['width'])) {
-                                    $classes .= ' ' . $tw_breakpoint . $border_mapping[$side] . '-' . $side_value['width'];
+                            if (!empty($value)) {
+                                if ($value_side === 'linked') {
+                                    continue;
                                 }
 
-                                if (!empty($side_value['color'])) {
-                                    $classes .= ' ' . $tw_breakpoint . $border_mapping[$side] . '-' . $side_value['color'];
-                                }
+                                if ($property_name === 'border') {
+                                    if (!empty($value['width'])) {
+                                        $classes .= ' ' . $tw_breakpoint . $border_mapping[$value_side] . '-' . $value['width'];
+                                    }
 
-                                if (!empty($side_value['style'])) {
-                                    $classes .= ' ' . $tw_breakpoint . $border_mapping[$side] . '-' . $side_value['style'];
+                                    if (!empty($value['color'])) {
+                                        $classes .= ' ' . $tw_breakpoint . $border_mapping[$value_side] . '-' . $value['color'];
+                                    }
+
+                                    if (!empty($value['style'])) {
+                                        $classes .= ' ' . $tw_breakpoint . $border_mapping[$value_side] . '-' . $value['style'];
+                                    }
+                                } elseif ($property_name === 'borderRadius') {
+                                    $classes .= ' ' . $tw_breakpoint . $border_radius_mapping[$value_side] . '-' . $value;
                                 }
                             }
                         }

@@ -184,8 +184,6 @@ class SliderComponent {
     // Return early if the gap is zero
     if (gap === 0) return;
 
-    console.log(gap);
-
     const maxWidth = `calc(100% - ${gap}px)`;
     const translateX = `${gap / 2}px`;
 
@@ -205,8 +203,6 @@ class SliderComponent {
 
   toggleAutoplay() {
     if (this.swiper) {
-      console.log(this.swiper);
-
       if (this.swiper.autoplay.running && !this.swiper.autoplay.paused) {
         this.swiper.autoplay.pause();
       } else {

@@ -1,0 +1,1 @@
+export { BorderPanel } from './panel';

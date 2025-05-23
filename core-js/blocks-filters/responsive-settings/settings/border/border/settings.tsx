@@ -1,4 +1,5 @@
 import { store as blockEditorStore } from '@wordpress/block-editor';
+import { getBlockType } from '@wordpress/blocks';
 import {
   Button,
   ColorPalette,
@@ -9,13 +10,15 @@ import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { link, linkOff } from '@wordpress/icons';
 
-import { isEmpty } from '@webentorCore/_utils';
-
-import { BlockPanelProps } from '../../types';
 import {
-  prepareTailwindBorderClassesFromSettings,
+  getColorBySlug,
+  getColorSlugByColor,
+  isEmpty,
   setImmutably,
-} from '../../utils';
+} from '@webentorCore/_utils';
+
+import { BlockPanelProps } from '../../../types';
+import { prepareTailwindBorderClassesFromSettings } from '../../../utils';
 import { getBorderProperties } from './properties';
 
 interface BorderSettingsProps extends BlockPanelProps {
@@ -23,9 +26,9 @@ interface BorderSettingsProps extends BlockPanelProps {
 }
 
 interface BorderSide {
-  width?: string;
-  style?: string;
-  color?: string;
+  width?: string; // E.g. '1', '2', '4',...
+  style?: string; // E.g. 'solid', 'dashed',...
+  color?: string; // E.g. 'black', 'red',...
 }
 
 interface BorderValue {
@@ -86,11 +89,11 @@ const WebentorBorderControl = ({
               <p className="wbtr:uppercase">{__('Color', 'webentor')}</p>
               <ColorPalette
                 colors={colors}
-                value={getColorBySlug(colors, value?.color)}
+                value={getColorBySlug(colors, value?.color)} // Get as hex value
                 onChange={(color) =>
                   onChange({
                     ...value,
-                    color: getColorSlugByColor(colors, color),
+                    color: getColorSlugByColor(colors, color), // Save as slug
                   })
                 }
                 disableCustomColors
@@ -101,14 +104,6 @@ const WebentorBorderControl = ({
       />
     </div>
   );
-};
-
-const getColorSlugByColor = (colors: any, color: string) => {
-  return colors.find((c: any) => c.color === color)?.slug;
-};
-
-const getColorBySlug = (colors: any, slug: string) => {
-  return colors.find((color: any) => color.slug === slug)?.color;
 };
 
 export const BorderSettings = ({
@@ -125,6 +120,9 @@ export const BorderSettings = ({
   const currentBorder: BorderValue = {
     ...(attributes.border.border?.value?.[breakpoint] || {}),
   };
+
+  const blockSettings = getBlockType(name)?.attributes;
+  const defaultBorderValue = blockSettings?.border?.default;
 
   const isLinked = currentBorder.linked ?? true;
 
@@ -205,121 +203,104 @@ export const BorderSettings = ({
 
   const resetBorder = () => {
     setAttributes(
-      setImmutably(attributes, ['border', 'border', 'value', breakpoint], {}),
+      setImmutably(
+        attributes,
+        ['border', 'border', 'value'],
+        defaultBorderValue?.border?.value,
+      ),
     );
   };
 
   const containerStyle = {
     display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
+    gridTemplateColumns: 'repeat(3, 1fr)',
     gridTemplateRows: 'repeat(3, 1fr)',
     gap: '8px',
     alignItems: 'center',
     justifyItems: 'center',
-    paddingTop: '16px',
   };
 
-  if (isLinked) {
-    return (
-      <div className="wbtr:flex wbtr:flex-col wbtr:gap-4">
-        <div style={containerStyle}>
-          <div style={{ gridColumn: '2', gridRow: '2' }}>
-            <WebentorBorderControl
-              label={__('All Borders', 'webentor')}
-              value={currentBorder.top}
-              onChange={(value) => onChange(value, 'top')}
-              colors={colors}
-              borderClasses={borderClasses}
-              twTheme={twTheme}
-            />
-          </div>
-          <div style={{ gridColumn: '4', gridRow: '2' }}>
-            <Button
-              icon={isLinked ? link : linkOff}
-              onClick={toggleLinked}
-              label={
-                isLinked
-                  ? __('Unlink sides', 'webentor')
-                  : __('Link sides', 'webentor')
-              }
-            />
-          </div>
-        </div>
-
-        <div className="wbtr:ml-auto">
-          <Button
-            variant="tertiary"
-            onClick={resetBorder}
-            disabled={isEmpty(currentBorder)}
-          >
-            {__('Reset', 'webentor')}
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="wbtr:flex wbtr:flex-col wbtr:gap-4">
+    <div className="wbtr:my-2 wbtr:flex wbtr:flex-col wbtr:gap-2 wbtr:border wbtr:border-editor-border wbtr:p-2">
+      <p className="wbtr:text-12 wbtr:uppercase">{__('Border', 'webentor')}</p>
+
       <div style={containerStyle}>
-        <div style={{ gridColumn: '2', gridRow: '1' }}>
-          <WebentorBorderControl
-            label={__('Top', 'webentor')}
-            value={currentBorder.top}
-            onChange={(value) => onChange(value, 'top')}
-            colors={colors}
-            borderClasses={borderTopClasses}
-            twTheme={twTheme}
-          />
-        </div>
-        <div style={{ gridColumn: '3', gridRow: '2' }}>
-          <WebentorBorderControl
-            label={__('Right', 'webentor')}
-            value={currentBorder.right}
-            onChange={(value) => onChange(value, 'right')}
-            colors={colors}
-            borderClasses={borderRightClasses}
-            twTheme={twTheme}
-          />
-        </div>
-        <div style={{ gridColumn: '2', gridRow: '3' }}>
-          <WebentorBorderControl
-            label={__('Bottom', 'webentor')}
-            value={currentBorder.bottom}
-            onChange={(value) => onChange(value, 'bottom')}
-            colors={colors}
-            borderClasses={borderBottomClasses}
-            twTheme={twTheme}
-          />
-        </div>
-        <div style={{ gridColumn: '1', gridRow: '2' }}>
-          <WebentorBorderControl
-            label={__('Left', 'webentor')}
-            value={currentBorder.left}
-            onChange={(value) => onChange(value, 'left')}
-            colors={colors}
-            borderClasses={borderLeftClasses}
-            twTheme={twTheme}
-          />
-        </div>
-        <div style={{ gridColumn: '4', gridRow: '2' }}>
-          <Button
-            icon={isLinked ? link : linkOff}
-            onClick={toggleLinked}
-            label={
-              isLinked
-                ? __('Unlink sides', 'webentor')
-                : __('Link sides', 'webentor')
-            }
-          />
-        </div>
+        {isLinked ? (
+          <>
+            <div style={{ gridColumn: 'span 3', gridRow: 'span 3' }}>
+              <WebentorBorderControl
+                label={__('All Borders', 'webentor')}
+                value={currentBorder.top}
+                onChange={(value) => onChange(value, 'top')}
+                colors={colors}
+                borderClasses={borderClasses}
+                twTheme={twTheme}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div style={{ gridColumn: '2', gridRow: '1' }}>
+              <WebentorBorderControl
+                label={__('Top', 'webentor')}
+                value={currentBorder.top}
+                onChange={(value) => onChange(value, 'top')}
+                colors={colors}
+                borderClasses={borderTopClasses}
+                twTheme={twTheme}
+              />
+            </div>
+            <div style={{ gridColumn: '3', gridRow: '2' }}>
+              <WebentorBorderControl
+                label={__('Right', 'webentor')}
+                value={currentBorder.right}
+                onChange={(value) => onChange(value, 'right')}
+                colors={colors}
+                borderClasses={borderRightClasses}
+                twTheme={twTheme}
+              />
+            </div>
+            <div style={{ gridColumn: '2', gridRow: '3' }}>
+              <WebentorBorderControl
+                label={__('Bottom', 'webentor')}
+                value={currentBorder.bottom}
+                onChange={(value) => onChange(value, 'bottom')}
+                colors={colors}
+                borderClasses={borderBottomClasses}
+                twTheme={twTheme}
+              />
+            </div>
+            <div style={{ gridColumn: '1', gridRow: '2' }}>
+              <WebentorBorderControl
+                label={__('Left', 'webentor')}
+                value={currentBorder.left}
+                onChange={(value) => onChange(value, 'left')}
+                colors={colors}
+                borderClasses={borderLeftClasses}
+                twTheme={twTheme}
+              />
+            </div>
+          </>
+        )}
       </div>
 
-      <div className="wbtr:ml-auto">
+      <div className="wbtr:flex wbtr:justify-between">
+        <Button
+          icon={isLinked ? link : linkOff}
+          onClick={toggleLinked}
+          label={
+            isLinked
+              ? __('Unlink sides', 'webentor')
+              : __('Link sides', 'webentor')
+          }
+        />
+
         <Button
           variant="tertiary"
           onClick={resetBorder}
           disabled={isEmpty(currentBorder)}
+          label={__('Reset to defaults', 'webentor')}
+          showTooltip
         >
           {__('Reset', 'webentor')}
         </Button>

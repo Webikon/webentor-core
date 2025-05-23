@@ -1,47 +1,52 @@
 import { PanelBody, TabPanel } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
+import { isEmpty } from '@webentorCore/_utils';
 import { BlockPanelProps } from '@webentorCore/block-filters/responsive-settings/types';
 
-import { BorderSettings } from './settings';
+import { BorderRadiusSettings } from './border-radius/settings';
+import { BorderSettings } from './border/settings';
 
 export const BorderPanel = (props: BlockPanelProps) => {
   const { attributes, breakpoints, twTheme } = props;
 
-  if (!attributes?.border) {
+  if (!attributes?.border && !attributes?.borderRadius) {
     return null;
   }
 
-  const hasBorderSettingsForBreakpoint = (breakpoint: string): boolean => {
-    return !!(
-      attributes?.border?.border?.value?.[breakpoint]?.top?.width ||
-      attributes?.border?.border?.value?.[breakpoint]?.right?.width ||
-      attributes?.border?.border?.value?.[breakpoint]?.bottom?.width ||
-      attributes?.border?.border?.value?.[breakpoint]?.left?.width ||
-      attributes?.border?.border?.value?.[breakpoint]?.top?.color ||
-      attributes?.border?.border?.value?.[breakpoint]?.right?.color ||
-      attributes?.border?.border?.value?.[breakpoint]?.bottom?.color ||
-      attributes?.border?.border?.value?.[breakpoint]?.left?.color ||
-      attributes?.border?.border?.value?.[breakpoint]?.top?.style ||
-      attributes?.border?.border?.value?.[breakpoint]?.right?.style ||
-      attributes?.border?.border?.value?.[breakpoint]?.bottom?.style ||
-      attributes?.border?.border?.value?.[breakpoint]?.left?.style
-    );
+  const checkIfHasAnyBorderSettings = (breakpoint: string): boolean => {
+    const properties = ['border', 'borderRadius'];
+
+    return properties.some((property) => {
+      return !isEmpty(attributes?.border?.[property]?.value?.[breakpoint]);
+    });
   };
 
   return (
-    <PanelBody title={__('Border Settings', 'webentor')} initialOpen={true}>
+    <PanelBody title={__('Border Settings', 'webentor')} initialOpen={false}>
       <TabPanel
         activeClass="is-active"
         className="w-responsive-settings-tabs"
         initialTabName={breakpoints[0]}
         tabs={breakpoints.map((breakpoint) => ({
           name: breakpoint,
-          title: `${breakpoint}${hasBorderSettingsForBreakpoint(breakpoint) ? '*' : ''}`, // Add * if spacing is set on this breakpoint,
+          title: `${breakpoint}${checkIfHasAnyBorderSettings(breakpoint) ? '*' : ''}`,
         }))}
       >
         {(tab) => (
-          <BorderSettings {...props} breakpoint={tab.name} twTheme={twTheme} />
+          <>
+            <BorderSettings
+              {...props}
+              breakpoint={tab.name}
+              twTheme={twTheme}
+            />
+
+            <BorderRadiusSettings
+              {...props}
+              breakpoint={tab.name}
+              twTheme={twTheme}
+            />
+          </>
         )}
       </TabPanel>
     </PanelBody>

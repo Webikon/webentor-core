@@ -138,7 +138,9 @@ const initResponsiveSettings = () => {
 
       if (
         includedBlocks['border'].includes(name) ||
-        settings?.supports?.webentor?.border
+        includedBlocks['borderRadius'].includes(name) ||
+        settings?.supports?.webentor?.border ||
+        settings?.supports?.webentor?.borderRadius
       ) {
         settings.attributes = {
           ...settings.attributes,
@@ -179,12 +181,12 @@ const BlockEdit = (props) => {
     <Fragment>
       <InspectorControls>
         <SpacingPanel {...props} breakpoints={breakpoints} twTheme={twTheme} />
-        <BorderPanel {...props} breakpoints={breakpoints} twTheme={twTheme} />
         <ContainerPanel
           {...props}
           breakpoints={breakpoints}
           twTheme={twTheme}
         />
+        <BorderPanel {...props} breakpoints={breakpoints} twTheme={twTheme} />
         <BlockLinkPanel {...props} />
       </InspectorControls>
     </Fragment>

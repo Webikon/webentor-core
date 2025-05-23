@@ -18,16 +18,12 @@
   $block_classes =
       !empty($attributes['fullWidth']) && $attributes['fullWidth'] ? $block_classes . ' wbtr:w-full' : $block_classes;
 
-  // Make image full rounded
-  $block_classes =
-      !empty($attributes['rounded']) && $attributes['rounded'] ? $block_classes . ' wbtr:rounded-full' : $block_classes;
-
   if (!empty($attributes['objectFit'])) {
-      $block_classes .= " wbtr:object-{$attributes['objectFit']}";
+      $block_classes .= " object-{$attributes['objectFit']}";
   }
 
   if (!empty($attributes['objectPosition'])) {
-      $block_classes .= " wbtr:object-{$attributes['objectPosition']}";
+      $block_classes .= " object-{$attributes['objectPosition']}";
   }
 
   $img_attr = [

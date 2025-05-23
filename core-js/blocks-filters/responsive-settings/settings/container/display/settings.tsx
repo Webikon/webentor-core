@@ -2,11 +2,11 @@ import { getBlockSupport } from '@wordpress/blocks';
 import { SelectControl } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 
-import { camelize } from '@webentorCore/_utils';
-import { BlockPanelProps } from '@webentorCore/block-filters/responsive-settings/types';
+import { camelize, setImmutably } from '@webentorCore/_utils';
 
 import { DisabledSliderInfo } from '../../../components/DisabledSliderInfo';
-import { isSliderEnabledForBreakpoint, setImmutably } from '../../../utils';
+import { BlockPanelProps } from '../../../types';
+import { isSliderEnabledForBreakpoint } from '../../../utils';
 import { getDisplayProperties } from './properties';
 
 interface DisplaySettingsProps extends BlockPanelProps {

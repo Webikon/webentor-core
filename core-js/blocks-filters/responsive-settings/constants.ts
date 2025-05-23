@@ -7,4 +7,5 @@ export const includedBlocks = {
   flexbox: [],
   flexboxItem: [],
   border: [],
+  borderRadius: [],
 };

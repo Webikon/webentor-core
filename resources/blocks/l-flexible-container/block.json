@@ -27,7 +27,8 @@
       "flexbox": true,
       "flexboxItem": true,
       "blockLink": true,
-      "border": true
+      "border": true,
+      "borderRadius": true
     }
   }
 }

@@ -42,7 +42,8 @@
         "height": true,
         "minHeight": true
       },
-      "border": true
+      "border": true,
+      "borderRadius": true
     }
   }
 }

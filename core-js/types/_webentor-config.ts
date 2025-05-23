@@ -53,7 +53,8 @@ export interface ThemeConfig {
   // borderOpacity: ThemeConfig['opacity'];
   borderRadius: ResolvableTo<KeyValuePair>;
   // borderSpacing: ThemeConfig['spacing'];
-  // borderWidth: ResolvableTo<KeyValuePair>;
+  borderStyle: ResolvableTo<KeyValuePair>;
+  borderWidth: ResolvableTo<KeyValuePair>;
   // boxShadow: ResolvableTo<KeyValuePair<string, string | string[]>>;
   // boxShadowColor: ThemeConfig['colors'];
   // brightness: ResolvableTo<KeyValuePair>;

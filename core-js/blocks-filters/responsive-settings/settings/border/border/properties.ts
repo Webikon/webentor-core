@@ -2,7 +2,7 @@ import { __ } from '@wordpress/i18n';
 
 import { WebentorConfig } from '@webentorCore/types/_webentor-config';
 
-import { getPixelFromRemValue } from '../../utils';
+import { getPixelFromRemValue } from '../../../utils';
 
 export const getBorderProperties = (twTheme: WebentorConfig['theme']) => [
   {
@@ -17,7 +17,7 @@ export const getBorderProperties = (twTheme: WebentorConfig['theme']) => [
     label: __('Border Style', 'webentor'),
     name: 'style',
     values: [
-      { label: __('None', 'webentor'), value: '' },
+      { label: __('None selected', 'webentor'), value: '' },
       ...Object.keys(twTheme?.borderStyle).map((key) => ({
         label: `${key}`,
         value: `${key}`,

@@ -43,10 +43,6 @@
       "type": "boolean",
       "default": false
     },
-    "rounded": {
-      "type": "boolean",
-      "default": false
-    },
     "objectFit": {
       "type": "string",
       "default": "none"
@@ -71,7 +67,8 @@
   "supports": {
     "webentor": {
       "spacing": true,
-      "border": true
+      "border": true,
+      "borderRadius": true
     }
   }
 }
