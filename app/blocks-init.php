@@ -149,7 +149,7 @@ function register_block_from_filename($filename)
             $should_add = false;
 
             // Check postType support and only register for defined post types
-            if (isset($registered_block->supports['webentor']['postType']) && in_array($block_editor_context->post->post_type, $registered_block->supports['webentor']['postType'])) {
+            if (isset($registered_block->supports['webentor']['postType']) && isset($block_editor_context->post->post_type) && in_array($block_editor_context->post->post_type, $registered_block->supports['webentor']['postType'])) {
                 $should_add = true;
             } elseif (empty($registered_block->supports['webentor']['postType'])) {
                 $should_add = true;
