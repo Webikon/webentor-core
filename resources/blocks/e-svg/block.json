@@ -1,13 +1,12 @@
 {
   "$schema": "../../../schemas/webentor-block.json",
+  "apiVersion": 3,
   "name": "webentor/e-svg",
   "title": "Svg",
   "description": "Svg block.",
   "category": "webentor-elements",
   "icon": "art",
-  "keywords": [
-    "svg"
-  ],
+  "keywords": ["svg"],
   "example": {
     "attributes": {
       "mode": "preview",
