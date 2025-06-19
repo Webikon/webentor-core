@@ -21,7 +21,7 @@ Facades\View::composer('blocks.e-picker-query-loop.view', function (View $view) 
 
     $query_args = [
         'post_type' => $query_attributes['postType'] ?? 'post',
-        'post__in' => $post_ids,
+        'post__in' => $post_ids ?: [0],
         'post__not_in' => [get_the_ID()], // Ignore current post
     ];
 
