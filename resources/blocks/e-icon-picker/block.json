@@ -1,0 +1,37 @@
+{
+  "$schema": "../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "name": "webentor/e-icon-picker",
+  "title": "Icon Picker",
+  "description": "Icon Picker block.",
+  "category": "webentor-elements",
+  "icon": "art",
+  "keywords": ["svg", "icon"],
+  "attributes": {
+    "icon": {
+      "type": "object",
+      "default": null
+    },
+    "color": {
+      "type": "string",
+      "default": "text-black"
+    },
+    "width": {
+      "type": "string",
+      "default": "24"
+    },
+    "height": {
+      "type": "string",
+      "default": "24"
+    },
+    "inheritSize": {
+      "type": "boolean",
+      "default": false
+    },
+    "link": {
+      "type": "object",
+      "default": {}
+    }
+  },
+  "supports": {}
+}

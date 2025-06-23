@@ -1,5 +1,10 @@
 # Webentor Core Changelog
 
+## 0.9.6
+
+- Add Icon Picker block
+- Update deps
+
 ## 0.9.5
 
 - Add new border & border radius responsive settings, applied to Flexible Content, Section and Image

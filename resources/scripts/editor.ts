@@ -25,3 +25,4 @@ import '@blocks/l-nav-menu/l-nav-menu.block';
 import '@blocks/l-post-card/l-post-card.block';
 import '@blocks/l-section/l-section.block';
 import '@blocks/l-site-logo/l-site-logo.block';
+import '@blocks/e-icon-picker/e-icon-picker.block';
