@@ -1,6 +1,6 @@
 <?php
 
-define('WEBENTOR_CORE_PUBLIC_PATH', __DIR__ . '/public');
+define('WEBENTOR_CORE_PUBLIC_PATH', __DIR__ . '/public/build');
 define('WEBENTOR_CORE_MANIFEST_PATH', WEBENTOR_CORE_PUBLIC_PATH . '/manifest.json');
 define('WEBENTOR_CORE_RESOURCES_PATH', __DIR__ . '/resources');
 
