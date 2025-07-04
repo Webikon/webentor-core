@@ -219,7 +219,7 @@ function render_block_blade($block)
     // Get the blade view and pass all necessary data
     // check if file exists
     if (\Roots\view()->exists("blocks/{$block_slug}/view")) {
-        return \Roots\view("blocks/{$block_slug}/view", [
+        $block_content = \Roots\view("blocks/{$block_slug}/view", [
             'attributes' => $block->attributes,
             'innerBlocksContent' => $inner_blocks_html,
             'anchor' => $anchor,
@@ -228,6 +228,35 @@ function render_block_blade($block)
             'block' => $block,
             'additional_data' => $additional_data,
         ]);
+
+        /**
+         * Filters the content of a single block.
+         *
+         * @since 5.0.0
+         * @since 5.9.0 The `$instance` parameter was added.
+         *
+         * @param string   $block_content The block content.
+         * @param array    $block         The full block, including name and attributes.
+         * @param WP_Block $instance      The block instance.
+         */
+        $block_content = apply_filters('render_blade_block', $block_content, $block->parsed_block, $block);
+
+        /**
+         * Filters the content of a single block.
+         *
+         * The dynamic portion of the hook name, `$name`, refers to
+         * the block name, e.g. "core/paragraph".
+         *
+         * @since 5.7.0
+         * @since 5.9.0 The `$instance` parameter was added.
+         *
+         * @param string   $block_content The block content.
+         * @param array    $block         The full block, including name and attributes.
+         * @param WP_Block $instance      The block instance.
+         */
+        $block_content = apply_filters("render_blade_block_{$block->name}", $block_content, $block->parsed_block, $block);
+
+        return $block_content;
     } else {
         return $block->render();
     }
@@ -259,17 +288,47 @@ function render_inner_block_blade($block)
     $classes = apply_filters('webentor/block_classes', $classes, $block);
     $bg_classes = apply_filters('webentor/block_bg_classes', $bg_classes, $block);
 
-    return $is_custom && \Roots\view()->exists("blocks/{$block_slug}/view") ?
-        \Roots\view("blocks/{$block_slug}/view", [
+    if ($is_custom && \Roots\view()->exists("blocks/{$block_slug}/view")) {
+        $block_content = \Roots\view("blocks/{$block_slug}/view", [
             'attributes' => $block->attributes,
             'anchor' => $anchor,
             'block_classes' => $classes,
             'bg_classes' => $bg_classes,
             'block' => $block
-        ])
-        : $block->render();
-}
+        ]);
 
+        /**
+         * Filters the content of a single block.
+         *
+         * @since 5.0.0
+         * @since 5.9.0 The `$instance` parameter was added.
+         *
+         * @param string   $block_content The block content.
+         * @param array    $block         The full block, including name and attributes.
+         * @param WP_Block $instance      The block instance.
+         */
+        $block_content = apply_filters('render_blade_block', $block_content, $block->parsed_block, $block);
+
+        /**
+         * Filters the content of a single block.
+         *
+         * The dynamic portion of the hook name, `$name`, refers to
+         * the block name, e.g. "core/paragraph".
+         *
+         * @since 5.7.0
+         * @since 5.9.0 The `$instance` parameter was added.
+         *
+         * @param string   $block_content The block content.
+         * @param array    $block         The full block, including name and attributes.
+         * @param WP_Block $instance      The block instance.
+         */
+        $block_content = apply_filters("render_blade_block_{$block->name}", $block_content, $block->parsed_block, $block);
+
+        return $block_content;
+    } else {
+        return $block->render();
+    }
+}
 
 /**
  * Build Tabs navigation based on child blocks titles.
@@ -400,3 +459,53 @@ add_filter('render_block_core/template-part', function ($block_content, $block) 
 
     return $block_content;
 }, 10, 2);
+
+/**
+ * Check if the given block has visibility settings from plugin Block Visibility.
+ *
+ * @since 1.0.0
+ *
+ * @param  string $block_content The block frontend output.
+ * @param  array  $block         The block info and attributes.
+ * @return mixed  Return either the $block_content or nothing depending on visibility settings.
+ */
+add_filter('render_blade_block', function ($block_content, $block) {
+    if (!function_exists('\BlockVisibility\Frontend\is_block_type_disabled')) {
+        return $block_content;
+    }
+
+    // Get the visibility settings.
+    $attributes = $block['attrs']['blockVisibility'] ?? null;
+
+    // Return early if the block does not have visibility settings.
+    if (! $attributes) {
+        return $block_content;
+    }
+
+    // Get the plugin settings.
+    $settings = get_option('block_visibility_settings');
+
+    // Return early if visibility control is disabled for this block type.
+    if (\BlockVisibility\Frontend\is_block_type_disabled($settings, $block)) {
+        return $block_content;
+    }
+
+    // Start with the hide block test. If it doesn't pass, the block is hidden.
+    if (! \BlockVisibility\Frontend\VisibilityTests\hide_block_test($settings, $attributes)) {
+        return '';
+    }
+
+    // If the block is visible, add custom classes as needed.
+    if (\BlockVisibility\Frontend\is_visible($settings, $attributes)) {
+
+        $content_classes = \BlockVisibility\Frontend\add_custom_classes($settings, $attributes);
+
+        if (! empty($content_classes)) {
+            $block_content = \BlockVisibility\Frontend\append_content_classes($block_content, $content_classes);
+        }
+
+        return $block_content;
+    } else {
+        return '';
+    }
+}, 10, 3);
