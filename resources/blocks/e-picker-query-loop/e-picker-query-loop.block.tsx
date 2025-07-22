@@ -119,7 +119,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
               }}
               content={posts || []}
               mode="post"
-              maxContentItems={10}
+              maxContentItems={20}
               isOrderable
               label={__('Select posts', 'webentor')}
               contentTypes={[postType]}
