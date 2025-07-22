@@ -69,7 +69,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
     parentBlockProps,
   ) as TemplateArray;
 
-  const innerBlocksProps = useInnerBlocksProps(blockProps, {
+  const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
     allowedBlocks,
     template,
     templateLock: 'all',
@@ -143,8 +143,16 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
 
       <div
         {...innerBlocksProps}
-        className={`${blockProps.className} ${innerBlocksProps.className} wbtr:border wbtr:border-editor-border wbtr:p-4`}
-      />
+        className={`${innerBlocksProps.className} wbtr:relative wbtr:p-2 wbtr:pt-4`}
+      >
+        <div className="wbtr:absolute wbtr:inset-0 wbtr:h-full wbtr:w-full wbtr:border wbtr:border-editor-border wbtr:p-2 wbtr:pt-4"></div>
+
+        <div className="wbtr:absolute wbtr:top-[2px] wbtr:left-2 wbtr:mb-1 wbtr:text-10 wbtr:opacity-50">
+          {__('Picker Query Loop', 'webentor')}
+        </div>
+
+        {children}
+      </div>
     </>
   );
 };

@@ -9,6 +9,7 @@ import {
   TemplateArray,
 } from '@wordpress/blocks';
 import { applyFilters } from '@wordpress/hooks';
+import { __ } from '@wordpress/i18n';
 
 import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 
@@ -56,7 +57,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
     parentBlockProps,
   );
 
-  const innerBlocksProps = useInnerBlocksProps(blockProps, {
+  const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
     allowedBlocks,
     template,
     templateLock: false,
@@ -70,8 +71,16 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   return (
     <div
       {...innerBlocksProps}
-      className={`${blockProps.className} ${innerBlocksProps.className} wbtr:border wbtr:border-editor-border wbtr:p-4`}
-    />
+      className={`${innerBlocksProps.className} wbtr:relative wbtr:p-2 wbtr:pt-4`}
+    >
+      <div className="wbtr:absolute wbtr:inset-0 wbtr:h-full wbtr:w-full wbtr:border wbtr:border-editor-border wbtr:p-2 wbtr:pt-4"></div>
+
+      <div className="wbtr:absolute wbtr:top-[2px] wbtr:left-2 wbtr:mb-1 wbtr:text-10 wbtr:opacity-50">
+        {__('Post Template', 'webentor')}
+      </div>
+
+      {children}
+    </div>
   );
 };
 
