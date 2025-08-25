@@ -175,7 +175,7 @@ function register_block_from_filename($filename)
 function render_block_blade($block)
 {
     // We don't need to render blocks in admin or while saving, this will dramatically improve Gutenberg loading time
-    if (is_admin() || wp_doing_ajax() || defined('REST_REQUEST')) {
+    if (is_admin() || wp_doing_ajax() || (is_admin() && defined('REST_REQUEST'))) {
         return;
     }
 
