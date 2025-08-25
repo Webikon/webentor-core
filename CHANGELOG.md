@@ -1,5 +1,9 @@
 # Webentor Core Changelog
 
+## 0.9.7
+
+- Fix empty content in WP REST API response
+
 ## 0.9.6
 
 - Add Icon Picker block
