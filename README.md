@@ -36,7 +36,7 @@ Then run `composer require webikon/webentor-core:dev-main`
 
 ### Install as node package
 
-In Sage theme, run `pnpm i -D webikon/webentor-core`
+In Sage theme, run `pnpm i -D @webikon/webentor-core`
 
 **Important info:**
 
