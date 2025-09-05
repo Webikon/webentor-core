@@ -1,0 +1,47 @@
+name: Release Composer Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+
+      - name: Install Composer
+        run: |
+          curl -sS https://getcomposer.org/installer | php
+          sudo mv composer.phar /usr/local/bin/composer
+
+      - name: Validate composer.json
+        run: composer validate --no-check-publish
+
+      - name: Install dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Extract version from composer.json
+        id: get_version
+        run: |
+          VERSION=$(php -r "echo json_decode(file_get_contents('composer.json'), true)['version'];")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Notify Packagist
+        run: |
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{"repository":{"url":"https://github.com/${{ github.repository }}"}}' \
+            https://packagist.org/api/update-package?username=${{ secrets.PACKAGIST_USERNAME }}&apiToken=${{ secrets.PACKAGIST_TOKEN }}
