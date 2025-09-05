@@ -1,5 +1,11 @@
 # Webentor Core Changelog
 
+## 0.9.8
+
+- Add `pnpm`
+- **BREAKING:** Rename npm package to `webikon/webentor-core`
+- **BREAKING:** Include `build/` assets
+
 ## 0.9.7
 
 - Fix empty content in WP REST API response

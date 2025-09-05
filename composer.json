@@ -1,6 +1,6 @@
 {
   "name": "webikon/webentor-core",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "license": "MIT",
   "description": "Webentor Core package",
   "homepage": "https://webikon.sk",
@@ -18,5 +18,8 @@
   ],
   "require": {
     "kucrut/vite-for-wp": "^0.11.6"
+  },
+  "require-dev": {
+    "php": ">=8.2"
   }
 }

@@ -1,0 +1,65 @@
+{
+  "__utils-D5M3S_Sp.js": {
+    "file": "assets/_utils-D5M3S_Sp.js",
+    "name": "_utils"
+  },
+  "resources/blocks/e-accordion/script.ts": {
+    "file": "assets/resources/blocks/e-accordion/script-l0sNRNKZ.js",
+    "name": "resources/blocks/e-accordion/script",
+    "src": "resources/blocks/e-accordion/script.ts",
+    "isEntry": true
+  },
+  "resources/blocks/e-accordion/style.css": {
+    "file": "assets/resources/blocks/e-accordion/style-B_8yURlk.css",
+    "src": "resources/blocks/e-accordion/style.css",
+    "isEntry": true
+  },
+  "resources/blocks/e-icon-picker/style.css": {
+    "file": "assets/resources/blocks/e-icon-picker/style-BSib2kGz.css",
+    "src": "resources/blocks/e-icon-picker/style.css",
+    "isEntry": true
+  },
+  "resources/blocks/l-mobile-nav/style.css": {
+    "file": "assets/resources/blocks/l-mobile-nav/style-QMBn75AN.css",
+    "src": "resources/blocks/l-mobile-nav/style.css",
+    "isEntry": true
+  },
+  "resources/blocks/l-nav-menu/style.css": {
+    "file": "assets/resources/blocks/l-nav-menu/style-BRXbCIFJ.css",
+    "src": "resources/blocks/l-nav-menu/style.css",
+    "isEntry": true
+  },
+  "resources/core-components/slider/slider.script.ts": {
+    "file": "assets/sliderJs-DxQKsrMk.js",
+    "name": "sliderJs",
+    "src": "resources/core-components/slider/slider.script.ts",
+    "isEntry": true,
+    "imports": [
+      "__utils-D5M3S_Sp.js"
+    ]
+  },
+  "resources/core-components/slider/slider.style.css": {
+    "file": "assets/sliderStyles-DGIM-zPM.css",
+    "src": "resources/core-components/slider/slider.style.css",
+    "isEntry": true
+  },
+  "resources/scripts/editor.ts": {
+    "file": "assets/coreEditorJs-sZW7Jilp.js",
+    "name": "coreEditorJs",
+    "src": "resources/scripts/editor.ts",
+    "isEntry": true,
+    "imports": [
+      "__utils-D5M3S_Sp.js"
+    ]
+  },
+  "resources/styles/app.css": {
+    "file": "assets/coreAppStyles-HeVLu3xw.css",
+    "src": "resources/styles/app.css",
+    "isEntry": true
+  },
+  "resources/styles/editor.css": {
+    "file": "assets/coreEditorStyles-DAozoo0M.css",
+    "src": "resources/styles/editor.css",
+    "isEntry": true
+  }
+}

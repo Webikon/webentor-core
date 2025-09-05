@@ -1,7 +1,8 @@
 {
-  "name": "webentor-core",
+  "name": "webikon/webentor-core",
   "homepage": "https://webikon.sk",
-  "version": "0.9.6",
+  "version": "0.9.8",
+  "description": "Core functionality and useful utilities for Webentor Stack",
   "license": "MIT",
   "author": "Webikon s.r.o.",
   "maintainers": [
@@ -13,6 +14,17 @@
       "name": "Pavol Caban",
       "email": "pavol.caban@webikon.sk"
     }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webikon/webentor-core.git"
+  },
+  "keywords": [
+    "wordpress",
+    "gutenberg",
+    "blocks",
+    "webentor",
+    "sage"
   ],
   "engines": {
     "node": ">=20.0.0"
@@ -31,7 +43,8 @@
     "prettier-fix": "prettier --write 'resources/**/*.{js,ts,tsx,css}'",
     "prettier-fix:js": "prettier --write 'resources/**/*.{js,ts,tsx}'",
     "prettier-fix:css": "prettier --write 'resources/**/*.css'",
-    "prettier-fix:blade": "prettier --write 'resources/**/*.blade.php'"
+    "prettier-fix:blade": "prettier --write 'resources/**/*.blade.php'",
+    "postinstall": "husky"
   },
   "devDependencies": {
     "@10up/block-components": "^1.21.1",
@@ -55,6 +68,7 @@
     "eslint-plugin-prettier": "^5.5.0",
     "eslint-plugin-react": "^7.37.5",
     "globals": "^15.15.0",
+    "husky": "^9.1.7",
     "lint-staged": "^15.5.0",
     "patch-package": "^8.0.0",
     "postcss": "^8.5.6",

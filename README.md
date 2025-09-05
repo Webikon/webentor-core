@@ -6,8 +6,10 @@ This package adds bunch of Gutenberg blocks, extensions, basic styling, etc.
 
 ## Requirements
 
-- Sage 10 or 11
-- PHP 8.2>=
+- Sage >=10
+- PHP >=8.2
+- NodeJS >=20
+- pnpm >=10
 
 ## Documentation
 
@@ -34,7 +36,7 @@ Then run `composer require webikon/webentor-core:dev-main`
 
 ### Install as node package
 
-In Sage theme, run `yarn add -D webikon/webentor-core`
+In Sage theme, run `pnpm i -D webikon/webentor-core`
 
 **Important info:**
 
@@ -42,9 +44,9 @@ In Sage theme, run `yarn add -D webikon/webentor-core`
 
 ### How to develop
 
-Run `composer install` and `yarn` to download dependencies.
-Run `yarn build`.
-Run `yarn dev` to start DEV server.
+Run `composer install` and `pnpm` to download dependencies.
+Run `pnpm build`.
+Run `pnpm dev` to start DEV server.
 
 ### Hooks
 
