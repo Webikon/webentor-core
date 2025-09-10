@@ -11,6 +11,7 @@ export default {
       },
     ],
     'no-empty-source': null,
+    'property-no-deprecated': null,
 
     // Tailwind v4 rules
     'import-notation': null,
@@ -40,6 +41,13 @@ export default {
       true,
       {
         ignoreAtRules: ['apply'],
+      },
+    ],
+    'no-invalid-position-declaration': null,
+    'nesting-selector-no-missing-scoping-root': [
+      true,
+      {
+        ignoreAtRules: ['mixin', 'utility'],
       },
     ],
   },
