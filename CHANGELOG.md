@@ -3,6 +3,7 @@
 ## 0.9.8
 
 - Add `pnpm`
+- Update node deps
 - **BREAKING:** Rename npm package to `@webikon/webentor-core`
 - **BREAKING:** Include `build/` assets
 

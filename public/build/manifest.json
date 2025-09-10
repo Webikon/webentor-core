@@ -1,6 +1,6 @@
 {
-  "__utils-D5M3S_Sp.js": {
-    "file": "assets/_utils-D5M3S_Sp.js",
+  "__utils-Ll1NSM7W.js": {
+    "file": "assets/_utils-Ll1NSM7W.js",
     "name": "_utils"
   },
   "resources/blocks/e-accordion/script.ts": {
@@ -12,54 +12,75 @@
   "resources/blocks/e-accordion/style.css": {
     "file": "assets/resources/blocks/e-accordion/style-B_8yURlk.css",
     "src": "resources/blocks/e-accordion/style.css",
-    "isEntry": true
+    "isEntry": true,
+    "names": [
+      "resources/blocks/e-accordion/style.css"
+    ]
   },
   "resources/blocks/e-icon-picker/style.css": {
     "file": "assets/resources/blocks/e-icon-picker/style-BSib2kGz.css",
     "src": "resources/blocks/e-icon-picker/style.css",
-    "isEntry": true
+    "isEntry": true,
+    "names": [
+      "resources/blocks/e-icon-picker/style.css"
+    ]
   },
   "resources/blocks/l-mobile-nav/style.css": {
     "file": "assets/resources/blocks/l-mobile-nav/style-QMBn75AN.css",
     "src": "resources/blocks/l-mobile-nav/style.css",
-    "isEntry": true
+    "isEntry": true,
+    "names": [
+      "resources/blocks/l-mobile-nav/style.css"
+    ]
   },
   "resources/blocks/l-nav-menu/style.css": {
     "file": "assets/resources/blocks/l-nav-menu/style-BRXbCIFJ.css",
     "src": "resources/blocks/l-nav-menu/style.css",
-    "isEntry": true
+    "isEntry": true,
+    "names": [
+      "resources/blocks/l-nav-menu/style.css"
+    ]
   },
   "resources/core-components/slider/slider.script.ts": {
-    "file": "assets/sliderJs-DxQKsrMk.js",
+    "file": "assets/sliderJs-DR4BCE7h.js",
     "name": "sliderJs",
     "src": "resources/core-components/slider/slider.script.ts",
     "isEntry": true,
     "imports": [
-      "__utils-D5M3S_Sp.js"
+      "__utils-Ll1NSM7W.js"
     ]
   },
   "resources/core-components/slider/slider.style.css": {
-    "file": "assets/sliderStyles-DGIM-zPM.css",
+    "file": "assets/sliderStyles-DUMhMo18.css",
     "src": "resources/core-components/slider/slider.style.css",
-    "isEntry": true
+    "isEntry": true,
+    "names": [
+      "sliderStyles.css"
+    ]
   },
   "resources/scripts/editor.ts": {
-    "file": "assets/coreEditorJs-sZW7Jilp.js",
+    "file": "assets/coreEditorJs-BSIR1ghS.js",
     "name": "coreEditorJs",
     "src": "resources/scripts/editor.ts",
     "isEntry": true,
     "imports": [
-      "__utils-D5M3S_Sp.js"
+      "__utils-Ll1NSM7W.js"
     ]
   },
   "resources/styles/app.css": {
-    "file": "assets/coreAppStyles-HeVLu3xw.css",
+    "file": "assets/coreAppStyles-CtrLInyA.css",
     "src": "resources/styles/app.css",
-    "isEntry": true
+    "isEntry": true,
+    "names": [
+      "coreAppStyles.css"
+    ]
   },
   "resources/styles/editor.css": {
-    "file": "assets/coreEditorStyles-DAozoo0M.css",
+    "file": "assets/coreEditorStyles-C6Se6BS8.css",
     "src": "resources/styles/editor.css",
-    "isEntry": true
+    "isEntry": true,
+    "names": [
+      "coreEditorStyles.css"
+    ]
   }
 }
