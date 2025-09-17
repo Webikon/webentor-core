@@ -5,6 +5,7 @@
 - **BREAKING:** Move slider styles to `@layer components`
 - Add more slider view classes
 - Remove empty styles folders
+- Add opacity to hidden FC blocks instead of hiding them entirely
 
 ## 0.9.8
 

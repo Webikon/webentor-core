@@ -62,7 +62,13 @@ export const prepareTailwindClassesFromSettings = (
 
             if (bpPropValue) {
               const twBreakpoint = bpName === 'basic' ? '' : `${bpName}:`;
-              classes.push(`${twBreakpoint}${bpPropValue}`);
+
+              if (bpPropValue === 'hidden') {
+                // Hidden items should be semi-transparent to indicate that they are hidden but still present
+                classes.push(`${twBreakpoint}opacity-30`);
+              } else {
+                classes.push(`${twBreakpoint}${bpPropValue}`);
+              }
             }
           },
         );
