@@ -1,5 +1,10 @@
 # Webentor Core Changelog
 
+## 0.9.9
+
+- **BREAKING:** Move slider styles to `@layer components`
+- Remove empty styles folders
+
 ## 0.9.8
 
 - Add `pnpm`

@@ -12,7 +12,6 @@
 @import './common/_global';
 @import './common/_wordpress';
 @import './common/_form';
-@import './common/_typography';
 
 /** Components */
 @import './components/_table';
@@ -20,14 +19,3 @@
 /** Partials */
 @import './partials/_header';
 @import './partials/_pagination';
-
-/** Sections */
-/* @import 'sections/_header'; */
-/* @import 'sections/_footer'; */
-/* @import 'sections/_sidebar'; */
-
-/** Page templates */
-/* @import 'templates/_blog'; */
-
-/** Misc */
-/* @import 'misc/_plugin; */
