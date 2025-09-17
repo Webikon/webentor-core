@@ -3,6 +3,7 @@
 ## 0.9.9
 
 - **BREAKING:** Move slider styles to `@layer components`
+- Add more slider view classes
 - Remove empty styles folders
 
 ## 0.9.8

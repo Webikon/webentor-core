@@ -58,8 +58,8 @@
   data-slider="{{ json_encode($swiper_params) }}"
   class="js-slider slider {{ $dark_mode ? 'has-darkmode' : 'has-lightmode' }} {{ $show_autoplay_control ? 'has-autoplay-control' : '' }} wbtr:group wbtr:max-w-full wbtr:overflow-hidden"
 >
-  <div class="wbtr:relative wbtr:flex wbtr:flex-col">
-    <div class="wbtr:relative wbtr:flex wbtr:w-full">
+  <div class="slider-inner wbtr:relative wbtr:flex wbtr:flex-col">
+    <div class="slider-inner-body wbtr:relative wbtr:flex wbtr:w-full">
 
       @if (!empty($show_arrows))
         <div
@@ -82,9 +82,9 @@
         </div>
       @endif
 
-      <div class="wbtr:relative wbtr:w-full wbtr:min-w-0 wbtr:overflow-hidden">
-        <div class="swiper-container js-swiper-container">
-          <div class="js-slider-wrapper swiper-wrapper {{ $classes ?? '' }}">
+      <div class="slider-swiper-container-wrapper wbtr:relative wbtr:w-full wbtr:min-w-0 wbtr:overflow-hidden">
+        <div class="slider-swiper-container swiper-container js-swiper-container">
+          <div class="slider-swiper-wrapper swiper-wrapper js-slider-wrapper {{ $classes ?? '' }}">
             @sliderContent($slider_content)
           </div>
         </div>
