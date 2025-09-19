@@ -68,7 +68,6 @@ import { __ } from '@wordpress/i18n';
       },
       "iconPosition": {
         "type": "string",
-        enum: [ "left", "right", "alone" ],
       }
     },
     "default": {
@@ -140,6 +139,12 @@ export const WebentorButton = (props) => {
       label: __('Large', 'webentor'),
     },
   ]) as { slug: string; label: string }[];
+
+  const iconPositions = applyFilters('webentor.core.button.iconPositions', [
+    { label: 'Left', value: 'left' },
+    { label: 'Right', value: 'right' },
+    { label: 'Alone', value: 'alone' },
+  ]) as { label: string; value: string }[];
 
   // This hook allows us to extend button with additional components, settings, etc.
   const ExtensionComponent = applyFilters(
@@ -295,7 +300,7 @@ export const WebentorButton = (props) => {
             <div className="border border-editor-border p-2">
               <div className="my-2">
                 <ToggleControl
-                  label="Show ButtonIcon"
+                  label="Show Button Icon"
                   checked={attributes[attributeName]?.showIcon}
                   onChange={(value) =>
                     updateObjectAttribute(attributeName, 'showIcon', value)
@@ -326,11 +331,7 @@ export const WebentorButton = (props) => {
                     <SelectControl
                       label="Icon Position"
                       value={attributes[attributeName]?.iconPosition}
-                      options={[
-                        { label: 'Left', value: 'left' },
-                        { label: 'Right', value: 'right' },
-                        { label: 'Alone', value: 'alone' },
-                      ]}
+                      options={iconPositions}
                       onChange={(value) =>
                         updateObjectAttribute(
                           attributeName,

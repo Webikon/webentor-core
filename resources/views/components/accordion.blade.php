@@ -31,7 +31,6 @@
       localActive: '{{ $openedId }}',
       id: '{{ $id }}',
       get expanded() {
-
           if (typeof this.active !== 'undefined') {
 
               if (this.active === null) {
@@ -42,7 +41,6 @@
           } else {
               return this.localActive === this.id
           }
-
       },
       set expanded(value) {
           if (typeof this.active !== 'undefined') {
@@ -54,18 +52,18 @@
       },
   }"
   role="region"
-  class="wbtr:w-full {{ $accordion_classes ?? '' }}"
+  class="accordion wbtr:w-full {{ $accordion_classes ?? '' }}"
 >
-  <h2>
+  <h2 class="accordion-btn-wrapper">
     <button
       x-on:click="expanded = !expanded"
       :aria-expanded="expanded"
-      class="{{ $btn_classes ?? '' }} text-headline wbtr:text-gray-700 wbtr:flex wbtr:w-full wbtr:items-center wbtr:justify-between wbtr:py-2.5 wbtr:text-left"
+      class="{{ $btn_classes ?? '' }} accordion-btn text-headline wbtr:text-gray-700 wbtr:flex wbtr:w-full wbtr:items-center wbtr:justify-between wbtr:py-2.5 wbtr:text-left"
     >
-      <span>{{ $title }}</span>
+      <span class="accordion-btn-title">{{ $title }}</span>
       <span
         x-bind:class="{ '-wbtr:rotate-90': expanded, 'wbtr:rotate-90': !expanded }"
-        class="transition-transform"
+        class="accordion-btn-icon transition-transform"
         aria-hidden="true"
       >
         @svg('images.svg.chevron-right', 'wbtr:w-4 wbtr:h-4 wbtr:text-gray-500')
@@ -84,6 +82,5 @@
     @if (!empty($accordion_content))
       {!! $accordion_content !!}
     @endif
-
   </div>
 </div>
