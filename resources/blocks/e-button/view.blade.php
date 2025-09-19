@@ -18,4 +18,6 @@
   size="{{ $attributes['button']['size'] ?? '' }}"
   asPill="{{ $attributes['button']['asPill'] ?? false }}"
   classes="{{ $block_classes ?? '' }}"
+  icon="{{ !empty($attributes['button']['showIcon']) && !empty($attributes['button']['icon']['name']) ? $attributes['button']['icon']['name'] : '' }}"
+  iconPosition="{{ $attributes['button']['iconPosition'] ?? '' }}"
 />

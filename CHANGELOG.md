@@ -1,5 +1,10 @@
 # Webentor Core Changelog
 
+## 0.9.10
+
+- Add ability to select icon in Button Block
+- Fix condition to render flex/grid item classes depending on parent display setting
+
 ## 0.9.9
 
 - **BREAKING:** Move slider styles to `@layer components`

@@ -1,8 +1,13 @@
 import { useState } from 'react';
+import {
+  Icon as Icon10up,
+  IconPickerToolbarButton,
+} from '@10up/block-components';
 import { URLInput } from '@wordpress/block-editor';
 import {
   Icon,
   Popover,
+  SelectControl,
   TextControl,
   ToggleControl,
 } from '@wordpress/components';
@@ -50,6 +55,20 @@ import { __ } from '@wordpress/i18n';
       },
       "newTab": {
         "type": "boolean"
+      },
+      "showIcon": {
+        "type": "boolean"
+      },
+      "icon": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "iconSet": { "type": "string" }
+        }
+      },
+      "iconPosition": {
+        "type": "string",
+        enum: [ "left", "right", "alone" ],
       }
     },
     "default": {
@@ -57,7 +76,10 @@ import { __ } from '@wordpress/i18n';
       "title": "Button",
       "variant": "primary"
       "url": "#",
-      "newTab": false
+      "newTab": false,
+      "showIcon": false,
+      "icon": null,
+      "iconPosition": "right"
     }
   }
  */
@@ -137,6 +159,12 @@ export const WebentorButton = (props) => {
   const handleTogglePopover = () => {
     setVisible(!visible);
   };
+
+  const handleIconSelection = (value) =>
+    updateObjectAttribute(attributeName, 'icon', {
+      name: value.name,
+      iconSet: value.iconSet,
+    });
 
   return (
     <span className={`${className ?? ''} relative inline-block`}>
@@ -263,6 +291,58 @@ export const WebentorButton = (props) => {
                 />
               </>
             )}
+
+            <div className="border border-editor-border p-2">
+              <div className="my-2">
+                <ToggleControl
+                  label="Show ButtonIcon"
+                  checked={attributes[attributeName]?.showIcon}
+                  onChange={(value) =>
+                    updateObjectAttribute(attributeName, 'showIcon', value)
+                  }
+                />
+              </div>
+
+              {attributes[attributeName]?.showIcon && (
+                <div>
+                  <div className="mb-2 flex items-center gap-4">
+                    <IconPickerToolbarButton
+                      label="Icon"
+                      value={attributes[attributeName]?.icon}
+                      onChange={handleIconSelection}
+                    />
+                    {attributes[attributeName]?.icon?.name ? (
+                      <div className="size-10">
+                        <Icon10up
+                          name={attributes[attributeName]?.icon.name}
+                          iconSet={attributes[attributeName]?.icon.iconSet}
+                        />
+                      </div>
+                    ) : (
+                      'No icon selected'
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <SelectControl
+                      label="Icon Position"
+                      value={attributes[attributeName]?.iconPosition}
+                      options={[
+                        { label: 'Left', value: 'left' },
+                        { label: 'Right', value: 'right' },
+                        { label: 'Alone', value: 'alone' },
+                      ]}
+                      onChange={(value) =>
+                        updateObjectAttribute(
+                          attributeName,
+                          'iconPosition',
+                          value,
+                        )
+                      }
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </Popover>
       )}
@@ -290,7 +370,7 @@ export const WebentorButton = (props) => {
 
         <button
           type="button"
-          className={`btn btn--${variant} btn--size-${size} ${buttonClassName ?? ''} prevent-hover ${!attributes[attributeName]?.showButton ? 'opacity-40' : ''}`}
+          className={`btn btn--${variant} btn--size-${size} ${buttonClassName ?? ''} prevent-hover ${attributes[attributeName]?.showIcon && attributes[attributeName]?.icon?.name ? 'btn--icon' : ''} ${attributes[attributeName]?.iconPosition ? `btn--icon-${attributes[attributeName]?.iconPosition}` : ''} ${!attributes[attributeName]?.showButton ? 'opacity-40' : ''}`}
           onClick={handleTogglePopover}
         >
           <span className="btn__text">
@@ -298,6 +378,16 @@ export const WebentorButton = (props) => {
               ? attributes[attributeName]?.title
               : ''}
           </span>
+
+          {attributes[attributeName]?.showIcon &&
+            attributes[attributeName]?.icon?.name && (
+              <span className="btn__icon svg-icon">
+                <Icon10up
+                  name={attributes[attributeName]?.icon.name}
+                  iconSet={attributes[attributeName]?.icon.iconSet}
+                />
+              </span>
+            )}
         </button>
       </span>
     </span>

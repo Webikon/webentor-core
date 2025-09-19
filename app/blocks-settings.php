@@ -189,10 +189,10 @@ add_filter('block_type_metadata_settings', function ($settings, $metadata) {
  *  Prepare background block (and Tailwind) classes from block attributes
  *
  * @param  array     $attributes
- * @param  \WP_Block $block
+ * @param  \WP_Block $parent_block
  * @return string
  */
-function prepareBgBlockClassesFromSettings($attributes, $block = null)
+function prepareBgBlockClassesFromSettings($attributes, $parent_block = null)
 {
     $classes = '';
     if (!empty($attributes['backgroundColor'])) {
@@ -206,10 +206,10 @@ function prepareBgBlockClassesFromSettings($attributes, $block = null)
  *  Prepare block (and Tailwind) classes from block attributes
  *
  * @param  array     $attributes
- * @param  \WP_Block $block
+ * @param  \WP_Block $parent_block
  * @return string
  */
-function prepareBlockClassesFromSettings($attributes, $block = null)
+function prepareBlockClassesFromSettings($attributes, $parent_block = null)
 {
     // Create classes attribute allowing for custom "className" and "align" values.
     $classes = '';
@@ -278,7 +278,9 @@ function prepareBlockClassesFromSettings($attributes, $block = null)
         foreach ($attributes['gridItem'] as $property_name => $property_data) {
             if (!empty($property_data['value'])) {
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
-                    if (!empty($breakpoint_property_value) && !empty($attributes['display']['display']['value'][$breakpoint_name]) && $attributes['display']['display']['value'][$breakpoint_name] === 'grid') {
+                    $parent_display_value = $parent_block->attributes['display']['display']['value'][$breakpoint_name] ?? 'flex';
+
+                    if (!empty($breakpoint_property_value) && !empty($parent_display_value) && $parent_display_value === 'grid') {
                         // Transform to Tailwind classes
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
@@ -344,7 +346,9 @@ function prepareBlockClassesFromSettings($attributes, $block = null)
                             continue;
                         }
 
-                        if (empty($attributes['display']['display']['value'][$breakpoint_name]) || $attributes['display']['display']['value'][$breakpoint_name] !== 'flex') {
+                        $parent_display_value = $parent_block->attributes['display']['display']['value'][$breakpoint_name] ?? 'flex';
+
+                        if (empty($parent_display_value) || $parent_display_value !== 'flex') {
                             // Skip when display is not flex
                             continue;
                         }
