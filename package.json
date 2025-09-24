@@ -44,7 +44,7 @@
     "prettier-fix:js": "prettier --write 'resources/**/*.{js,ts,tsx}'",
     "prettier-fix:css": "prettier --write 'resources/**/*.css'",
     "prettier-fix:blade": "prettier --write 'resources/**/*.blade.php'",
-    "postinstall": "husky"
+    "prepare": "husky || true"
   },
   "devDependencies": {
     "@10up/block-components": "^1.21.4",
