@@ -59,7 +59,7 @@
     ]
   },
   "resources/scripts/editor.ts": {
-    "file": "assets/coreEditorJs-CT7v6CoL.js",
+    "file": "assets/coreEditorJs-CU4kvfuc.js",
     "name": "coreEditorJs",
     "src": "resources/scripts/editor.ts",
     "isEntry": true,
@@ -68,7 +68,7 @@
     ]
   },
   "resources/styles/app.css": {
-    "file": "assets/coreAppStyles-CtrLInyA.css",
+    "file": "assets/coreAppStyles-Dn4escjb.css",
     "src": "resources/styles/app.css",
     "isEntry": true,
     "names": [
@@ -76,7 +76,7 @@
     ]
   },
   "resources/styles/editor.css": {
-    "file": "assets/coreEditorStyles-C6Se6BS8.css",
+    "file": "assets/coreEditorStyles-CaV3MDs8.css",
     "src": "resources/styles/editor.css",
     "isEntry": true,
     "names": [

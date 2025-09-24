@@ -30,7 +30,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   return (
     <div
       {...blockProps}
-      className={`${blockProps.className} w-flexible-container ${classes.join(' ')} border border-dashed border-editor-border p-2`}
+      className={`${blockProps.className} w-flexible-container ${classes.join(' ')} wbtr:border wbtr:border-dashed wbtr:border-editor-border wbtr:p-2`}
     >
       This would display dynamic Breadcrumbs on FE
     </div>

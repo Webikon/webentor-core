@@ -1,5 +1,10 @@
 # Webentor Core Changelog
 
+## DEV
+
+- Fix husky install
+- Add missing `wbtr:` prefixes in blocks edit
+
 ## 0.9.10
 
 - Add ability to select icon in Button Block

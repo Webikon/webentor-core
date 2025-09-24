@@ -85,7 +85,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   return (
     <div {...blockProps}>
       <div className="wp-block-table">
-        <table className="w-full">
+        <table className="wbtr:w-full">
           <tbody {...innerBlocksProps}>
             {children}
 
@@ -93,7 +93,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
           </tbody>
         </table>
 
-        <div className="my-2">
+        <div className="wbtr:my-2">
           <WebentorBlockAppender
             rootClientId={props.clientId}
             text={__('Add rows', 'webentor')}

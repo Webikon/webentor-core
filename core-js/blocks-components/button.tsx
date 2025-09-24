@@ -172,22 +172,22 @@ export const WebentorButton = (props) => {
     });
 
   return (
-    <span className={`${className ?? ''} relative inline-block`}>
+    <span className={`${className ?? ''} wbtr:relative wbtr:inline-block`}>
       {visible && (
         <Popover
           placement={placement ?? 'bottom'}
           shift
           onFocusOutside={handleTogglePopover}
         >
-          <div className="w-[320px] p-2">
-            <h4 className="flex text-14 uppercase">
+          <div className="wbtr:w-[320px] wbtr:p-2">
+            <h4 className="wbtr:flex wbtr:text-14 wbtr:uppercase">
               {__('Button Settings', 'webentor')}
-              <button className="ml-auto" onClick={handleTogglePopover}>
+              <button className="wbtr:ml-auto" onClick={handleTogglePopover}>
                 <Icon icon="no-alt" />
               </button>
             </h4>
 
-            <hr className="mb-3 mt-2" />
+            <hr className="wbtr:mt-2 wbtr:mb-3" />
 
             <ToggleControl
               label={__('Show button', 'webentor')}
@@ -212,12 +212,12 @@ export const WebentorButton = (props) => {
               onChange={(value) =>
                 updateObjectAttribute(attributeName, 'title', value)
               }
-              className="mb-3"
+              className="wbtr:mb-3"
             />
 
             {!hideVariant && (
-              <div className="mb-2">
-                <p className="mb-2 text-12 uppercase">
+              <div className="wbtr:mb-2">
+                <p className="wbtr:mb-2 wbtr:text-12 wbtr:uppercase">
                   {__('Button Variant', 'webentor')}
                 </p>
                 {variants.map((item) => {
@@ -231,7 +231,7 @@ export const WebentorButton = (props) => {
                           item.slug,
                         )
                       }
-                      className={`pr-2 ${variant === item.slug ? 'font-bold' : ''}`}
+                      className={`wbtr:pr-2 ${variant === item.slug ? 'wbtr:font-bold' : ''}`}
                     >
                       {item.label}
                     </button>
@@ -241,8 +241,8 @@ export const WebentorButton = (props) => {
             )}
 
             {!hideSize && (
-              <div className="mb-2">
-                <p className="mb-2 text-12 uppercase">
+              <div className="wbtr:mb-2">
+                <p className="wbtr:mb-2 wbtr:text-12 wbtr:uppercase">
                   {__('Button Size', 'webentor')}
                 </p>
                 {sizes.map((item) => {
@@ -252,9 +252,9 @@ export const WebentorButton = (props) => {
                       onClick={() =>
                         updateObjectAttribute(attributeName, 'size', item.slug)
                       }
-                      className={`pr-2 ${
+                      className={`wbtr:pr-2 ${
                         attributes[attributeName]?.size === item.slug
-                          ? 'font-bold'
+                          ? 'wbtr:font-bold'
                           : ''
                       }`}
                     >
@@ -279,7 +279,7 @@ export const WebentorButton = (props) => {
                   onChange={(value) =>
                     updateObjectAttribute(attributeName, 'url', value)
                   }
-                  className="mb-2"
+                  className="wbtr:mb-2"
                 />
 
                 <ToggleControl
@@ -297,8 +297,8 @@ export const WebentorButton = (props) => {
               </>
             )}
 
-            <div className="border border-editor-border p-2">
-              <div className="my-2">
+            <div className="wbtr:border wbtr:border-editor-border wbtr:p-2">
+              <div className="wbtr:my-2">
                 <ToggleControl
                   label="Show Button Icon"
                   checked={attributes[attributeName]?.showIcon}
@@ -310,14 +310,14 @@ export const WebentorButton = (props) => {
 
               {attributes[attributeName]?.showIcon && (
                 <div>
-                  <div className="mb-2 flex items-center gap-4">
+                  <div className="wbtr:mb-2 wbtr:flex wbtr:items-center wbtr:gap-4">
                     <IconPickerToolbarButton
                       label="Icon"
                       value={attributes[attributeName]?.icon}
                       onChange={handleIconSelection}
                     />
                     {attributes[attributeName]?.icon?.name ? (
-                      <div className="size-10">
+                      <div className="wbtr:size-10">
                         <Icon10up
                           name={attributes[attributeName]?.icon.name}
                           iconSet={attributes[attributeName]?.icon.iconSet}
@@ -327,7 +327,7 @@ export const WebentorButton = (props) => {
                       'No icon selected'
                     )}
                   </div>
-                  <div className="mb-2">
+                  <div className="wbtr:mb-2">
                     <SelectControl
                       label="Icon Position"
                       value={attributes[attributeName]?.iconPosition}
@@ -348,13 +348,13 @@ export const WebentorButton = (props) => {
         </Popover>
       )}
 
-      <span className={`${innerClassName ?? ''} inline-block`}>
+      <span className={`${innerClassName ?? ''} wbtr:inline-block`}>
         {!attributes[attributeName]?.showButton && (
-          <span className="absolute -right-1 -top-1 z-10 flex h-4 w-6 items-center justify-center rounded bg-white shadow">
+          <span className="wbtr:absolute wbtr:-right-1 wbtr:-top-1 wbtr:z-10 wbtr:flex wbtr:h-4 wbtr:w-6 wbtr:items-center wbtr:justify-center wbtr:rounded wbtr:bg-white wbtr:shadow">
             <svg
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-5"
+              className="wbtr:h-4 wbtr:w-5"
             >
               <rect
                 x="18.364"
@@ -371,7 +371,7 @@ export const WebentorButton = (props) => {
 
         <button
           type="button"
-          className={`btn btn--${variant} btn--size-${size} ${buttonClassName ?? ''} prevent-hover ${attributes[attributeName]?.showIcon && attributes[attributeName]?.icon?.name ? 'btn--icon' : ''} ${attributes[attributeName]?.iconPosition ? `btn--icon-${attributes[attributeName]?.iconPosition}` : ''} ${!attributes[attributeName]?.showButton ? 'opacity-40' : ''}`}
+          className={`btn btn--${variant} btn--size-${size} ${buttonClassName ?? ''} wbtr:prevent-hover ${attributes[attributeName]?.showIcon && attributes[attributeName]?.icon?.name ? 'btn--icon' : ''} ${attributes[attributeName]?.iconPosition ? `btn--icon-${attributes[attributeName]?.iconPosition}` : ''} ${!attributes[attributeName]?.showButton ? 'wbtr:opacity-40' : ''}`}
           onClick={handleTogglePopover}
         >
           <span className="btn__text">

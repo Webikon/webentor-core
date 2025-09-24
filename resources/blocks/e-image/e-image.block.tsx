@@ -157,7 +157,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
               <div className="wbtr:w-full wbtr:border wbtr:border-editor-border wbtr:p-2">
                 <p>{__('Link Image to URL', 'webentor')}</p>
 
-                <div className="flex gap-2">
+                <div className="wbtr:flex wbtr:gap-2">
                   {/* External link */}
                   <Link
                     value={attributes?.link?.title}

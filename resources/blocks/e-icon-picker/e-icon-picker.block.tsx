@@ -119,8 +119,8 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
             }}
           /> */}
 
-          <div className="mt-4">
-            <p className="components-base-control__label mb-2">
+          <div className="wbtr:mt-4">
+            <p className="components-base-control__label wbtr:mb-2">
               {__('Icon Color', 'webentor')}
             </p>
             <ColorPalette
@@ -140,7 +140,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
             <div className="wbtr:w-full wbtr:border wbtr:border-editor-border wbtr:p-2">
               <p>{__('Link Icon to URL', 'webentor')}</p>
 
-              <div className="flex gap-2">
+              <div className="wbtr:flex wbtr:gap-2">
                 <Link
                   value={attributes?.link?.title}
                   url={attributes?.link?.url}
@@ -209,7 +209,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
             }}
           />
         ) : (
-          <span className="text-10">{__('Pick icon', 'webentor')}</span>
+          <span className="wbtr:text-10">{__('Pick icon', 'webentor')}</span>
         )}
       </div>
     </>

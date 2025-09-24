@@ -9,7 +9,7 @@ export const WebentorTypographyPickerSelect = (props) => {
     : null;
 
   return (
-    <div className="w-full">
+    <div className="wbtr:w-full">
       <CustomSelectControl
         __next40pxDefaultSize={__next40pxDefaultSize}
         className="components-typography-picker__select"
