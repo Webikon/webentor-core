@@ -6,8 +6,24 @@
   "description": "Section wrapper",
   "category": "webentor-layout",
   "icon": "align-wide",
-  "keywords": ["section", "container", "layout"],
+  "keywords": [
+    "section",
+    "container",
+    "layout"
+  ],
   "attributes": {
+    "img": {
+      "type": "object",
+      "default": null
+    },
+    "mobileImg": {
+      "type": "object",
+      "default": null
+    },
+    "imgSize": {
+      "type": "object",
+      "default": null
+    },
     "spacing": {
       "type": "object",
       "default": {
@@ -21,6 +37,16 @@
           "value": {
             "basic": "pb-10",
             "lg": "pb-20"
+          }
+        }
+      }
+    },
+    "display": {
+      "type": "object",
+      "default": {
+        "display": {
+          "value": {
+            "basic": ""
           }
         }
       }
@@ -40,8 +66,10 @@
       "spacing": true,
       "display": {
         "height": true,
-        "minHeight": true
+        "minHeight": true,
+        "display": true
       },
+      "flexbox": true,
       "border": true,
       "borderRadius": true
     }
