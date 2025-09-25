@@ -24,7 +24,7 @@
 
 <section
   {!! $anchor !!}
-  class="{{ $block_classes }} w-section"
+  class="{{ $block_classes }} w-section wbtr:relative"
 >
   @if (!empty($img_id))
     <picture>
