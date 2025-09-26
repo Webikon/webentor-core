@@ -192,7 +192,7 @@ add_filter('block_type_metadata_settings', function ($settings, $metadata) {
  * @param  \WP_Block $parent_block
  * @return string
  */
-function prepareBgBlockClassesFromSettings($attributes, $parent_block = null)
+function prepareBgBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
 {
     $classes = '';
     if (!empty($attributes['backgroundColor'])) {
@@ -207,36 +207,63 @@ function prepareBgBlockClassesFromSettings($attributes, $parent_block = null)
  *
  * @param  array     $attributes
  * @param  \WP_Block $parent_block
- * @return string
+ * @return array ['classes' => string, 'classes_by_property' => array]
  */
-function prepareBlockClassesFromSettings($attributes, $parent_block = null)
+function prepareBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
 {
+
+    $classes_by_prop = [
+        'className' => [],
+        'align' => [],
+        'backgroundColor' => [],
+        'textColor' => [],
+        'spacing' => [],
+        'display' => [],
+        'grid' => [],
+        'gridItem' => [],
+        'flexbox' => [],
+        'flexboxItem' => [],
+        'border' => [],
+        'borderRadius' => [],
+    ];
+
     // Create classes attribute allowing for custom "className" and "align" values.
     $classes = '';
     if (!empty($attributes['className'])) {
-        $classes .= ' ' . $attributes['className'];
+        $classname_classes = ' ' . $attributes['className'];
+        $classes_by_prop['className'] = $classname_classes;
+        $classes .= $classname_classes;
     }
 
     if (!empty($attributes['align'])) {
-        $classes .= ' align' . $attributes['align'];
+        $align_classes = ' align' . $attributes['align'];
+        $classes_by_prop['align'] = $align_classes;
+        $classes .= $align_classes;
     }
     if (!empty($attributes['backgroundColor'])) {
-        $classes .= ' has-' . $attributes['backgroundColor'] . '-background-color bg-' . $attributes['backgroundColor']; // add WP has-*-background-color clas, but also Tailwind bg-* so bg with image (texture) can be applied
+        $background_color_classes = ' has-' . $attributes['backgroundColor'] . '-background-color bg-' . $attributes['backgroundColor']; // add WP has-*-background-color clas, but also Tailwind bg-* so bg with image (texture) can be applied
+        $classes_by_prop['backgroundColor'] = $background_color_classes;
+        $classes .= $background_color_classes;
     }
     if (!empty($attributes['textColor'])) {
-        $classes .= ' has-' . $attributes['textColor'] . '-color text-' . $attributes['textColor'];
+        $text_color_classes = ' has-' . $attributes['textColor'] . '-color text-' . $attributes['textColor'];
+        $classes_by_prop['textColor'] = $text_color_classes;
+        $classes .= $text_color_classes;
     }
 
     if (!empty($attributes['spacing'])) {
         foreach ($attributes['spacing'] as $property_name => $property_data) {
             if (!empty($property_data['value'])) {
+                $spacing_classes = '';
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     if (!empty($breakpoint_property_value)) {
                         // Transform to Tailwind classes
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
+                        $spacing_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                     }
                 }
+                $classes_by_prop['spacing'][$property_name] = $spacing_classes;
             }
         }
     }
@@ -244,6 +271,7 @@ function prepareBlockClassesFromSettings($attributes, $parent_block = null)
     if (!empty($attributes['display'])) {
         foreach ($attributes['display'] as $property_name => $property_data) {
             if (!empty($property_data['value'])) {
+                $display_classes = '';
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     if (!empty($breakpoint_property_value)) {
                         if (!empty($attributes['slider']['enabled']['value'][$breakpoint_name])) {
@@ -254,8 +282,11 @@ function prepareBlockClassesFromSettings($attributes, $parent_block = null)
                         // Transform to Tailwind classes
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
+                        $display_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                     }
                 }
+
+                $classes_by_prop['display'][$property_name] = $display_classes;
             }
         }
     }
@@ -263,13 +294,16 @@ function prepareBlockClassesFromSettings($attributes, $parent_block = null)
     if (!empty($attributes['grid'])) {
         foreach ($attributes['grid'] as $property_name => $property_data) {
             if (!empty($property_data['value'])) {
+                $grid_classes = '';
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     if (!empty($breakpoint_property_value) && !empty($attributes['display']['display']['value'][$breakpoint_name]) && $attributes['display']['display']['value'][$breakpoint_name] === 'grid') {
                         // Transform to Tailwind classes
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
+                        $grid_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                     }
                 }
+                $classes_by_prop['grid'][$property_name] = $grid_classes;
             }
         }
     }
@@ -277,6 +311,7 @@ function prepareBlockClassesFromSettings($attributes, $parent_block = null)
     if (!empty($attributes['gridItem'])) {
         foreach ($attributes['gridItem'] as $property_name => $property_data) {
             if (!empty($property_data['value'])) {
+                $grid_item_classes = '';
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     $parent_display_value = $parent_block->attributes['display']['display']['value'][$breakpoint_name] ?? 'flex';
 
@@ -284,8 +319,10 @@ function prepareBlockClassesFromSettings($attributes, $parent_block = null)
                         // Transform to Tailwind classes
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
+                        $grid_item_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                     }
                 }
+                $classes_by_prop['gridItem'][$property_name] = $grid_item_classes;
             }
         }
     }
@@ -293,6 +330,7 @@ function prepareBlockClassesFromSettings($attributes, $parent_block = null)
     if (!empty($attributes['flexbox'])) {
         foreach ($attributes['flexbox'] as $property_name => $property_data) {
             if (!empty($property_data['value'])) {
+                $flexbox_classes = '';
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     if (!empty($breakpoint_property_value)) {
                         if (!empty($attributes['slider']['enabled']['value'][$breakpoint_name])) {
@@ -330,8 +368,10 @@ function prepareBlockClassesFromSettings($attributes, $parent_block = null)
                         // Transform to Tailwind classes
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
+                        $flexbox_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                     }
                 }
+                $classes_by_prop['flexbox'][$property_name] = $flexbox_classes;
             }
         }
     }
@@ -339,6 +379,7 @@ function prepareBlockClassesFromSettings($attributes, $parent_block = null)
     if (!empty($attributes['flexboxItem'])) {
         foreach ($attributes['flexboxItem'] as $property_name => $property_data) {
             if (!empty($property_data['value'])) {
+                $flexbox_item_classes = '';
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     if (!empty($breakpoint_property_value)) {
                         if (!empty($attributes['slider']['enabled']['value'][$breakpoint_name])) {
@@ -356,8 +397,10 @@ function prepareBlockClassesFromSettings($attributes, $parent_block = null)
                         // Transform to Tailwind classes
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
+                        $flexbox_item_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                     }
                 }
+                $classes_by_prop['flexboxItem'][$property_name] = $flexbox_item_classes;
             }
         }
     }
@@ -380,6 +423,8 @@ function prepareBlockClassesFromSettings($attributes, $parent_block = null)
 
         foreach ($attributes['border'] as $property_name => $property_data) {
             if (!empty($property_data['value'])) {
+                $border_classes = '';
+                $border_radius_classes = '';
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     if (!empty($breakpoint_property_value)) {
                         foreach ($breakpoint_property_value as $value_side => $value) {
@@ -393,28 +438,41 @@ function prepareBlockClassesFromSettings($attributes, $parent_block = null)
 
                                 if ($property_name === 'border') {
                                     if (!empty($value['width'])) {
-                                        $classes .= ' ' . $tw_breakpoint . $border_mapping[$value_side] . '-' . $value['width'];
+                                        $class = ' ' . $tw_breakpoint . $border_mapping[$value_side] . '-' . $value['width'];
+                                        $classes .= $class;
+                                        $border_classes .= $class;
                                     }
 
                                     if (!empty($value['color'])) {
-                                        $classes .= ' ' . $tw_breakpoint . $border_mapping[$value_side] . '-' . $value['color'];
+                                        $class = ' ' . $tw_breakpoint . $border_mapping[$value_side] . '-' . $value['color'];
+                                        $classes .= $class;
+                                        $border_classes .= $class;
                                     }
 
                                     if (!empty($value['style'])) {
-                                        $classes .= ' ' . $tw_breakpoint . $border_mapping[$value_side] . '-' . $value['style'];
+                                        $class = ' ' . $tw_breakpoint . $border_mapping[$value_side] . '-' . $value['style'];
+                                        $classes .= $class;
+                                        $border_classes .= $class;
                                     }
                                 } elseif ($property_name === 'borderRadius') {
-                                    $classes .= ' ' . $tw_breakpoint . $border_radius_mapping[$value_side] . '-' . $value;
+                                    $class = ' ' . $tw_breakpoint . $border_radius_mapping[$value_side] . '-' . $value;
+                                    $classes .= $class;
+                                    $border_radius_classes .= $class;
                                 }
                             }
                         }
                     }
                 }
+                if ($property_name === 'border') {
+                    $classes_by_prop['border'] = $border_classes;
+                } elseif ($property_name === 'borderRadius') {
+                    $classes_by_prop['borderRadius'] = $border_radius_classes;
+                }
             }
         }
     }
 
-    return $classes;
+    return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
 }
 
 /**

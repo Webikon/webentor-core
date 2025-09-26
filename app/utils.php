@@ -167,3 +167,58 @@ function remove_query_args_from_current_url($args)
 
     return $url;
 }
+
+
+/**
+ * Get classes by property or nested property path
+ *
+ * @param array $classes_by_prop
+ * @param string|array $property Property path, e.g. 'display' or ['display', 'height']
+ * @return string
+ */
+function get_classes_by_property($classes_by_prop, $property)
+{
+    // Handle single property
+    if (is_string($property)) {
+        return extract_classes_recursively($classes_by_prop[$property] ?? '');
+    }
+
+    // Handle nested property path (array)
+    if (is_array($property)) {
+        $current = $classes_by_prop;
+
+        // Navigate through the nested structure
+        foreach ($property as $key) {
+            if (isset($current[$key])) {
+                $current = $current[$key];
+            } else {
+                return ''; // Property not found
+            }
+        }
+
+        return extract_classes_recursively($current);
+    }
+
+    return '';
+}
+
+/**
+ * Recursively extract classes from nested arrays
+ *
+ * @param mixed $data
+ * @return string
+ */
+function extract_classes_recursively($data)
+{
+    $classes = '';
+
+    if (is_string($data)) {
+        $classes .= ' ' . $data;
+    } elseif (is_array($data)) {
+        foreach ($data as $value) {
+            $classes .= ' ' . extract_classes_recursively($value);
+        }
+    }
+
+    return trim($classes);
+}

@@ -170,12 +170,17 @@ function register_block_from_filename($filename)
  * Render blade view from block object and also handle inner blocks.
  *
  * @param  \WP_Block $block
+ * @param  \WP_Block $parent_block
  * @return string
  */
-function render_block_blade($block)
+function render_block_blade($block, $parent_block = null)
 {
     // We don't need to render blocks in admin or while saving, this will dramatically improve Gutenberg loading time
-    if (is_admin() || wp_doing_ajax() || (is_admin() && defined('REST_REQUEST'))) {
+    if (is_admin() || wp_doing_ajax() || (!empty($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' && defined('REST_REQUEST'))) {
+        return;
+    }
+
+    if (apply_filters('webentor/skip_render_block_blade', false, $block)) {
         return;
     }
 
@@ -185,9 +190,9 @@ function render_block_blade($block)
     if (!empty($block->inner_blocks)) {
         foreach ($block->inner_blocks as $inner_block) {
             if (!empty($inner_block->inner_blocks)) {
-                $inner_blocks_html .= render_block_blade($inner_block);
+                $inner_blocks_html .= render_block_blade($inner_block, $block);
             } else {
-                $inner_blocks_html .= render_inner_block_blade($inner_block);
+                $inner_blocks_html .= render_inner_block_blade($inner_block, $block);
             }
         }
     }
@@ -201,7 +206,8 @@ function render_block_blade($block)
     $block_name = $block->parsed_block['blockName']; // in format "namespace/block-name"
     $block_slug = substr($block_name, strrpos($block_name, "/") + 1); // get only "block-name"
 
-    $classes = prepareBlockClassesFromSettings($block->attributes);
+    $classes = prepareBlockClassesFromSettings($block->attributes, $block, $parent_block)['classes'];
+    $classes_by_property = prepareBlockClassesFromSettings($block->attributes, $block, $parent_block)['classes_by_property'];
     $bg_classes = prepareBgBlockClassesFromSettings($block->attributes);
 
     $additional_data = [];
@@ -212,8 +218,10 @@ function render_block_blade($block)
     }
 
     // Let's have ability to modify classes and additional data for specific blocks
-    $classes = apply_filters('webentor/block_classes', $classes, $block);
+    $classes_by_property = apply_filters('webentor/block_classes_by_property', $classes_by_property, $block);
+    $classes = apply_filters('webentor/block_classes', $classes, $block, $classes_by_property);
     $bg_classes = apply_filters('webentor/block_bg_classes', $bg_classes, $block);
+    $custom_classes = apply_filters('webentor/block_custom_classes', [], $block, $classes_by_property);
     $additional_data = apply_filters('webentor/block_additional_data', $additional_data, $block);
 
     // Get the blade view and pass all necessary data
@@ -224,7 +232,9 @@ function render_block_blade($block)
             'innerBlocksContent' => $inner_blocks_html,
             'anchor' => $anchor,
             'block_classes' => $classes,
+            'block_classes_by_property' => $classes_by_property,
             'bg_classes' => $bg_classes,
+            'custom_classes' => $custom_classes,
             'block' => $block,
             'additional_data' => $additional_data,
         ]);
@@ -266,9 +276,10 @@ function render_block_blade($block)
  * Render blade view from block object for children.
  *
  * @param  \WP_Block $block
+ * @param  \WP_Block $parent_block
  * @return string
  */
-function render_inner_block_blade($block)
+function render_inner_block_blade($block, $parent_block = null)
 {
     $is_custom = strpos($block->parsed_block['blockName'], 'webentor/') !== false;
 
@@ -281,20 +292,27 @@ function render_inner_block_blade($block)
     $block_name = $block->parsed_block['blockName']; // in format "namespace/block-name"
     $block_slug = substr($block_name, strrpos($block_name, "/") + 1); // get only "block-name"
 
-    $classes = prepareBlockClassesFromSettings($block->attributes);
+    $classes = prepareBlockClassesFromSettings($block->attributes, $block, $parent_block)['classes'];
+    $classes_by_property = prepareBlockClassesFromSettings($block->attributes, $block, $parent_block)['classes_by_property'];
     $bg_classes = prepareBgBlockClassesFromSettings($block->attributes);
 
     // Let's have ability to modify classes and additional data for specific blocks
-    $classes = apply_filters('webentor/block_classes', $classes, $block);
+    $classes_by_property = apply_filters('webentor/block_classes_by_property', $classes_by_property, $block);
+    $classes = apply_filters('webentor/block_classes', $classes, $block, $classes_by_property);
     $bg_classes = apply_filters('webentor/block_bg_classes', $bg_classes, $block);
+    $custom_classes = apply_filters('webentor/block_custom_classes', [], $block, $classes_by_property);
+    $additional_data = apply_filters('webentor/block_additional_data', [], $block);
 
     if ($is_custom && \Roots\view()->exists("blocks/{$block_slug}/view")) {
         $block_content = \Roots\view("blocks/{$block_slug}/view", [
             'attributes' => $block->attributes,
             'anchor' => $anchor,
             'block_classes' => $classes,
+            'block_classes_by_property' => $classes_by_property,
             'bg_classes' => $bg_classes,
-            'block' => $block
+            'custom_classes' => $custom_classes,
+            'block' => $block,
+            'additional_data' => $additional_data,
         ]);
 
         /**
@@ -406,11 +424,11 @@ add_action('init', function () {
 add_action('init', function () {
     register_block_pattern_category(
         'webentor/components',
-        [ 'label' => __('Components', 'webentor') ]
+        ['label' => __('Components', 'webentor')]
     );
     register_block_pattern_category(
         'webentor/sections',
-        [ 'label' => __('Sections', 'webentor') ]
+        ['label' => __('Sections', 'webentor')]
     );
 });
 
@@ -508,4 +526,56 @@ add_filter('render_blade_block', function ($block_content, $block) {
     } else {
         return '';
     }
+}, 10, 3);
+
+/**
+ * Customize block classes for Section block.
+ * We need to split classes for block and its container as flexbox/grid classes needs to be applied to the container instead.
+ *
+ * @param string $classes
+ * @param \WP_Block $block
+ * @param array $classes_by_property
+ * @return string
+ */
+add_filter('webentor/block_classes', function ($classes, $block, $classes_by_property) {
+    if ($block->name === 'webentor/l-section') {
+        $block_classes = [
+            \Webentor\Core\get_classes_by_property($classes_by_property, ['className']),
+            \Webentor\Core\get_classes_by_property($classes_by_property, ['backgroundColor']),
+            \Webentor\Core\get_classes_by_property($classes_by_property, ['textColor']),
+            \Webentor\Core\get_classes_by_property($classes_by_property, ['spacing']),
+            \Webentor\Core\get_classes_by_property($classes_by_property, ['display', 'height']),
+            \Webentor\Core\get_classes_by_property($classes_by_property, ['display', 'minHeight']),
+            \Webentor\Core\get_classes_by_property($classes_by_property, ['border']),
+            \Webentor\Core\get_classes_by_property($classes_by_property, ['borderRadius']),
+        ];
+        $block_classes = implode(' ', $block_classes);
+
+        return $block_classes;
+    }
+
+    return $classes;
+}, 10, 3);
+
+/**
+ * Add custom classes to Section block which would be used as container classes.
+ *
+ * @param string $custom_classes
+ * @param \WP_Block $block
+ * @param array $classes_by_property
+ * @return string
+ */
+add_filter('webentor/block_custom_classes', function ($custom_classes, $block, $classes_by_property) {
+    if ($block->name === 'webentor/l-section') {
+        $custom_classes = [
+            \Webentor\Core\get_classes_by_property($classes_by_property, ['display', 'display']),
+            \Webentor\Core\get_classes_by_property($classes_by_property, ['flexbox']),
+            \Webentor\Core\get_classes_by_property($classes_by_property, ['grid']),
+        ];
+        $custom_classes = implode(' ', $custom_classes);
+
+        return $custom_classes;
+    }
+
+    return $custom_classes;
 }, 10, 3);

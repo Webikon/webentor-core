@@ -24,7 +24,7 @@
 
 <section
   {!! $anchor !!}
-  class="{{ $block_classes }} w-section wbtr:relative"
+  class="w-section wbtr:relative wbtr:flex {{ !empty($img_id) ? 'wbtr:overflow-hidden' : '' }} {{ $block_classes }} "
 >
   @if (!empty($img_id))
     <picture>
@@ -56,12 +56,12 @@
       <img
         src="{!! \Webentor\Core\get_resized_image_url($img_id, [1920, $height_basic]) !!}"
         alt="{!! \Webentor\Core\get_image_alt($img_id) !!}"
-        class="w-section-img absolute inset-0 h-full w-full object-cover"
+        class="w-section-img wbtr:absolute wbtr:inset-0 wbtr:h-full wbtr:w-full wbtr:object-cover"
       >
     </picture>
   @endif
 
-  <div class="w-section-inner wbtr:flex wbtr:flex-col container wbtr:relative wbtr:z-[2]">
+  <div class="w-section-inner container wbtr:flex wbtr:flex-col wbtr:relative wbtr:z-[2] {{ $custom_classes }}">
     {!! $innerBlocksContent ?? '' !!}
   </div>
 </section>

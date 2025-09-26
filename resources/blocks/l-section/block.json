@@ -46,7 +46,17 @@
       "default": {
         "display": {
           "value": {
-            "basic": ""
+            "basic": "flex"
+          }
+        }
+      }
+    },
+    "flexbox": {
+      "type": "object",
+      "default": {
+        "flex-direction": {
+          "value": {
+            "basic": "flex-col"
           }
         }
       }
@@ -70,6 +80,7 @@
         "display": true
       },
       "flexbox": true,
+      "flexboxItem": true,
       "grid": true,
       "border": true,
       "borderRadius": true

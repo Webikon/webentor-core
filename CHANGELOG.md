@@ -4,7 +4,9 @@
 
 - Fix husky install
 - Add missing `wbtr:` prefixes in blocks edit
+- Fix rendering in REST API request
 - NEW: Add flexbox, grid and background image settings to **Section block**
+- NEW: Add hook `webentor/skip_render_block_blade`
 
 ## 0.9.10
 
