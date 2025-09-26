@@ -4,7 +4,7 @@
 
 - Fix husky install
 - Add missing `wbtr:` prefixes in blocks edit
-- NEW: Add flexbox and background image settings to **Section block**
+- NEW: Add flexbox, grid and background image settings to **Section block**
 
 ## 0.9.10
 
