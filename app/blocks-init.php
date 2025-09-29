@@ -545,7 +545,7 @@ add_filter('webentor/block_classes', function ($classes, $block, $classes_by_pro
             \Webentor\Core\get_classes_by_property($classes_by_property, ['textColor']),
             \Webentor\Core\get_classes_by_property($classes_by_property, ['spacing']),
             \Webentor\Core\get_classes_by_property($classes_by_property, ['display', 'height']),
-            \Webentor\Core\get_classes_by_property($classes_by_property, ['display', 'minHeight']),
+            \Webentor\Core\get_classes_by_property($classes_by_property, ['display', 'min-height']),
             \Webentor\Core\get_classes_by_property($classes_by_property, ['border']),
             \Webentor\Core\get_classes_by_property($classes_by_property, ['borderRadius']),
         ];
