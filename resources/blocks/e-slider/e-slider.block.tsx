@@ -40,7 +40,11 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
    */
   const allowedBlocks: string[] = applyFilters(
     'webentor.core.e-slider.allowedBlocks',
-    ['webentor/l-flexible-container', 'webentor/e-query-loop'],
+    [
+      'webentor/l-flexible-container',
+      'webentor/e-query-loop',
+      'webentor/e-picker-query-loop',
+    ],
     blockProps,
     parentBlockProps,
   );
