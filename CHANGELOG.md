@@ -8,6 +8,7 @@
 - NEW: Add flexbox, grid and background image settings to **Section block**
 - NEW: Add hooks `webentor/skip_render_block_blade` and `webentor/slider/view/swiper_params`
 - NEW: Add `loop` and `slider_id` settings to **Slider block**
+- NEW: Add flex/grid item order settings
 
 ## 0.9.10
 

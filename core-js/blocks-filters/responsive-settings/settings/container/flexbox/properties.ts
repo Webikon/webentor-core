@@ -101,6 +101,19 @@ const getFlexShrinkValues = () => [
   { label: __('Shrink 1', 'webentor'), value: 'shrink' },
 ];
 
+const getOrderValues = () => [
+  { label: __('None selected', 'webentor'), value: '' },
+  { label: __('Order First', 'webentor'), value: 'order-first' },
+  { label: __('Order Last', 'webentor'), value: 'order-last' },
+  { label: __('Order None', 'webentor'), value: 'order-none' },
+  { label: __('Order 0', 'webentor'), value: 'order-0' },
+  { label: __('Order 1', 'webentor'), value: 'order-1' },
+  { label: __('Order 2', 'webentor'), value: 'order-2' },
+  { label: __('Order 3', 'webentor'), value: 'order-3' },
+  { label: __('Order 4', 'webentor'), value: 'order-4' },
+  { label: __('Order 5', 'webentor'), value: 'order-5' },
+];
+
 export const getFlexboxProperties = (twTheme: WebentorConfig['theme']) => [
   {
     label: __('Flex Gap', 'webentor'),
@@ -164,5 +177,11 @@ export const getFlexboxItemProperties = (twTheme: WebentorConfig['theme']) => [
     name: 'flex-basis',
     help: __('Applicable only on Flexbox child item', 'webentor'),
     values: getFlexBasisValues(twTheme),
+  },
+  {
+    label: __('Order', 'webentor'),
+    name: 'order',
+    help: __('Applicable only on Flexbox child item', 'webentor'),
+    values: getOrderValues(),
   },
 ];

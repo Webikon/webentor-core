@@ -130,7 +130,7 @@ export interface ThemeConfig {
   // minWidth: ResolvableTo<KeyValuePair>;
   objectPosition: ResolvableTo<KeyValuePair>;
   // opacity: ResolvableTo<KeyValuePair>;
-  // order: ResolvableTo<KeyValuePair>;
+  order: ResolvableTo<KeyValuePair>;
   // outlineColor: ThemeConfig['colors'];
   // outlineOffset: ResolvableTo<KeyValuePair>;
   // outlineWidth: ResolvableTo<KeyValuePair>;
