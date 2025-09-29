@@ -24,7 +24,7 @@
 
 <section
   {!! $anchor !!}
-  class="w-section wbtr:relative wbtr:flex {{ !empty($img_id) ? 'wbtr:overflow-hidden' : '' }} {{ $block_classes }} "
+  class="w-section {{ !empty($img_id) ? 'w-section--has-bg-img wbtr:overflow-hidden' : '' }} wbtr:relative wbtr:flex {{ $block_classes }} "
 >
   @if (!empty($img_id))
     <picture>
