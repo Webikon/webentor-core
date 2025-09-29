@@ -33,6 +33,16 @@ const initSliderSettings = () => {
             <PanelBody title={__('Slider Settings', 'webentor')} initialOpen>
               {/* Not responsive settings */}
               <ToggleControl
+                label={__('Loop Slides', 'webentor')}
+                checked={attributes?.slider?.loop ?? true}
+                onChange={(checked) =>
+                  setAttributes(
+                    setImmutably(attributes, ['slider', 'loop'], checked),
+                  )
+                }
+              />
+
+              <ToggleControl
                 label={__('Autoplay', 'webentor')}
                 checked={attributes?.slider?.autoplay ?? false}
                 onChange={(checked) =>
@@ -149,6 +159,19 @@ const initSliderSettings = () => {
                     setImmutably(attributes, ['slider', 'darkMode'], checked),
                   )
                 }
+              />
+
+              <TextControl
+                label={__('Slider ID', 'webentor')}
+                value={attributes?.slider?.id ?? ''}
+                onChange={(value) =>
+                  setAttributes(
+                    setImmutably(attributes, ['slider', 'id'], value),
+                  )
+                }
+                help={__(
+                  'This ID can be used to filter slider params via `webentor/slider/view/swiper_params` hook.',
+                )}
               />
 
               <hr />

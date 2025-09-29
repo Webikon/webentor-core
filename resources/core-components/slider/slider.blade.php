@@ -17,16 +17,11 @@
 
   --}}
 
-{{-- set defaults --}}
-@if (empty($id))
-  @php $id = rand(); @endphp
-@endif
-
 @php
-  $slider_id = uniqid();
+  $slider_id = $slider_id ?: uniqid();
 
   $swiper_params = [
-      'loop' => true,
+      'loop' => $loop ?? true,
   ];
   if (!empty($space_between)) {
       $swiper_params['spaceBetween'] = $space_between;
@@ -51,10 +46,19 @@
   $swiper_params['breakpoints'] = $slider_breakpoints;
 
   $swiper_params['autoplayControl'] = $show_autoplay_control;
+
+  /**
+   * Ability to filter slider params
+   *
+   * @param array $swiper_params Slider params
+   * @param string $slider_id Slider ID
+   * @return array
+   */
+  $swiper_params = apply_filters('webentor/slider/view/swiper_params', $swiper_params, $slider_id);
 @endphp
 
 <div
-  id="{{ $id }}"
+  id="{{ $slider_id }}"
   data-slider="{{ json_encode($swiper_params) }}"
   class="js-slider slider {{ $dark_mode ? 'has-darkmode' : 'has-lightmode' }} {{ $show_autoplay_control ? 'has-autoplay-control' : '' }} wbtr:group wbtr:max-w-full wbtr:overflow-hidden"
 >

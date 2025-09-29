@@ -43,6 +43,8 @@
     'pagination_inside' => $attributes['slider']['paginationInsideContainer'] ?? false,
     'dark_mode' => $attributes['slider']['darkMode'] ?? false,
     'show_autoplay_control' => $attributes['slider']['autoplayControl'] ?? false,
+    'loop' => $attributes['slider']['loop'] ?? true,
+    'slider_id' => $attributes['slider']['id'] ?? '',
     'slider_content' => $innerBlocksContent ?? '',
     'classes' => $block_classes,
     'slides_per_view' => $slides_per_view,
