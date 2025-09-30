@@ -14,7 +14,7 @@
 
   $default_img_height = apply_filters('webentor/l-section/default_img_height', 300);
 
-  $crop_basic = $attributes['imgSize']['crop']['basic'] ?? false;
+  $crop_basic = $attributes['imgSize']['crop']['basic'] ?? true;
   $crop_sm = $attributes['imgSize']['crop']['sm'] ?? $crop_basic;
   $crop_md = $attributes['imgSize']['crop']['md'] ?? $crop_basic;
   $crop_lg = $attributes['imgSize']['crop']['lg'] ?? $crop_basic;
@@ -27,7 +27,7 @@
   $height_lg = $attributes['imgSize']['height']['lg'] ?? $default_img_height;
   $height_xl = $attributes['imgSize']['height']['xl'] ?? $default_img_height;
   $height_2xl = $attributes['imgSize']['height']['2xl'] ?? $default_img_height;
-@endphp)
+@endphp
 
 <section
   {!! $anchor !!}

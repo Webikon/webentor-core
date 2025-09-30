@@ -286,7 +286,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
                         'If enabled, the image will be cropped to the specified height. If disabled, the image will be still resized, but keeps its aspect ratio which can cause image to be stretched.',
                         'webentor',
                       )}
-                      checked={attributes.imgSize?.crop?.[tab.name] || false}
+                      checked={attributes.imgSize?.crop?.[tab.name] || true}
                       onChange={(crop) =>
                         setAttributes(
                           setImmutably(
