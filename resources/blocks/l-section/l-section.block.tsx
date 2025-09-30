@@ -17,6 +17,7 @@ import {
   PanelBody,
   PanelRow,
   TabPanel,
+  ToggleControl,
 } from '@wordpress/components';
 import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
@@ -125,7 +126,9 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
         <PanelBody title="Background Image Settings" initialOpen={true}>
           <PanelRow>
             <div className="wbtr:flex wbtr:flex-col">
-              <p className="wbtr:mb-2 wbtr:uppercase">{__('Desktop Image', 'webentor')}</p>
+              <p className="wbtr:mb-2 wbtr:uppercase">
+                {__('Desktop Image', 'webentor')}
+              </p>
               <MediaUploadCheck>
                 <MediaUpload
                   onSelect={onSelectImage}
@@ -170,7 +173,9 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
 
           <PanelRow>
             <div className="wbtr:flex wbtr:flex-col">
-              <p className="wbtr:mb-2 wbtr:uppercase">{__('Mobile Image', 'webentor')}</p>
+              <p className="wbtr:mb-2 wbtr:uppercase">
+                {__('Mobile Image', 'webentor')}
+              </p>
               <div className="wbtr:mb-2">
                 Used for devices up to 480px screen width.
               </div>
@@ -273,6 +278,24 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
                         )
                       }
                       className="wbtr:mb-2!"
+                    />
+
+                    <ToggleControl
+                      label={__('Crop Image', 'webentor')}
+                      help={__(
+                        'If enabled, the image will be cropped to the specified height. If disabled, the image will be still resized, but keeps its aspect ratio which can cause image to be stretched.',
+                        'webentor',
+                      )}
+                      checked={attributes.imgSize?.crop?.[tab.name] || false}
+                      onChange={(crop) =>
+                        setAttributes(
+                          setImmutably(
+                            attributes,
+                            ['imgSize', 'crop', tab.name],
+                            crop,
+                          ),
+                        )
+                      }
                     />
                   </div>
                 )}
