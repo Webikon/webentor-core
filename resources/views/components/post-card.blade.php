@@ -15,11 +15,12 @@
   $target = !empty($in_new) && $in_new ? 'target=_blank' : '';
 @endphp
 
-<div class="wbtr:bg-gray-50 wbtr:flex wbtr:h-full wbtr:flex-col wbtr:gap-4">
+<div class="w-post-card wbtr:bg-gray-50 wbtr:flex wbtr:h-full wbtr:flex-col wbtr:gap-4">
   @notempty($url)
     <a
       href="{{ $url }}"
       {{ $target }}
+      class="w-post-card__img-link"
     >
     @endnotempty
 
@@ -29,7 +30,7 @@
       <img
         src="{{ asset('/images/post-placeholder.jpg')->uri() }}"
         alt="Placeholder"
-        class="wbtr:h-[215px] wbtr:w-full wbtr:object-cover"
+        class="w-post-card__img wbtr:h-[215px] wbtr:w-full wbtr:object-cover"
       />
     @endif
 
@@ -37,18 +38,19 @@
     </a>
   @endnotempty
 
-  <div class="wbtr:flex wbtr:h-full wbtr:flex-col wbtr:justify-between wbtr:gap-3 wbtr:px-2 wbtr:pb-2">
-    <div class="wbtr:flex wbtr:flex-col wbtr:gap-3">
-      <div>
+  <div class="w-post-card__content wbtr:flex wbtr:h-full wbtr:flex-col wbtr:justify-between wbtr:gap-3 wbtr:px-2 wbtr:pb-2">
+    <div class="w-post-card__content-body wbtr:flex wbtr:flex-col wbtr:gap-3">
+      <div class="w-post-card__content-header">
         @notempty($url)
           <a
             href="{{ $url }}"
             {{ $target }}
+            class="w-post-card__title-link"
           >
           @endnotempty
 
           @notempty($title)
-            <h2 class="wbtr:text-gray-700 wbtr:text-title">{!! $title !!}</h2>
+            <h2 class="w-post-card__title wbtr:text-gray-700 wbtr:text-title">{!! $title !!}</h2>
           @endnotempty
 
           @notempty($url)
@@ -56,22 +58,22 @@
         @endnotempty
 
         @notempty($date)
-          <div class="wbtr:text-12 wbtr:text-gray-200">{{ $date }}</div>
+          <div class="w-post-card__date wbtr:text-12 wbtr:text-gray-200">{{ $date }}</div>
         @endnotempty
 
       </div>
 
       @notempty($excerpt)
-        <div class="wbtr:text-16 wbtr:leading-150 wbtr:text-gray-200">{!! $excerpt !!}</div>
+        <div class="w-post-card__excerpt wbtr:text-16 wbtr:leading-150 wbtr:text-gray-200">{!! $excerpt !!}</div>
       @endnotempty
     </div>
+
     @notempty($url)
       <a
         href="{{ $url }}"
         {{ $target }}
-        class="wbtr:text-16 wbtr:leading-150 wbtr:text-sred-500 wbtr:hover:wbtr:text-sred-600 wbtr:hover:wbtr:underline"
+        class="w-post-card__read-more wbtr:text-16 wbtr:leading-150 wbtr:text-sred-500 wbtr:hover:wbtr:text-sred-600 wbtr:hover:wbtr:underline"
       >{{ __('Read more', 'webentor') }}</a>
     @endnotempty
-
   </div>
 </div>

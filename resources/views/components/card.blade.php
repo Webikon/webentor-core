@@ -1,17 +1,18 @@
-<div class="card wbtr:bg-gray-800 wbtr:p-4">
-  <div class="card__inner wbtr:bg-white wbtr:p-8">
+<div class="w-card card wbtr:bg-gray-800 wbtr:p-4">
+  <div class="w-card__inner card__inner wbtr:bg-white wbtr:p-8">
     @if (!empty($img_url))
       <img
         src="{{ $img_url }}"
         alt=""
+        class="w-card__img"
       >
     @endif
 
-    <h2 class="wbtr:text-24">
+    <h2 class="w-card__title wbtr:text-24">
       {{ $title }}
     </h2>
 
-    <div>
+    <div class="w-card__content">
       {!! $content !!}
     </div>
   </div>

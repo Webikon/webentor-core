@@ -52,18 +52,18 @@
       },
   }"
   role="region"
-  class="accordion wbtr:w-full {{ $accordion_classes ?? '' }}"
+  class="w-accordion accordion wbtr:w-full {{ $accordion_classes ?? '' }}"
 >
-  <h2 class="accordion-btn-wrapper">
+  <h2 class="w-accordion__btn-wrapper accordion-btn-wrapper">
     <button
       x-on:click="expanded = !expanded"
       :aria-expanded="expanded"
-      class="{{ $btn_classes ?? '' }} accordion-btn text-headline wbtr:text-gray-700 wbtr:flex wbtr:w-full wbtr:items-center wbtr:justify-between wbtr:py-2.5 wbtr:text-left"
+      class="{{ $btn_classes ?? '' }} w-accordion__btn accordion-btn text-headline wbtr:text-gray-700 wbtr:flex wbtr:w-full wbtr:items-center wbtr:justify-between wbtr:py-2.5 wbtr:text-left"
     >
-      <span class="accordion-btn-title">{{ $title }}</span>
+      <span class="w-accordion__btn-title accordion-btn-title">{{ $title }}</span>
       <span
         x-bind:class="{ '-wbtr:rotate-90': expanded, 'wbtr:rotate-90': !expanded }"
-        class="accordion-btn-icon transition-transform"
+        class="w-accordion__btn-icon accordion-btn-icon transition-transform"
         aria-hidden="true"
       >
         @svg('images.svg.chevron-right', 'wbtr:w-4 wbtr:h-4 wbtr:text-gray-500')
@@ -76,7 +76,7 @@
     x-show="expanded"
     x-cloak
     x-collapse
-    class="accordion-content wbtr:flex wbtr:w-full wbtr:flex-col wbtr:items-start wbtr:justify-start wbtr:gap-3 wbtr:pt-3"
+    class="w-accordion__content accordion-content wbtr:flex wbtr:w-full wbtr:flex-col wbtr:items-start wbtr:justify-start wbtr:gap-3 wbtr:pt-3"
   >
     {{-- Show InnerBlocks if $content is not set --}}
     @if (!empty($accordion_content))

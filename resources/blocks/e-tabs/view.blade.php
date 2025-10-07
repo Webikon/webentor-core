@@ -15,14 +15,20 @@
   <div
     {!! $anchor !!}
     x-data="{ activeTab: '{{ $additional_data['tabs_nav'][0]['id'] ?? 0 }}' }"
+    x-init="await $nextTick();
+    $dispatch('e_tabs_nav_initialized', {{ $additional_data['tabs_nav'][0]['id'] ?? 0 }});"
     class="e-tabs wbtr:w-full {{ $block_classes }}"
   >
     <div class="e-tabs__navigation tabs-navigation">
-      <ul class="wbtr:border-gray-100 wbtr:flex wbtr:flex-wrap wbtr:border-b wbtr:text-center">
+      <ul class="e-tabs__navigation-list wbtr:border-gray-100 wbtr:flex wbtr:flex-wrap wbtr:border-b wbtr:text-center">
         @foreach ($additional_data['tabs_nav'] as $index => $tab)
           <li class="e-tabs__navigation-item">
             <button
-              @click="activeTab = '{{ $tab['id'] }}'"
+              x-on:click="
+                activeTab = '{{ $tab['id'] }}'
+                await $nextTick();
+                $dispatch('e_tabs_nav_item_clicked', {{ $tab['id'] }});
+              "
               class="e-tabs__btn wbtr:inline-block wbtr:p-4"
               :class="{ 'wbtr:bg-sred-300': activeTab === '{{ $tab['id'] }}' }"
             >
