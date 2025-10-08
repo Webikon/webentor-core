@@ -9,7 +9,7 @@
 - NEW: Add hooks `webentor/skip_render_block_blade` and `webentor/slider/view/swiper_params`
 - NEW: Add `loop` and `slider_id` settings to **Slider block**
 - NEW: Add flex/grid item order settings
-- NEW: Add JS events `e_tabs_nav_initialized` and `e_tabs_nav_item_clicked`
+- NEW: Add JS events `e_tabs_nav_initialized`, `e_tabs_nav_item_clicked`, `e_accordion_btn_clicked`
 - NEW: Add components BEM classes
 
 ## 0.9.10

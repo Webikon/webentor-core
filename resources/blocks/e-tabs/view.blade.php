@@ -16,7 +16,7 @@
     {!! $anchor !!}
     x-data="{ activeTab: '{{ $additional_data['tabs_nav'][0]['id'] ?? 0 }}' }"
     x-init="await $nextTick();
-    $dispatch('e_tabs_nav_initialized', {{ $additional_data['tabs_nav'][0]['id'] ?? 0 }});"
+    $dispatch('e_tabs_nav_initialized', { id: {{ $additional_data['tabs_nav'][0]['id'] ?? 0 }}, activeTab: activeTab, content: $refs.tabContainer });"
     class="e-tabs wbtr:w-full {{ $block_classes }}"
   >
     <div class="e-tabs__navigation tabs-navigation">
@@ -27,7 +27,7 @@
               x-on:click="
                 activeTab = '{{ $tab['id'] }}'
                 await $nextTick();
-                $dispatch('e_tabs_nav_item_clicked', {{ $tab['id'] }});
+                $dispatch('e_tabs_nav_item_clicked', { id: '{{ $tab['id'] }}', activeTab: activeTab, content: $refs.tabContainer });
               "
               class="e-tabs__btn wbtr:inline-block wbtr:p-4"
               :class="{ 'wbtr:bg-sred-300': activeTab === '{{ $tab['id'] }}' }"

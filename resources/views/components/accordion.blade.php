@@ -51,12 +51,18 @@
           }
       },
   }"
+  x-ref="accordion"
   role="region"
   class="w-accordion accordion wbtr:w-full {{ $accordion_classes ?? '' }}"
 >
   <h2 class="w-accordion__btn-wrapper accordion-btn-wrapper">
     <button
-      x-on:click="expanded = !expanded"
+      x-on:click="
+        expanded = !expanded;
+        await $nextTick();
+        $dispatch('e_accordion_btn_clicked', { expanded: expanded, content: $refs.accordionContent });
+      "
+      x-ref="accordionBtn"
       :aria-expanded="expanded"
       class="{{ $btn_classes ?? '' }} w-accordion__btn accordion-btn text-headline wbtr:text-gray-700 wbtr:flex wbtr:w-full wbtr:items-center wbtr:justify-between wbtr:py-2.5 wbtr:text-left"
     >
@@ -74,6 +80,7 @@
 
   <div
     x-show="expanded"
+    x-ref="accordionContent"
     x-cloak
     x-collapse
     class="w-accordion__content accordion-content wbtr:flex wbtr:w-full wbtr:flex-col wbtr:items-start wbtr:justify-start wbtr:gap-3 wbtr:pt-3"
