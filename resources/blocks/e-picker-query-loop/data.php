@@ -8,7 +8,7 @@ use Illuminate\View\View;
  *
  * First argument is the current block view path.
  */
-Facades\View::composer('blocks.e-picker-query-loop.view', function (View $view) {
+Facades\View::composer('e-picker-query-loop.view', function (View $view) {
     $data = $view->getData();
     $attributes = $data['attributes'];
 
