@@ -224,10 +224,16 @@ function render_block_blade($block, $parent_block = null)
     $custom_classes = apply_filters('webentor/block_custom_classes', [], $block, $classes_by_property);
     $additional_data = apply_filters('webentor/block_additional_data', $additional_data, $block);
 
+    // Backward compatibility for old view.php config, where we defined path also for whole /resources folder
+    $view_path = "{$block_slug}/view";
+    if (!\Roots\view()->exists($view_path)) {
+        $view_path = "blocks/{$block_slug}/view";
+    }
+
     // Get the blade view and pass all necessary data
     // check if file exists
-    if (\Roots\view()->exists("blocks/{$block_slug}/view")) {
-        $block_content = \Roots\view("blocks/{$block_slug}/view", [
+    if (\Roots\view()->exists($view_path)) {
+        $block_content = \Roots\view($view_path, [
             'attributes' => $block->attributes,
             'innerBlocksContent' => $inner_blocks_html,
             'anchor' => $anchor,
@@ -303,8 +309,14 @@ function render_inner_block_blade($block, $parent_block = null)
     $custom_classes = apply_filters('webentor/block_custom_classes', [], $block, $classes_by_property);
     $additional_data = apply_filters('webentor/block_additional_data', [], $block);
 
-    if ($is_custom && \Roots\view()->exists("blocks/{$block_slug}/view")) {
-        $block_content = \Roots\view("blocks/{$block_slug}/view", [
+    // Backward compatibility for old view.php config, where we defined path also for whole /resources folder
+    $view_path = "{$block_slug}/view";
+    if (!\Roots\view()->exists($view_path)) {
+        $view_path = "blocks/{$block_slug}/view";
+    }
+
+    if ($is_custom && \Roots\view()->exists($view_path)) {
+        $block_content = \Roots\view($view_path, [
             'attributes' => $block->attributes,
             'anchor' => $anchor,
             'block_classes' => $classes,

@@ -11,6 +11,9 @@
 - NEW: Add flex/grid item order settings
 - NEW: Add JS events `e_tabs_nav_initialized`, `e_tabs_nav_item_clicked`, `e_accordion_btn_clicked`
 - NEW: Add components BEM classes
+- **BREAKING:**: Change view paths for Blade `blocks` and `core-components`. Now these folder names doesn't need to be included in the path when including views from them.
+  - Replace `core-components.button.button` and `core-components.slider.slider` with `button.button` and `slider.slider`
+  - If you included blocks as `blocks.blockName.view`, remove `blocks.` and leave just `blockName.view`
 
 ## 0.9.10
 

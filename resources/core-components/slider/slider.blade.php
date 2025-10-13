@@ -13,7 +13,7 @@
   $classes - Additional CSS classes to be applied to the slider container.
 
   Usage:
-  @include('core-components.slider.slider', ['id' => $block['id'], 'autoplay' => $acf_data['autoplay'], 'autoplay_speed' => $acf_data['autoplay_speed'] ?? '', 'show_arrows' => $acf_data['show_arrows'], 'show_pagination' => $acf_data['show_pagination'], 'slider_content' => $content, 'classes' => $block_classes])
+  @include('slider.slider', ['id' => $block['id'], 'autoplay' => $acf_data['autoplay'], 'autoplay_speed' => $acf_data['autoplay_speed'] ?? '', 'show_arrows' => $acf_data['show_arrows'], 'show_pagination' => $acf_data['show_pagination'], 'slider_content' => $content, 'classes' => $block_classes])
 
   --}}
 

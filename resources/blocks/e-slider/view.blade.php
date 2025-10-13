@@ -34,21 +34,24 @@
   }
 @endphp
 
-@include('core-components.slider.slider', [
-    'autoplay' => $attributes['slider']['autoplay'] ?? false,
-    'autoplay_speed' => $attributes['slider']['autoplaySpeed'] ?? 3000,
-    'show_arrows' => $attributes['slider']['showArrows'] ?? false,
-    'show_pagination' => $attributes['slider']['showPagination'] ?? false,
-    'arrows_inside' => $attributes['slider']['arrowsInsideContainer'] ?? false,
-    'pagination_inside' => $attributes['slider']['paginationInsideContainer'] ?? false,
-    'dark_mode' => $attributes['slider']['darkMode'] ?? false,
-    'show_autoplay_control' => $attributes['slider']['autoplayControl'] ?? false,
-    'loop' => $attributes['slider']['loop'] ?? true,
-    'slider_id' => $attributes['slider']['id'] ?? '',
-    'slider_content' => $innerBlocksContent ?? '',
-    'classes' => $block_classes,
-    'slides_per_view' => $slides_per_view,
-    'space_between' => $space_between,
-    'centered_slides' => $centered_slides,
-    'slider_breakpoints' => $slider_breakpoints_data,
-])
+@includeFirst(
+    ['core-components.slider.slider', 'slider.slider'],
+    [
+        'autoplay' => $attributes['slider']['autoplay'] ?? false,
+        'autoplay_speed' => $attributes['slider']['autoplaySpeed'] ?? 3000,
+        'show_arrows' => $attributes['slider']['showArrows'] ?? false,
+        'show_pagination' => $attributes['slider']['showPagination'] ?? false,
+        'arrows_inside' => $attributes['slider']['arrowsInsideContainer'] ?? false,
+        'pagination_inside' => $attributes['slider']['paginationInsideContainer'] ?? false,
+        'dark_mode' => $attributes['slider']['darkMode'] ?? false,
+        'show_autoplay_control' => $attributes['slider']['autoplayControl'] ?? false,
+        'loop' => $attributes['slider']['loop'] ?? true,
+        'slider_id' => $attributes['slider']['id'] ?? '',
+        'slider_content' => $innerBlocksContent ?? '',
+        'classes' => $block_classes,
+        'slides_per_view' => $slides_per_view,
+        'space_between' => $space_between,
+        'centered_slides' => $centered_slides,
+        'slider_breakpoints' => $slider_breakpoints_data,
+    ]
+)
