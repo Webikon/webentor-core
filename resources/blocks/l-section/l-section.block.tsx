@@ -11,19 +11,15 @@ import {
   registerBlockType,
   TemplateArray,
 } from '@wordpress/blocks';
-import {
-  Button,
-  __experimentalNumberControl as NumberControl,
-  PanelBody,
-  PanelRow,
-  TabPanel,
-  ToggleControl,
-} from '@wordpress/components';
+import { Button, PanelBody, PanelRow } from '@wordpress/components';
 import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 
 import { setImmutably } from '@webentorCore/_utils';
-import { WebentorBlockAppender } from '@webentorCore/blocks-components';
+import {
+  CustomImageSizesPanel,
+  WebentorBlockAppender,
+} from '@webentorCore/blocks-components';
 import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 
 import block from './block.json';
@@ -46,13 +42,6 @@ type AttributesType = {
       [key: string]: string;
     };
   };
-};
-
-const hasSizeSettingsForBreakpoint = (
-  attributes: AttributesType,
-  breakpoint: string,
-) => {
-  return attributes?.imgSize?.height?.[breakpoint] || false;
 };
 
 const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
@@ -98,8 +87,6 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
 
   const hasInnerBlocks = children && React.Children.count(children) > 0;
 
-  const breakpoints = applyFilters('webentor.core.twBreakpoints', ['basic']);
-
   const onSelectImage = (media) => {
     setAttributes({
       img: { id: media.id, url: media.url, alt: media.alt },
@@ -118,6 +105,32 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
 
   const removeMobileImage = () => {
     setAttributes({ mobileImg: null });
+  };
+
+  const handleEnabledChange = (enabled: boolean, breakpoint: string) => {
+    // Set custom size enabled/disabled
+    // For some reason, this doesn't work with setImmutably
+    setAttributes({
+      imgSize: {
+        ...attributes?.imgSize,
+        enabled: {
+          ...attributes?.imgSize?.enabled,
+          [breakpoint]: enabled,
+        },
+      },
+    });
+  };
+
+  const handleHeightChange = (height: number, breakpoint: string) => {
+    setAttributes(
+      setImmutably(attributes, ['imgSize', 'height', breakpoint], height),
+    );
+  };
+
+  const handleCropChange = (crop: boolean, breakpoint: string) => {
+    setAttributes(
+      setImmutably(attributes, ['imgSize', 'crop', breakpoint], crop),
+    );
   };
 
   return (
@@ -224,83 +237,27 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
           </PanelRow>
 
           <PanelRow>
-            <div>
-              <p className="wbtr:mt-4 wbtr:uppercase">
-                {__('Custom Image sizes', 'webentor')}
-              </p>
-
-              <div>
-                Notice: This is not height used for the section/hero. Please set
-                section height <strong>Container Settings</strong>. <br />
-                Image Height settings below are needed just so image can be
-                properly optimized, resized and cropped on frontend.
-              </div>
-
-              <div className="wbtr:my-2">
-                Help: These sizes are defined <strong>UP TO</strong> specific
-                breakpoint, e.g. if you define sizes for `sm`, it means it would
-                be applied on screens up to `sm` (max-width:480px). Always
-                define <strong>basic</strong> breakpoint first as it would be
-                used as default image height.
-              </div>
-
-              <TabPanel
-                activeClass="is-active"
-                className="w-responsive-settings-tabs"
-                initialTabName={breakpoints[0]}
-                tabs={
-                  breakpoints.map((breakpoint) => ({
-                    name: breakpoint,
-                    title: `${breakpoint}${hasSizeSettingsForBreakpoint(attributes, breakpoint) ? '*' : ''}`, // Add * if spacing is set on this breakpoint
-                  })) || []
-                }
-              >
-                {(tab) => (
-                  <div
-                    className="wbtr:mt-4 wbtr:flex wbtr:flex-wrap wbtr:justify-center wbtr:gap-x-4"
-                    key={tab.name}
-                  >
-                    <NumberControl
-                      label={__('Image Height', 'webentor')}
-                      value={attributes.imgSize?.height?.[tab.name] || '0'}
-                      help={__(
-                        'This will help the image to be properly resized and cropped on frontend. Leave 0 to use default height.',
-                        'webentor',
-                      )}
-                      min={0}
-                      onChange={(height) =>
-                        setAttributes(
-                          setImmutably(
-                            attributes,
-                            ['imgSize', 'height', tab.name],
-                            height,
-                          ),
-                        )
-                      }
-                      className="wbtr:mb-2!"
-                    />
-
-                    <ToggleControl
-                      label={__('Crop Image', 'webentor')}
-                      help={__(
-                        'If enabled, the image will be cropped to the specified height. If disabled, the image will be still resized, but keeps its aspect ratio which can cause image to be stretched.',
-                        'webentor',
-                      )}
-                      checked={attributes.imgSize?.crop?.[tab.name] || true}
-                      onChange={(crop) =>
-                        setAttributes(
-                          setImmutably(
-                            attributes,
-                            ['imgSize', 'crop', tab.name],
-                            crop,
-                          ),
-                        )
-                      }
-                    />
+            <CustomImageSizesPanel
+              attributes={attributes}
+              imgSizeAttribute="imgSize"
+              onEnabledChange={handleEnabledChange}
+              onHeightChange={handleHeightChange}
+              onCropChange={handleCropChange}
+              alwaysEnabled
+              hideWidth
+              noticeBefore={() => (
+                <>
+                  <div>
+                    Notice: This is not height used for the section/hero. Please
+                    set section height <strong>Container Settings</strong>.{' '}
+                    <br />
+                    Image Height settings below are needed just so image can be
+                    properly optimized, resized and cropped on frontend.
                   </div>
-                )}
-              </TabPanel>
-            </div>
+                  <br />
+                </>
+              )}
+            />
           </PanelRow>
         </PanelBody>
       </InspectorControls>

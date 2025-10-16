@@ -1,22 +1,30 @@
-import { Image, Link, MediaToolbar } from '@10up/block-components';
 import {
   BlockControls,
   store as blockEditorStore,
   InspectorControls,
+  MediaUpload,
+  MediaUploadCheck,
   useBlockProps,
 } from '@wordpress/block-editor';
 import { BlockEditProps, registerBlockType } from '@wordpress/blocks';
 import {
+  Button,
   PanelBody,
   PanelRow,
   SelectControl,
   ToggleControl,
+  ToolbarGroup,
+  ToolbarItem,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
+import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 
 import { setImmutably } from '@webentorCore/_utils';
 import { CustomImageSizesPanel } from '@webentorCore/blocks-components';
+import { BorderPanel } from '@webentorCore/blocks-filters/responsive-settings/settings/border/panel';
+import { prepareTailwindBorderClassesFromSettings } from '@webentorCore/blocks-filters/responsive-settings/utils';
+import { WebentorConfig } from '@webentorCore/types/_webentor-config';
 
 import block from './block.json';
 
@@ -29,10 +37,13 @@ import block from './block.json';
  */
 
 type AttributesType = {
-  coverImage: string;
+  images: {
+    id: number;
+    url: string;
+    alt: string;
+  }[];
   lazyload: boolean;
   openInLightbox: boolean;
-  fullWidth: boolean;
   aspectRatio: string;
   objectFit: string;
   objectPosition: string;
@@ -51,57 +62,46 @@ type AttributesType = {
       [key: string]: boolean;
     };
   };
-  imgId: number;
-  focalPoint: {
-    x: number;
-    y: number;
-  };
-  link: {
-    url: string;
-    title: string;
-    opensInNewTab: boolean;
-  };
 };
 
 const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   const { attributes, setAttributes } = props;
+  const { images } = attributes;
 
   const blockProps = useBlockProps();
 
-  const imageWidth = 600;
-  const imageHeight = 600;
+  const imageHeight = 150;
+  const imageWidth = 150;
 
-  // Preview image for block inserter
-  if (attributes.coverImage) {
-    return <img src={attributes.coverImage} width="468" />;
-  }
+  const { clientId } = props;
+  const { getSettings } = useSelect(blockEditorStore, []);
+  const { imageSizes } = useSelect(() => {
+    const settings = getSettings();
 
-  const handleLinkTextChange = (value: string) =>
-    setAttributes({
-      link: {
-        ...attributes.link,
-        title: value,
-      },
-    });
+    return {
+      imageSizes: settings.imageSizes,
+    };
+  }, [clientId]);
 
-  const handleLinkChange = (value: unknown) =>
-    setAttributes({
-      link: {
-        url: value?.url,
-        opensInNewTab: value?.opensInNewTab,
-        title: value?.title ?? attributes?.link?.title,
-      },
-    });
+  const imageSizeOptions = imageSizes.map(({ name, slug }) => ({
+    value: slug,
+    label: name,
+  }));
 
-  const handleLinkRemove = () => {
-    setAttributes({ link: null });
+  const breakpoints: string[] = applyFilters('webentor.core.twBreakpoints', [
+    'basic',
+  ]);
+  const twTheme: WebentorConfig['theme'] = applyFilters(
+    'webentor.core.twTheme',
+    {},
+  );
+
+  const handleGallerySelect = (images: unknown) => {
+    setAttributes({ images });
   };
 
-  const handleImageSelect = (image: unknown) => {
-    setAttributes({ imgId: image?.id });
-  };
-  const handleImageRemove = () => {
-    setAttributes({ imgId: null });
+  const handleGalleryRemove = () => {
+    setAttributes({ images: null });
   };
 
   const handleEnabledChange = (enabled: boolean, breakpoint: string) => {
@@ -136,29 +136,39 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
     );
   };
 
-  // const handleFocalPointChange = (value) => {
-  //   setAttributes({ focalPoint: value });
-  // };
+  const GalleryMediaUpload = (
+    variant?: 'link' | 'primary' | 'secondary' | 'tertiary',
+  ) => (
+    <MediaUploadCheck>
+      <MediaUpload
+        onSelect={handleGallerySelect}
+        allowedTypes={['image']}
+        value={images?.map(({ id }) => id)}
+        gallery
+        multiple
+        render={({ open }) => (
+          <Button onClick={open} variant={variant}>
+            {images?.length > 0
+              ? __('Edit Gallery Images', 'webentor')
+              : __('Select Gallery Images', 'webentor')}
+          </Button>
+        )}
+      />
+    </MediaUploadCheck>
+  );
 
-  const { clientId } = props;
-  const { getSettings } = useSelect(blockEditorStore, []);
-  const { imageSizes } = useSelect(() => {
-    const settings = getSettings();
-
-    return {
-      imageSizes: settings.imageSizes,
-    };
-  }, [clientId]);
-
-  const imageSizeOptions = imageSizes.map(({ name, slug }) => ({
-    value: slug,
-    label: name,
-  }));
+  const borderClasses = prepareTailwindBorderClassesFromSettings(
+    attributes,
+    'border',
+    ['top', 'right', 'bottom', 'left'],
+  );
 
   return (
     <>
       <InspectorControls>
-        <PanelBody title="Block Settings" initialOpen={true}>
+        <PanelBody title="Gallery Settings" initialOpen={true}>
+          <PanelRow>{GalleryMediaUpload('secondary')}</PanelRow>
+
           <PanelRow>
             <ToggleControl
               label={__('Lazyload', 'webentor')}
@@ -173,37 +183,6 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
               label={__('Open in lightbox', 'webentor')}
               checked={attributes.openInLightbox}
               onChange={(openInLightbox) => setAttributes({ openInLightbox })}
-            />
-          </PanelRow>
-
-          {/* TODO maybe move to BlockControls toolbar */}
-          {!attributes.openInLightbox && (
-            <PanelRow>
-              <div className="wbtr:w-full wbtr:border wbtr:border-editor-border wbtr:p-2">
-                <p>{__('Link Image to URL', 'webentor')}</p>
-
-                <div className="wbtr:flex wbtr:gap-2">
-                  {/* External link */}
-                  <Link
-                    value={attributes?.link?.title}
-                    url={attributes?.link?.url}
-                    opensInNewTab={attributes?.link?.opensInNewTab}
-                    onTextChange={handleLinkTextChange}
-                    onLinkChange={handleLinkChange}
-                    onLinkRemove={handleLinkRemove}
-                    placeholder="Enter Link Text here..."
-                  />
-                </div>
-              </div>
-            </PanelRow>
-          )}
-
-          {/* Full width */}
-          <PanelRow>
-            <ToggleControl
-              label={__('Make image full width', 'webentor')}
-              checked={attributes.fullWidth}
-              onChange={(fullWidth) => setAttributes({ fullWidth })}
             />
           </PanelRow>
 
@@ -284,32 +263,38 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
             />
           </PanelRow>
         </PanelBody>
+
+        <BorderPanel {...props} breakpoints={breakpoints} twTheme={twTheme} />
       </InspectorControls>
 
       <BlockControls>
-        <MediaToolbar
-          isOptional
-          id={attributes.imgId}
-          onSelect={handleImageSelect}
-          onRemove={handleImageRemove}
-        />
+        <ToolbarGroup>
+          <ToolbarItem as="div">{GalleryMediaUpload()}</ToolbarItem>
+          <ToolbarItem as={Button} onClick={handleGalleryRemove}>
+            {__('Remove Gallery', 'webentor')}
+          </ToolbarItem>
+        </ToolbarGroup>
       </BlockControls>
 
-      <div {...blockProps} className={blockProps.className}>
-        <Image
-          id={attributes.imgId}
-          size={attributes.imageSize}
-          onSelect={handleImageSelect}
-          className={`wbtr:rounded-[inherit] object-${attributes.objectFit} object-${attributes.objectPosition} aspect-${attributes.aspectRatio}`}
-          // focalPoint={attributes.focalPoint}
-          // onChangeFocalPoint={handleFocalPointChange}
-          labels={{
-            title: 'Select Image',
-            instructions: 'Upload or pick one from your media library.',
-          }}
-          width={attributes.customSize?.width?.basic || imageWidth}
-          height={attributes.customSize?.height?.basic || imageHeight}
-        />
+      <div {...blockProps} className={`${blockProps.className} w-gallery`}>
+        {images?.length > 0 ? (
+          images.map((image) => (
+            <img
+              src={image.url}
+              key={image.id}
+              width={attributes.customSize?.width?.basic || imageWidth}
+              height={attributes.customSize?.height?.basic || imageHeight}
+              className={`w-gallery__item object-${attributes.objectFit} object-${attributes.objectPosition} aspect-${attributes.aspectRatio} ${borderClasses.join(' ')}`}
+            />
+          ))
+        ) : (
+          <div className="wbtr:py-4 wbtr:text-gray-500">
+            <div className="wbtr:mb-4">
+              Gallery is empty, please select some images.
+            </div>
+            <div>{GalleryMediaUpload('secondary')}</div>
+          </div>
+        )}
       </div>
     </>
   );

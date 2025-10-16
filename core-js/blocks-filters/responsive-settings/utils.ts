@@ -1,3 +1,6 @@
+import { useBlockProps } from '@wordpress/block-editor';
+import { getBlockType } from '@wordpress/blocks';
+
 export const getPixelFromRemValue = (value: string): string => {
   if (value.includes('rem')) {
     const remValue = value.replace('rem', '');
@@ -207,49 +210,80 @@ export const applyResponsiveSettings = (attributes: any): boolean => {
   return true;
 };
 
+/**
+ * Automatically generates the class names for the block based on the attributes if they are supported.
+ *
+ * @param attributes - The attributes of the block
+ * @returns The class names of the block
+ */
 export const generateClassNames = (attributes: any): string => {
   if (!applyResponsiveSettings(attributes)) {
     return '';
   }
 
+  const blockProps = useBlockProps();
+  // const settings = useSettings();
+  const blockName = blockProps['data-type'];
+
+  const blockSettings = getBlockType(blockName);
+  const supports = blockSettings?.supports;
+
   const classes: string[] = [];
 
   // Prepare all Tailwind classes
-  const spacingClasses = prepareTailwindClassesFromSettings(
-    attributes,
-    'spacing',
-  );
-  const displayClasses = prepareTailwindClassesFromSettings(
-    attributes,
-    'display',
-  );
-  const flexboxClasses = prepareTailwindClassesFromSettings(
-    attributes,
-    'flexbox',
-  );
-  const flexboxItemClasses = prepareTailwindClassesFromSettings(
-    attributes,
-    'flexboxItem',
-  );
-  const gridClasses = prepareTailwindClassesFromSettings(attributes, 'grid');
-  const gridItemClasses = prepareTailwindClassesFromSettings(
-    attributes,
-    'gridItem',
-  );
+  if (supports?.webentor?.spacing) {
+    const spacingClasses = prepareTailwindClassesFromSettings(
+      attributes,
+      'spacing',
+    );
+    classes.push(...spacingClasses);
+  }
 
-  const borderClasses = prepareTailwindBorderClassesFromSettings(
-    attributes,
-    'border',
-    ['top', 'right', 'bottom', 'left'],
-  );
+  if (supports?.webentor?.display) {
+    const displayClasses = prepareTailwindClassesFromSettings(
+      attributes,
+      'display',
+    );
+    classes.push(...displayClasses);
+  }
 
-  classes.push(...spacingClasses);
-  classes.push(...displayClasses);
-  classes.push(...flexboxClasses);
-  classes.push(...flexboxItemClasses);
-  classes.push(...gridClasses);
-  classes.push(...gridItemClasses);
-  classes.push(...borderClasses);
+  if (supports?.webentor?.flexbox) {
+    const flexboxClasses = prepareTailwindClassesFromSettings(
+      attributes,
+      'flexbox',
+    );
+    classes.push(...flexboxClasses);
+  }
+
+  if (supports?.webentor?.flexboxItem) {
+    const flexboxItemClasses = prepareTailwindClassesFromSettings(
+      attributes,
+      'flexboxItem',
+    );
+    classes.push(...flexboxItemClasses);
+  }
+
+  if (supports?.webentor?.grid) {
+    const gridClasses = prepareTailwindClassesFromSettings(attributes, 'grid');
+    classes.push(...gridClasses);
+  }
+
+  if (supports?.webentor?.gridItem) {
+    const gridItemClasses = prepareTailwindClassesFromSettings(
+      attributes,
+      'gridItem',
+    );
+    classes.push(...gridItemClasses);
+  }
+
+  if (supports?.webentor?.border || supports?.webentor?.borderRadius) {
+    const borderClasses = prepareTailwindBorderClassesFromSettings(
+      attributes,
+      'border',
+      ['top', 'right', 'bottom', 'left'],
+    );
+    classes.push(...borderClasses);
+  }
 
   return classes.join(' ') ?? '';
 };

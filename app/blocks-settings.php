@@ -211,7 +211,6 @@ function prepareBgBlockClassesFromSettings($attributes, $block = null, $parent_b
  */
 function prepareBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
 {
-
     $classes_by_prop = [
         'className' => [],
         'align' => [],
@@ -251,6 +250,58 @@ function prepareBlockClassesFromSettings($attributes, $block = null, $parent_blo
         $classes .= $text_color_classes;
     }
 
+    if (!empty($block->block_type->supports['webentor']['spacing'])) {
+        $spacing_classes = prepareSpacingBlockClassesFromSettings($attributes, $block, $parent_block);
+        $classes .= $spacing_classes['classes'];
+        $classes_by_prop = array_merge($classes_by_prop, $spacing_classes['classes_by_property']);
+    }
+
+    if (!empty($block->block_type->supports['webentor']['display'])) {
+        $display_classes = prepareDisplayBlockClassesFromSettings($attributes, $block, $parent_block);
+        $classes .= $display_classes['classes'];
+        $classes_by_prop = array_merge($classes_by_prop, $display_classes['classes_by_property']);
+    }
+
+    if (!empty($block->block_type->supports['webentor']['grid'])) {
+        $grid_classes = prepareGridBlockClassesFromSettings($attributes, $block, $parent_block);
+        $classes .= $grid_classes['classes'];
+        $classes_by_prop = array_merge($classes_by_prop, $grid_classes['classes_by_property']);
+    }
+
+    if (!empty($block->block_type->supports['webentor']['gridItem'])) {
+        $grid_item_classes = prepareGridItemBlockClassesFromSettings($attributes, $block, $parent_block);
+        $classes .= $grid_item_classes['classes'];
+        $classes_by_prop = array_merge($classes_by_prop, $grid_item_classes['classes_by_property']);
+    }
+
+    if (!empty($block->block_type->supports['webentor']['flexbox'])) {
+        $flexbox_classes = prepareFlexboxBlockClassesFromSettings($attributes, $block, $parent_block);
+        $classes .= $flexbox_classes['classes'];
+        $classes_by_prop = array_merge($classes_by_prop, $flexbox_classes['classes_by_property']);
+    }
+
+    if (!empty($block->block_type->supports['webentor']['flexboxItem'])) {
+        $flexbox_item_classes = prepareFlexboxItemBlockClassesFromSettings($attributes, $block, $parent_block);
+        $classes .= $flexbox_item_classes['classes'];
+        $classes_by_prop = array_merge($classes_by_prop, $flexbox_item_classes['classes_by_property']);
+    }
+
+    if (!empty($block->block_type->supports['webentor']['border'])) {
+        $border_classes = prepareBorderBlockClassesFromSettings($attributes, $block, $parent_block);
+        $classes .= $border_classes['classes'];
+        $classes_by_prop = array_merge($classes_by_prop, $border_classes['classes_by_property']);
+    }
+
+    return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
+}
+
+function prepareSpacingBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
+{
+    $classes = '';
+    $classes_by_prop = [
+        'spacing' => [],
+    ];
+
     if (!empty($attributes['spacing'])) {
         foreach ($attributes['spacing'] as $property_name => $property_data) {
             if (!empty($property_data['value'])) {
@@ -268,28 +319,42 @@ function prepareBlockClassesFromSettings($attributes, $block = null, $parent_blo
         }
     }
 
+    return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
+}
+
+function prepareDisplayBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
+{
+    $classes = '';
+    $classes_by_prop = [
+        'display' => [],
+    ];
+
     if (!empty($attributes['display'])) {
         foreach ($attributes['display'] as $property_name => $property_data) {
             if (!empty($property_data['value'])) {
                 $display_classes = '';
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     if (!empty($breakpoint_property_value)) {
-                        if (!empty($attributes['slider']['enabled']['value'][$breakpoint_name])) {
-                            // Skip display classes generation if slider is enabled
-                            continue;
-                        }
-
                         // Transform to Tailwind classes
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                         $display_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                     }
                 }
-
                 $classes_by_prop['display'][$property_name] = $display_classes;
             }
         }
     }
+
+    return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
+}
+
+function prepareGridBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
+{
+    $classes = '';
+    $classes_by_prop = [
+        'grid' => [],
+    ];
 
     if (!empty($attributes['grid'])) {
         foreach ($attributes['grid'] as $property_name => $property_data) {
@@ -307,6 +372,16 @@ function prepareBlockClassesFromSettings($attributes, $block = null, $parent_blo
             }
         }
     }
+
+    return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
+}
+
+function prepareGridItemBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
+{
+    $classes = '';
+    $classes_by_prop = [
+        'gridItem' => [],
+    ];
 
     if (!empty($attributes['gridItem'])) {
         foreach ($attributes['gridItem'] as $property_name => $property_data) {
@@ -326,6 +401,16 @@ function prepareBlockClassesFromSettings($attributes, $block = null, $parent_blo
             }
         }
     }
+
+    return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
+}
+
+function prepareFlexboxBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
+{
+    $classes = '';
+    $classes_by_prop = [
+        'flexbox' => [],
+    ];
 
     if (!empty($attributes['flexbox'])) {
         foreach ($attributes['flexbox'] as $property_name => $property_data) {
@@ -376,6 +461,16 @@ function prepareBlockClassesFromSettings($attributes, $block = null, $parent_blo
         }
     }
 
+    return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
+}
+
+function prepareFlexboxItemBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
+{
+    $classes = '';
+    $classes_by_prop = [
+        'flexboxItem' => [],
+    ];
+
     if (!empty($attributes['flexboxItem'])) {
         foreach ($attributes['flexboxItem'] as $property_name => $property_data) {
             if (!empty($property_data['value'])) {
@@ -405,6 +500,16 @@ function prepareBlockClassesFromSettings($attributes, $block = null, $parent_blo
         }
     }
 
+    return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
+}
+
+function prepareBorderBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
+{
+    $classes = '';
+    $classes_by_prop = [
+        'border' => [],
+        'borderRadius' => [],
+    ];
 
     if (!empty($attributes['border'])) {
         $border_mapping = [

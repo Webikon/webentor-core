@@ -163,7 +163,7 @@ const initResponsiveSettings = () => {
     attributes: {},
     inlineStyleGenerator,
     classNameGenerator: generateClassNames,
-    order: 'before',
+    order: 'after',
     Edit: BlockEdit,
   });
 };

@@ -43,6 +43,10 @@
       "type": "boolean",
       "default": false
     },
+    "aspectRatio": {
+      "type": "string",
+      "default": "auto"
+    },
     "objectFit": {
       "type": "string",
       "default": "none"

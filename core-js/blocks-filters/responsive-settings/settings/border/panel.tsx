@@ -10,7 +10,7 @@ import { BorderSettings } from './border/settings';
 export const BorderPanel = (props: BlockPanelProps) => {
   const { attributes, breakpoints, twTheme } = props;
 
-  if (!attributes?.border && !attributes?.borderRadius) {
+  if (!attributes?.border) {
     return null;
   }
 

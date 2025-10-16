@@ -5,12 +5,17 @@
 - Fix husky install
 - Add missing `wbtr:` prefixes in blocks edit
 - Fix rendering in REST API request
+- Refactor custom size settings into separate React component
+- Improve block classes rendering conditions
 - NEW: Add flexbox, grid and background image settings to **Section block**
+- NEW: Add `webentor/e-gallery` block
 - NEW: Add hooks `webentor/skip_render_block_blade` and `webentor/slider/view/swiper_params`
 - NEW: Add `loop` and `slider_id` settings to **Slider block**
 - NEW: Add flex/grid item order settings
 - NEW: Add JS events `e_tabs_nav_initialized`, `e_tabs_nav_item_clicked`, `e_accordion_btn_clicked`
 - NEW: Add components BEM classes
+- NEW: Add `aspect-ratio` settings to `e-image` block.
+  - **BREAKING**: Add `aspect-ratio` config to `webentor-config.ts`
 - **BREAKING:**: Change view paths for Blade `blocks` and `core-components`. Now these folder names doesn't need to be included in the path when including views from them.
   - Replace `core-components.button.button` and `core-components.slider.slider` with `button.button` and `slider.slider`
   - If you included blocks as `blocks.blockName.view`, remove `blocks.` and leave just `blockName.view`

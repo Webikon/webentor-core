@@ -33,7 +33,7 @@ export interface ThemeConfig {
   // Utilities
   // accentColor: ThemeConfig['colors'];
   // animation: ResolvableTo<KeyValuePair>;
-  // aspectRatio: ResolvableTo<KeyValuePair>;
+  aspectRatio: ResolvableTo<KeyValuePair>;
   // backdropBlur: ThemeConfig['blur'];
   // backdropBrightness: ThemeConfig['brightness'];
   // backdropContrast: ThemeConfig['contrast'];

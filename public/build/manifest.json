@@ -1,6 +1,6 @@
 {
-  "__utils-Ll1NSM7W.js": {
-    "file": "assets/_utils-Ll1NSM7W.js",
+  "__utils-D2fkz5kU.js": {
+    "file": "assets/_utils-D2fkz5kU.js",
     "name": "_utils"
   },
   "resources/blocks/e-accordion/script.ts": {
@@ -42,12 +42,12 @@
     ]
   },
   "resources/core-components/slider/slider.script.ts": {
-    "file": "assets/sliderJs-DR4BCE7h.js",
+    "file": "assets/sliderJs-DAOONIEz.js",
     "name": "sliderJs",
     "src": "resources/core-components/slider/slider.script.ts",
     "isEntry": true,
     "imports": [
-      "__utils-Ll1NSM7W.js"
+      "__utils-D2fkz5kU.js"
     ]
   },
   "resources/core-components/slider/slider.style.css": {
@@ -59,16 +59,16 @@
     ]
   },
   "resources/scripts/editor.ts": {
-    "file": "assets/coreEditorJs-NG0ReNCS.js",
+    "file": "assets/coreEditorJs-DQdDZnKk.js",
     "name": "coreEditorJs",
     "src": "resources/scripts/editor.ts",
     "isEntry": true,
     "imports": [
-      "__utils-Ll1NSM7W.js"
+      "__utils-D2fkz5kU.js"
     ]
   },
   "resources/styles/app.css": {
-    "file": "assets/coreAppStyles-DlQ7NGfG.css",
+    "file": "assets/coreAppStyles-BQa8SNob.css",
     "src": "resources/styles/app.css",
     "isEntry": true,
     "names": [
@@ -76,7 +76,7 @@
     ]
   },
   "resources/styles/editor.css": {
-    "file": "assets/coreEditorStyles-BgpM8JRt.css",
+    "file": "assets/coreEditorStyles-uD1cv435.css",
     "src": "resources/styles/editor.css",
     "isEntry": true,
     "names": [

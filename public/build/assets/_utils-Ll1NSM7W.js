@@ -1,2 +1,0 @@
-function u(r,o,n){o=Array.isArray(o)?[...o]:[o],r=Array.isArray(r)?[...r]:{...r};const t=o.pop();let e=r;for(const s of o){const l=e[s];e=e[s]=Array.isArray(l)?[...l]:{...l}}return e[t]=n,r}const i=(r,o=50)=>{let n=null;return(...t)=>{window.clearTimeout(n),n=window.setTimeout(()=>{r(...t)},o)}};function a(r,o=20){let n=Date.now();return function(...t){n+o-Date.now()<0&&(r(...t),n=Date.now())}}const y=(r,o)=>r.find(n=>n.color===o)?.slug,f=(r,o)=>r.find(n=>n.slug===o)?.color;export{y as a,i as d,f as g,u as s,a as t};
-//# sourceMappingURL=_utils-Ll1NSM7W.js.map
