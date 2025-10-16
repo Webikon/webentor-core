@@ -38,7 +38,9 @@
     </a>
   @endnotempty
 
-  <div class="w-post-card__content wbtr:flex wbtr:h-full wbtr:flex-col wbtr:justify-between wbtr:gap-3 wbtr:px-2 wbtr:pb-2">
+  <div
+    class="w-post-card__content wbtr:flex wbtr:h-full wbtr:flex-col wbtr:justify-between wbtr:gap-3 wbtr:px-2 wbtr:pb-2"
+  >
     <div class="w-post-card__content-body wbtr:flex wbtr:flex-col wbtr:gap-3">
       <div class="w-post-card__content-header">
         @notempty($url)
@@ -72,7 +74,7 @@
       <a
         href="{{ $url }}"
         {{ $target }}
-        class="w-post-card__read-more wbtr:text-16 wbtr:leading-150 wbtr:text-sred-500 wbtr:hover:wbtr:text-sred-600 wbtr:hover:wbtr:underline"
+        class="w-post-card__read-more wbtr:text-16 wbtr:leading-150 wbtr:hover:wbtr:underline"
       >{{ __('Read more', 'webentor') }}</a>
     @endnotempty
   </div>

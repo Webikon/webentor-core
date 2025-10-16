@@ -30,7 +30,7 @@
                 $dispatch('e_tabs_nav_item_clicked', { id: '{{ $tab['id'] }}', activeTab: activeTab, content: $refs.tabContainer });
               "
               class="e-tabs__btn wbtr:inline-block wbtr:p-4"
-              :class="{ 'wbtr:bg-sred-300': activeTab === '{{ $tab['id'] }}' }"
+              :class="{ 'is-active': activeTab === '{{ $tab['id'] }}' }"
             >
               {{ $tab['title'] ?? '' }}
             </button>
