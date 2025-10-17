@@ -19,7 +19,6 @@ function register_frontend_blocks_assets($block_json_files = null, $manifest = n
 
     $manifest_path = $manifest === 'webentor-core' ? WEBENTOR_CORE_MANIFEST_PATH : get_template_directory() . '/public/build/manifest.json';
     $public_path = $manifest === 'webentor-core' ? WEBENTOR_CORE_PUBLIC_PATH : get_template_directory() . '/public/build';
-    $resources_path = $manifest === 'webentor-core' ? WEBENTOR_CORE_RESOURCES_PATH : get_template_directory() . '/resources';
 
     // Auto register all blocks that were found.
     foreach ($block_json_files as $filename) {
@@ -31,11 +30,8 @@ function register_frontend_blocks_assets($block_json_files = null, $manifest = n
         // Handle Vite assets
         if (file_exists($manifest_path)) {
             $build_manifest = File::json($manifest_path) ?? [];
-            $block_js = array_merge(
-                glob($resources_path . "/blocks/{$block_slug}/script.ts") ?: [],
-                glob($resources_path . "/blocks/{$block_slug}/script.tsx") ?: []
-            );
-            $block_css = glob($resources_path . "/blocks/{$block_slug}/style.css");
+            $block_js = str_ends_with($filename, 'script.ts') || str_ends_with($filename, 'script.tsx') ? [$filename] : [];
+            $block_css = str_ends_with($filename, 'style.css') ? [$filename] : [];
 
             foreach ($build_manifest as $manifest_src => $manifest_item) {
                 if (!empty($block_js[0]) && strpos($block_js[0], $manifest_src) !== false) {
@@ -90,19 +86,29 @@ add_filter('block_type_metadata', function ($metadata) {
  *  Register Native blocks
  */
 add_action('init', function () {
+    // Register all theme blocks assets
+    $theme_block_assets_files = glob(get_template_directory() . '/resources/blocks/**/{script.ts,script.tsx,style.css}', GLOB_BRACE);
+    if (!empty($theme_block_assets_files)) {
+        register_frontend_blocks_assets($theme_block_assets_files, 'theme');
+    }
+
     // Register all theme blocks that were found
     $theme_block_json_files = glob(get_template_directory() . '/resources/blocks/**/block.json');
     if (!empty($theme_block_json_files)) {
-        register_frontend_blocks_assets($theme_block_json_files, 'theme');
         foreach ($theme_block_json_files as $filename) {
             register_block_from_filename($filename);
         }
     }
 
+    // Register all core blocks assets
+    $core_block_assets_files = glob(WEBENTOR_CORE_RESOURCES_PATH . '/blocks/**/{script.ts,script.tsx,style.css}', GLOB_BRACE);
+    if (!empty($core_block_assets_files)) {
+        register_frontend_blocks_assets($core_block_assets_files, 'webentor-core');
+    }
+
     // Register all core blocks that were found
     $core_block_json_files = glob(WEBENTOR_CORE_RESOURCES_PATH . '/blocks/**/block.json');
     if (!empty($core_block_json_files)) {
-        register_frontend_blocks_assets($core_block_json_files, 'webentor-core');
         foreach ($core_block_json_files as $filename) {
             register_block_from_filename($filename);
         }
