@@ -15,7 +15,7 @@
     <div class="wbtr:flex wbtr:flex-col wbtr:gap-2">
     @endnotempty
 
-    @if ($img_link_url)
+    @if (!empty($img_link_url))
       <a
         href="{{ $img_link_url }}"
         target="{{ $img_link_target }}"
@@ -41,7 +41,7 @@
       ) !!}
     @endif
 
-    @if ($img_link_url)
+    @if (!empty($img_link_url))
       </a>
     @endif
 

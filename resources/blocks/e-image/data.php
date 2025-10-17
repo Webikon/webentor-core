@@ -98,17 +98,13 @@ Facades\View::composer('e-image.view', function (View $view) {
             $attributes['customSize']['height']['basic'] ?? null,
             $attributes['customSize']['crop']['basic'] ?? false,
         ]
-        : [];
+        : $wp_size;
 
     $img = [
         'id' => $attributes['imgId'],
         'default_size' => $default_size,
         'sizes_array' => $sizes_array,
         'img_attr' => $img_attr,
-        'img_link_url' => $img_link_url,
-        'img_link_target' => $img_link_target,
-        'img_link_title' => $img_link_title,
-        'img_link_class' => $img_link_class,
     ];
 
     $view->with('block_classes', $block_classes);

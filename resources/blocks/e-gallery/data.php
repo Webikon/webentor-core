@@ -91,7 +91,7 @@ Facades\View::composer('e-gallery.view', function (View $view) {
                 $attributes['customSize']['height']['basic'] ?? null,
                 $attributes['customSize']['crop']['basic'] ?? false,
             ]
-            : [];
+            : $wp_size;
 
         if (!empty($attributes['openInLightbox'])) {
             $img_link_url = !empty($image['id']) ? wp_get_attachment_image_url($image['id'], 'full') : null;

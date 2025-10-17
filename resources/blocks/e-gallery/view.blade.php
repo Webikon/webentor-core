@@ -11,32 +11,32 @@
 @endphp
 
 <div class="{{ $block_classes }} w-gallery">
-  @foreach ($images as $image)
-    @if (!empty($image['img_link_url']))
+  @foreach ($images as $img)
+    @if (!empty($img['img_link_url']))
       <a
-        href="{{ $image['img_link_url'] }}"
-        class="{{ $image['img_link_class'] }}"
+        href="{{ $img['img_link_url'] }}"
+        class="{{ $img['img_link_class'] }}"
       >
     @endif
 
-    {{-- Custom responsive image --}}
+    {{-- Custom responsive img --}}
     @if (class_exists('\Webentor\Core\CloudinaryClient') && \Webentor\Core\CloudinaryClient::isCloudinaryEnabled())
       {!! \Webentor\Core\get_resized_cloud_picture(
-          $image['id'],
-          $image['default_size'],
-          $image['sizes_array'],
-          $image['img_attr'],
+          $img['id'],
+          $img['default_size'],
+          $img['sizes_array'],
+          $img['img_attr'],
       ) !!}
     @else
       {!! \Webentor\Core\get_resized_picture(
-          $image['id'],
-          $image['default_size'],
-          $image['sizes_array'],
-          $image['img_attr'],
+          $img['id'],
+          $img['default_size'],
+          $img['sizes_array'],
+          $img['img_attr'],
       ) !!}
     @endif
 
-    @if (!empty($image['img_link_url']))
+    @if (!empty($img['img_link_url']))
       </a>
     @endif
   @endforeach
