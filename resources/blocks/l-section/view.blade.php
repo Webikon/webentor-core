@@ -12,7 +12,8 @@
   $img_id = $attributes['img']['id'] ?? null;
   $img_id_mobile = $attributes['mobileImg']['id'] ?? $img_id;
 
-  $default_img_height = apply_filters('webentor/l-section/default_img_height', 300);
+  $default_img_height =
+      $attributes['imgSize']['height']['basic'] ?? apply_filters('webentor/l-section/default_img_height', 300);
 
   $crop_basic = $attributes['imgSize']['crop']['basic'] ?? true;
   $crop_sm = $attributes['imgSize']['crop']['sm'] ?? $crop_basic;
@@ -21,12 +22,24 @@
   $crop_xl = $attributes['imgSize']['crop']['xl'] ?? $crop_basic;
   $crop_2xl = $attributes['imgSize']['crop']['2xl'] ?? $crop_basic;
 
-  $height_basic = (int) ($attributes['imgSize']['height']['basic'] ?? $default_img_height);
-  $height_sm = (int) ($attributes['imgSize']['height']['sm'] ?? $default_img_height);
-  $height_md = (int) ($attributes['imgSize']['height']['md'] ?? $default_img_height);
-  $height_lg = (int) ($attributes['imgSize']['height']['lg'] ?? $default_img_height);
-  $height_xl = (int) ($attributes['imgSize']['height']['xl'] ?? $default_img_height);
-  $height_2xl = (int) ($attributes['imgSize']['height']['2xl'] ?? $default_img_height);
+  $height_basic = (int) (!empty($attributes['imgSize']['height']['basic'])
+      ? $attributes['imgSize']['height']['basic']
+      : $default_img_height);
+  $height_sm = (int) (!empty($attributes['imgSize']['height']['sm'])
+      ? $attributes['imgSize']['height']['sm']
+      : $default_img_height);
+  $height_md = (int) (!empty($attributes['imgSize']['height']['md'])
+      ? $attributes['imgSize']['height']['md']
+      : $default_img_height);
+  $height_lg = (int) (!empty($attributes['imgSize']['height']['lg'])
+      ? $attributes['imgSize']['height']['lg']
+      : $default_img_height);
+  $height_xl = (int) (!empty($attributes['imgSize']['height']['xl'])
+      ? $attributes['imgSize']['height']['xl']
+      : $default_img_height);
+  $height_2xl = (int) (!empty($attributes['imgSize']['height']['2xl'])
+      ? $attributes['imgSize']['height']['2xl']
+      : $default_img_height);
 @endphp
 
 <section
