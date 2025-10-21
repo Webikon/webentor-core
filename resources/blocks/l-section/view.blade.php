@@ -21,7 +21,7 @@
   $crop_xl = $attributes['imgSize']['crop']['xl'] ?? $crop_basic;
   $crop_2xl = $attributes['imgSize']['crop']['2xl'] ?? $crop_basic;
 
-  $height_basic = (int) $attributes['imgSize']['height']['basic'] ?? $default_img_height;
+  $height_basic = (int) ($attributes['imgSize']['height']['basic'] ?? $default_img_height);
   $height_sm = (int) ($attributes['imgSize']['height']['sm'] ?? $default_img_height);
   $height_md = (int) ($attributes['imgSize']['height']['md'] ?? $default_img_height);
   $height_lg = (int) ($attributes['imgSize']['height']['lg'] ?? $default_img_height);
@@ -31,7 +31,7 @@
 
 <section
   {!! $anchor !!}
-  class="w-section {{ !empty($img_id) ? 'w-section--has-bg-img wbtr:overflow-hidden' : '' }} wbtr:relative wbtr:flex {{ $block_classes }} "
+  class="w-section {{ !empty($img_id) ? 'w-section--has-bg-img wbtr:overflow-hidden' : '' }} wbtr:relative wbtr:flex {{ $block_classes }}"
 >
   @if (!empty($img_id))
     <picture>
@@ -72,7 +72,7 @@
     </picture>
   @endif
 
-  <div class="w-section-inner container wbtr:flex wbtr:flex-col wbtr:relative wbtr:z-[2] {{ $custom_classes }}">
+  <div class="w-section-inner wbtr:flex wbtr:flex-col wbtr:relative wbtr:z-[2] {{ $custom_classes }} container">
     {!! $innerBlocksContent ?? '' !!}
   </div>
 </section>
