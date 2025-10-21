@@ -46,7 +46,11 @@ export const CustomImageSizesPanel: React.FC<Props> = (props: Props) => {
   const breakpoints = applyFilters('webentor.core.twBreakpoints', ['basic']);
 
   const hasSizeSettingsForBreakpoint = (attributes, breakpoint) => {
-    return attributes?.[imgSizeAttribute]?.enabled?.[breakpoint];
+    return (
+      attributes?.[imgSizeAttribute]?.enabled?.[breakpoint] ||
+      attributes?.[imgSizeAttribute]?.width?.[breakpoint] ||
+      attributes?.[imgSizeAttribute]?.height?.[breakpoint]
+    );
   };
 
   return (

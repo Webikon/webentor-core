@@ -21,12 +21,12 @@
   $crop_xl = $attributes['imgSize']['crop']['xl'] ?? $crop_basic;
   $crop_2xl = $attributes['imgSize']['crop']['2xl'] ?? $crop_basic;
 
-  $height_basic = $attributes['imgSize']['height']['basic'] ?? $default_img_height;
-  $height_sm = $attributes['imgSize']['height']['sm'] ?? $default_img_height;
-  $height_md = $attributes['imgSize']['height']['md'] ?? $default_img_height;
-  $height_lg = $attributes['imgSize']['height']['lg'] ?? $default_img_height;
-  $height_xl = $attributes['imgSize']['height']['xl'] ?? $default_img_height;
-  $height_2xl = $attributes['imgSize']['height']['2xl'] ?? $default_img_height;
+  $height_basic = (int) $attributes['imgSize']['height']['basic'] ?? $default_img_height;
+  $height_sm = (int) ($attributes['imgSize']['height']['sm'] ?? $default_img_height);
+  $height_md = (int) ($attributes['imgSize']['height']['md'] ?? $default_img_height);
+  $height_lg = (int) ($attributes['imgSize']['height']['lg'] ?? $default_img_height);
+  $height_xl = (int) ($attributes['imgSize']['height']['xl'] ?? $default_img_height);
+  $height_2xl = (int) ($attributes['imgSize']['height']['2xl'] ?? $default_img_height);
 @endphp
 
 <section
