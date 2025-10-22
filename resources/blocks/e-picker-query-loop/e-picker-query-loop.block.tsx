@@ -10,7 +10,12 @@ import {
   registerBlockType,
   TemplateArray,
 } from '@wordpress/blocks';
-import { PanelBody, SelectControl, TextControl } from '@wordpress/components';
+import {
+  Notice,
+  PanelBody,
+  SelectControl,
+  TextControl,
+} from '@wordpress/components';
 import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 
@@ -95,14 +100,16 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
     <>
       <InspectorControls>
         <PanelBody title="Loop Settings" initialOpen={true}>
+          {/* TODO: Maybe rework to nicer UI */}
           <SelectControl
             __nextHasNoMarginBottom
             options={postTypesSelectOptions}
             value={postType}
             label={__('Post type')}
+            multiple
             onChange={onPostTypeChange}
             help={__(
-              'First select post type from which you would be able to pick posts',
+              'First select post type(s) from which you would be able to pick posts',
               'webentor',
             )}
           />
@@ -111,19 +118,28 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
             <p>
               {__('Posts which would be displayed in the loop', 'webentor')}
             </p>
-            <ContentPicker
-              onPickChange={(pickedContent) => {
-                setQuery({
-                  posts: pickedContent,
-                });
-              }}
-              content={posts || []}
-              mode="post"
-              maxContentItems={20}
-              isOrderable
-              label={__('Select posts', 'webentor')}
-              contentTypes={[postType]}
-            />
+            {postType?.length > 0 ? (
+              <ContentPicker
+                onPickChange={(pickedContent) => {
+                  setQuery({
+                    posts: pickedContent,
+                  });
+                }}
+                content={posts || []}
+                mode="post"
+                maxContentItems={20}
+                isOrderable
+                label={__('Select posts', 'webentor')}
+                contentTypes={postType || []}
+              />
+            ) : (
+              <Notice status="error" isDismissible={false}>
+                {__(
+                  'Post type selection is required to select posts',
+                  'webentor',
+                )}
+              </Notice>
+            )}
           </div>
 
           <TextControl

@@ -8,6 +8,7 @@
 - Refactor custom size settings into separate React component
 - Improve block classes rendering conditions
 - Improve block assets registering, so they can be overriden in the theme
+- Allow picking up multiple post types in Picker Query Loop block
 - NEW: Add basic `webentor-config`, which can be included in the theme
 - NEW: Add flexbox, grid and background image settings to **Section block**
 - NEW: Add `webentor/e-gallery` block

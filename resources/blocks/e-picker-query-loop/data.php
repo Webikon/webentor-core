@@ -19,8 +19,14 @@ Facades\View::composer('e-picker-query-loop.view', function (View $view) {
         return $post['id'];
     }, $query_attributes['posts']);
 
+    // Don't return anything when post type is missing
+    if (empty($query_attributes['postType'])) {
+        $view->with('block_content', '');
+        return;
+    }
+
     $query_args = [
-        'post_type' => $query_attributes['postType'] ?? 'post',
+        'post_type' => $query_attributes['postType'] ?? '',
         'post__in' => $post_ids ?: [0],
         'post__not_in' => [get_the_ID()], // Ignore current post
         'posts_per_page' => count($post_ids),
