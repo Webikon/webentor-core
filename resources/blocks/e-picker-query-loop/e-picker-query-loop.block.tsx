@@ -35,7 +35,7 @@ import block from './block.json';
 type AttributesType = {
   coverImage: string;
   query: {
-    postType: string;
+    postType: string[];
     posts: [];
     queryId: string;
   };
@@ -104,7 +104,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
           <SelectControl
             __nextHasNoMarginBottom
             options={postTypesSelectOptions}
-            value={postType}
+            value={Array.isArray(postType) ? postType : [postType]}
             label={__('Post type')}
             multiple
             onChange={onPostTypeChange}
@@ -130,7 +130,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
                 maxContentItems={20}
                 isOrderable
                 label={__('Select posts', 'webentor')}
-                contentTypes={postType || []}
+                contentTypes={Array.isArray(postType) ? postType : [postType]}
               />
             ) : (
               <Notice status="error" isDismissible={false}>
