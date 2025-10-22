@@ -15,12 +15,12 @@
   $default_img_height =
       $attributes['imgSize']['height']['basic'] ?? apply_filters('webentor/l-section/default_img_height', 300);
 
-  $crop_basic = $attributes['imgSize']['crop']['basic'] ?? true;
-  $crop_sm = $attributes['imgSize']['crop']['sm'] ?? $crop_basic;
-  $crop_md = $attributes['imgSize']['crop']['md'] ?? $crop_basic;
-  $crop_lg = $attributes['imgSize']['crop']['lg'] ?? $crop_basic;
-  $crop_xl = $attributes['imgSize']['crop']['xl'] ?? $crop_basic;
-  $crop_2xl = $attributes['imgSize']['crop']['2xl'] ?? $crop_basic;
+  $crop_basic = $attributes['imgSize']['crop']['basic'] ?? apply_filters('webentor/l-section/default_img_crop', true);
+  $crop_sm = isset($attributes['imgSize']['crop']['sm']) ? $attributes['imgSize']['crop']['sm'] : $crop_basic;
+  $crop_md = isset($attributes['imgSize']['crop']['md']) ? $attributes['imgSize']['crop']['md'] : $crop_basic;
+  $crop_lg = isset($attributes['imgSize']['crop']['lg']) ? $attributes['imgSize']['crop']['lg'] : $crop_basic;
+  $crop_xl = isset($attributes['imgSize']['crop']['xl']) ? $attributes['imgSize']['crop']['xl'] : $crop_basic;
+  $crop_2xl = isset($attributes['imgSize']['crop']['2xl']) ? $attributes['imgSize']['crop']['2xl'] : $crop_basic;
 
   $height_basic = (int) (!empty($attributes['imgSize']['height']['basic'])
       ? $attributes['imgSize']['height']['basic']
