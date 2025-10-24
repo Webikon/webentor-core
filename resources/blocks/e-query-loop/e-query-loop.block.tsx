@@ -237,7 +237,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
         {...innerBlocksProps}
         className={`${innerBlocksProps.className} wbtr:relative wbtr:p-2 wbtr:pt-4`}
       >
-        <div className="wbtr:absolute wbtr:inset-0 wbtr:h-full wbtr:w-full wbtr:border wbtr:border-editor-border wbtr:p-2 wbtr:pt-4"></div>
+        <div className="wbtr:pointer-events-none wbtr:absolute wbtr:inset-0 wbtr:h-full wbtr:w-full wbtr:border wbtr:border-editor-border wbtr:p-2 wbtr:pt-4"></div>
 
         <div className="wbtr:absolute wbtr:top-[2px] wbtr:left-2 wbtr:mb-1 wbtr:text-10 wbtr:opacity-50">
           {__('Query Loop', 'webentor')}
