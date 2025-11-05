@@ -24,6 +24,7 @@
 - **BREAKING:**: Change view paths for Blade `blocks` and `core-components`. Now these folder names doesn't need to be included in the path when including views from them.
   - Replace `core-components.button.button` and `core-components.slider.slider` with `button.button` and `slider.slider`
   - If you included blocks as `blocks.blockName.view`, remove `blocks.` and leave just `blockName.view`
+- Fix slider pagination styles
 
 ## 0.9.10
 

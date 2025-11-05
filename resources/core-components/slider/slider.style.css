@@ -40,6 +40,12 @@
         flex-basis: initial;
       }
     }
+
+    .slider-pagination {
+      .swiper-pagination-lock {
+        display: none;
+      }
+    }
   }
 
   .slider {

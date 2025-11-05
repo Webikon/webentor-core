@@ -287,6 +287,33 @@ const config: WebentorConfig = {
     maxWidth: {
       ...spacing,
       none: 'none',
+      '1/2': '50%',
+      '1/3': '33.333333%',
+      '2/3': '66.666667%',
+      '1/4': '25%',
+      '2/4': '50%',
+      '3/4': '75%',
+      '1/5': '20%',
+      '2/5': '40%',
+      '3/5': '60%',
+      '4/5': '80%',
+      '1/6': '16.666667%',
+      '2/6': '33.333333%',
+      '3/6': '50%',
+      '4/6': '66.666667%',
+      '5/6': '83.333333%',
+      '1/12': '8.333333%',
+      '2/12': '16.666667%',
+      '3/12': '25%',
+      '4/12': '33.333333%',
+      '5/12': '41.666667%',
+      '6/12': '50%',
+      '7/12': '58.333333%',
+      '8/12': '66.666667%',
+      '9/12': '75%',
+      '10/12': '83.333333%',
+      '11/12': '91.666667%',
+      full: '100%',
       xs: '20rem',
       sm: '24rem',
       md: '28rem',
@@ -298,7 +325,6 @@ const config: WebentorConfig = {
       '5xl': '64rem',
       '6xl': '72rem',
       '7xl': '80rem',
-      full: '100%',
       min: 'min-content',
       max: 'max-content',
       fit: 'fit-content',
@@ -306,6 +332,16 @@ const config: WebentorConfig = {
     },
     minHeight: {
       ...spacing,
+      '1/2': '50%',
+      '1/3': '33.333333%',
+      '2/3': '66.666667%',
+      '1/4': '25%',
+      '2/4': '50%',
+      '3/4': '75%',
+      '1/5': '20%',
+      '2/5': '40%',
+      '3/5': '60%',
+      '4/5': '80%',
       full: '100%',
       screen: '100vh',
       svh: '100svh',
@@ -317,6 +353,32 @@ const config: WebentorConfig = {
     },
     minWidth: {
       ...spacing,
+      '1/2': '50%',
+      '1/3': '33.333333%',
+      '2/3': '66.666667%',
+      '1/4': '25%',
+      '2/4': '50%',
+      '3/4': '75%',
+      '1/5': '20%',
+      '2/5': '40%',
+      '3/5': '60%',
+      '4/5': '80%',
+      '1/6': '16.666667%',
+      '2/6': '33.333333%',
+      '3/6': '50%',
+      '4/6': '66.666667%',
+      '5/6': '83.333333%',
+      '1/12': '8.333333%',
+      '2/12': '16.666667%',
+      '3/12': '25%',
+      '4/12': '33.333333%',
+      '5/12': '41.666667%',
+      '6/12': '50%',
+      '7/12': '58.333333%',
+      '8/12': '66.666667%',
+      '9/12': '75%',
+      '10/12': '83.333333%',
+      '11/12': '91.666667%',
       full: '100%',
       min: 'min-content',
       max: 'max-content',
@@ -401,48 +463,8 @@ const config: WebentorConfig = {
 };
 
 // These will be used to generate options for Gutenberg typography select
-export const customTypographyKeys = [
-  {
-    key: 'text-display',
-    size: '56/88px',
-  },
-  {
-    key: 'text-h1',
-    size: '40/56px',
-  },
-  {
-    key: 'text-h2',
-    size: '32/48px',
-  },
-  {
-    key: 'text-h3',
-    size: '28/40px',
-  },
-  {
-    key: 'text-h4',
-    size: '24/32px',
-  },
-  {
-    key: 'text-h5',
-    size: '20/24px',
-  },
-  {
-    key: 'text-h6',
-    size: '14/16px',
-  },
-  {
-    key: 'text-body',
-    size: '16px',
-  },
-  {
-    key: 'text-body-s',
-    size: '14px',
-  },
-  {
-    key: 'text-body-l',
-    size: '18/24px',
-  },
-];
+// MUST BE defined in theme webentor-config.ts as its project specific
+export const customTypographyKeys = [];
 
 const breakpointsPrefixes = Object.keys(config.theme.screens).map((key) => {
   return `${key}:`;
