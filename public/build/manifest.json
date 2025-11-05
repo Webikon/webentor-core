@@ -13,6 +13,7 @@
     "file": "assets/resources/blocks/e-accordion/style-By4NoyzC.css",
     "src": "resources/blocks/e-accordion/style.css",
     "isEntry": true,
+    "name": "resources/blocks/e-accordion/style",
     "names": [
       "resources/blocks/e-accordion/style.css"
     ]
@@ -21,6 +22,7 @@
     "file": "assets/resources/blocks/e-icon-picker/style-BSib2kGz.css",
     "src": "resources/blocks/e-icon-picker/style.css",
     "isEntry": true,
+    "name": "resources/blocks/e-icon-picker/style",
     "names": [
       "resources/blocks/e-icon-picker/style.css"
     ]
@@ -29,6 +31,7 @@
     "file": "assets/resources/blocks/l-mobile-nav/style-QMBn75AN.css",
     "src": "resources/blocks/l-mobile-nav/style.css",
     "isEntry": true,
+    "name": "resources/blocks/l-mobile-nav/style",
     "names": [
       "resources/blocks/l-mobile-nav/style.css"
     ]
@@ -37,6 +40,7 @@
     "file": "assets/resources/blocks/l-nav-menu/style-BRXbCIFJ.css",
     "src": "resources/blocks/l-nav-menu/style.css",
     "isEntry": true,
+    "name": "resources/blocks/l-nav-menu/style",
     "names": [
       "resources/blocks/l-nav-menu/style.css"
     ]
@@ -51,15 +55,16 @@
     ]
   },
   "resources/core-components/slider/slider.style.css": {
-    "file": "assets/sliderStyles-k31pqg4M.css",
+    "file": "assets/sliderStyles-D-C9nS12.css",
     "src": "resources/core-components/slider/slider.style.css",
     "isEntry": true,
+    "name": "sliderStyles",
     "names": [
       "sliderStyles.css"
     ]
   },
   "resources/scripts/editor.ts": {
-    "file": "assets/coreEditorJs-DOD0oDYW.js",
+    "file": "assets/coreEditorJs-CtgcmWAD.js",
     "name": "coreEditorJs",
     "src": "resources/scripts/editor.ts",
     "isEntry": true,
@@ -68,17 +73,19 @@
     ]
   },
   "resources/styles/app.css": {
-    "file": "assets/coreAppStyles-CaIzNjok.css",
+    "file": "assets/coreAppStyles-CHPFdE9m.css",
     "src": "resources/styles/app.css",
     "isEntry": true,
+    "name": "coreAppStyles",
     "names": [
       "coreAppStyles.css"
     ]
   },
   "resources/styles/editor.css": {
-    "file": "assets/coreEditorStyles-H4xIkYJz.css",
+    "file": "assets/coreEditorStyles-BrzrQhBe.css",
     "src": "resources/styles/editor.css",
     "isEntry": true,
+    "name": "coreEditorStyles",
     "names": [
       "coreEditorStyles.css"
     ]

@@ -25,6 +25,8 @@
   - Replace `core-components.button.button` and `core-components.slider.slider` with `button.button` and `slider.slider`
   - If you included blocks as `blocks.blockName.view`, remove `blocks.` and leave just `blockName.view`
 - Fix slider pagination styles
+- Update deps
+- Fix publicDir Vite error
 
 ## 0.9.10
 

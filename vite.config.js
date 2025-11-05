@@ -30,6 +30,7 @@ blocksScripts.forEach((js) => {
 });
 
 export default defineConfig({
+  publicDir: 'public-assets',
   plugins: [
     tailwindcss(),
 
