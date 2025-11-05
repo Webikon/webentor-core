@@ -6,12 +6,7 @@
   "description": "Button block.",
   "category": "webentor-elements",
   "icon": "button",
-  "keywords": [
-    "button",
-    "link",
-    "cta",
-    "call to action"
-  ],
+  "keywords": ["button", "link", "cta", "call to action"],
   "attributes": {
     "button": {
       "type": "object",
@@ -20,7 +15,6 @@
         "title": "Button",
         "variant": "primary",
         "size": "medium",
-        "asPill": false,
         "url": "#",
         "newTab": false,
         "showIcon": false,

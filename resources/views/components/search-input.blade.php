@@ -30,7 +30,6 @@
     <x-button
       title="{{ __('Search', 'webentor') }}"
       variant="primary"
-      asPill="true"
       element="button"
       classes="w-search-input-form__btn"
     />

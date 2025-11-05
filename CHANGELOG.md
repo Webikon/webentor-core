@@ -27,6 +27,7 @@
 - Fix slider pagination styles
 - Update deps
 - Fix publicDir Vite error
+- Remove Button asPill parameter
 
 ## 0.9.10
 
