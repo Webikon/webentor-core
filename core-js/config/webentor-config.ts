@@ -4,7 +4,7 @@ import type { WebentorConfig } from '@webentorCore/types/_webentor-config';
 // See: https://github.com/tailwindlabs/tailwindcss/blob/v3.4.17/stubs/config.full.js
 
 // Basic spacing, also used for padding and margin
-const spacing = {
+export const spacing = {
   0: '0px', // 0px
   0.5: '0.125rem', // 2px
   1: '0.25rem', // 4px

@@ -2,6 +2,8 @@
 
 ## DEV
 
+## 0.9.11
+
 - Fix husky install
 - Add missing `wbtr:` prefixes in blocks edit
 - Fix rendering in REST API request
@@ -9,7 +11,7 @@
 - Improve block classes rendering conditions
 - Improve block assets registering, so they can be overriden in the theme
 - Allow picking up multiple post types in Picker Query Loop block
-- NEW: Add basic `webentor-config`, which can be included in the theme
+- NEW: Add basic `webentor-config`, which can be included in the theme, export `spacing`
 - NEW: Add flexbox, grid and background image settings to **Section block**
 - NEW: Add `webentor/e-gallery` block
 - NEW: Add hooks `webentor/skip_render_block_blade` and `webentor/slider/view/swiper_params`
