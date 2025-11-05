@@ -55,7 +55,7 @@
     ]
   },
   "resources/core-components/slider/slider.style.css": {
-    "file": "assets/sliderStyles-D-C9nS12.css",
+    "file": "assets/sliderStyles-CNqbBX4L.css",
     "src": "resources/core-components/slider/slider.style.css",
     "isEntry": true,
     "name": "sliderStyles",
@@ -64,7 +64,7 @@
     ]
   },
   "resources/scripts/editor.ts": {
-    "file": "assets/coreEditorJs-DhonI3YC.js",
+    "file": "assets/coreEditorJs-5xLNzpzu.js",
     "name": "coreEditorJs",
     "src": "resources/scripts/editor.ts",
     "isEntry": true,

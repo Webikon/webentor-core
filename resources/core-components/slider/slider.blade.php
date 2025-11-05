@@ -121,7 +121,7 @@
         class="slider-pagination {{ $pagination_inside ? 'slider-pagination--inside wbtr:absolute wbtr:bottom-0 wbtr:z-10 wbtr:mb-3' : 'slider-pagination--outside' }} wbtr:mt-5 wbtr:hidden wbtr:w-full wbtr:items-center wbtr:justify-center wbtr:gap-2 wbtr:group-[.slider-enabled]:flex"
       >
         <div
-          class="js-slider-pagination js-slider-pagination-{{ $slider_id }} wbtr:hidden wbtr:items-center wbtr:justify-center wbtr:gap-2 wbtr:group-[.slider-enabled]:flex"
+          class="slider-pagination-items js-slider-pagination js-slider-pagination-{{ $slider_id }} wbtr:items-center wbtr:justify-center wbtr:gap-2"
         ></div>
 
         @if (!empty($show_autoplay_control))
