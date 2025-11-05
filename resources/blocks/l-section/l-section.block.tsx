@@ -136,7 +136,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   return (
     <>
       <InspectorControls>
-        <PanelBody title="Background Image Settings" initialOpen={true}>
+        <PanelBody title="Background Image Settings" initialOpen={false}>
           <PanelRow>
             <div className="wbtr:flex wbtr:flex-col">
               <p className="wbtr:mb-2 wbtr:uppercase">
