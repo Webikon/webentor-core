@@ -2,6 +2,8 @@
 
 ## DEV
 
+- Fix webentorConfig safelist
+
 ## 0.9.11
 
 - Fix husky install

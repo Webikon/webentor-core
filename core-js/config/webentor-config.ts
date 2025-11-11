@@ -466,249 +466,253 @@ const config: WebentorConfig = {
 // MUST BE defined in theme webentor-config.ts as its project specific
 export const customTypographyKeys = [];
 
-const breakpointsPrefixes = Object.keys(config.theme.screens).map((key) => {
-  return `${key}:`;
-});
-breakpointsPrefixes.unshift('');
+export const buildSafelist = (config: WebentorConfig) => {
+  const breakpointsPrefixes = Object.keys(config.theme.screens).map((key) => {
+    return `${key}:`;
+  });
+  breakpointsPrefixes.unshift('');
+
+  return [
+    'bg-white',
+    'bg-black',
+
+    // Custom typography classes
+    ...customTypographyKeys.flatMap((item) => {
+      return [`${item.key}`];
+    }),
+
+    // WP classes
+    ...Object.keys(config.theme.colors).flatMap((color) => {
+      if (typeof config.theme.colors[color] === 'string') {
+        return [`has-${color}-color`, `has-${color}-background-color`];
+      } else {
+        return Object.keys(config.theme.colors[color]).flatMap((subColor) => {
+          return [
+            `has-${color}-${subColor}-color`,
+            `has-${color}-${subColor}-background-color`,
+          ];
+        });
+      }
+    }),
+    ...Object.keys(config.theme.fontSize).flatMap((size) => {
+      return [`has-${size}-font-size`];
+    }),
+    ...Object.keys(config.theme.fontFamily).flatMap((family) => {
+      return [`has-${family}-font-family`];
+    }),
+
+    /**
+     * IMPORTANT: We are adding responsive settings for Gutenberg which would dynamically generate TW classes.
+     * That's why we need to add all of them to safelist.
+     */
+
+    // Padding
+    ...Object.keys(config.theme.padding).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [
+        `${bp}pt-${i}`,
+        `${bp}pr-${i}`,
+        `${bp}pb-${i}`,
+        `${bp}pl-${i}`,
+      ]);
+    }),
+
+    // Margin
+    ...Object.keys(config.theme.margin).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [
+        `${bp}mt-${i}`,
+        `${bp}mr-${i}`,
+        `${bp}mb-${i}`,
+        `${bp}ml-${i}`,
+      ]);
+    }),
+
+    // Object fit
+    ...[
+      'object-contain',
+      'object-cover',
+      'object-fill',
+      'object-none',
+      'object-scale-down',
+    ].flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}${i}`]);
+    }),
+
+    // Object position
+    ...Object.keys(config.theme.objectPosition).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}object-${i}`]);
+    }),
+
+    // Display
+    ...['block', 'hidden', 'flex', 'grid', 'inline-block', 'inline'].flatMap(
+      (i) => {
+        return breakpointsPrefixes.flatMap((bp) => [`${bp}${i}`]);
+      },
+    ),
+
+    // Height
+    ...Object.keys(config.theme.height).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}h-${i}`]);
+    }),
+
+    // Min height
+    ...Object.keys(config.theme.minHeight).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}min-h-${i}`]);
+    }),
+
+    // Max height
+    ...Object.keys(config.theme.maxHeight).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}max-h-${i}`]);
+    }),
+
+    // Width
+    ...Object.keys(config.theme.width).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}w-${i}`]);
+    }),
+
+    // Min width
+    ...Object.keys(config.theme.minWidth).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}min-w-${i}`]);
+    }),
+
+    // Max width
+    ...Object.keys(config.theme.maxWidth).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}max-w-${i}`]);
+    }),
+
+    // Flex flow
+    ...[
+      'flex-row',
+      'flex-row-reverse',
+      'flex-col',
+      'flex-col-reverse',
+      'flex-wrap',
+      'flex-wrap-reverse',
+      'flex-nowrap',
+    ].flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}${i}`]);
+    }),
+
+    // Justify content
+    ...[
+      'justify-normal',
+      'justify-start',
+      'justify-end',
+      'justify-center',
+      'justify-between',
+      'justify-around',
+      'justify-evenly',
+      'justify-stretch',
+    ].flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}${i}`]);
+    }),
+
+    // Align items
+    ...[
+      'items-start',
+      'items-end',
+      'items-center',
+      'items-baseline',
+      'items-stretch',
+    ].flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}${i}`]);
+    }),
+
+    // Align content
+    ...[
+      'content-normal',
+      'content-start',
+      'content-end',
+      'content-center',
+      'content-between',
+      'content-around',
+      'content-evenly',
+      'content-baseline',
+      'content-stretch',
+    ].flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}${i}`]);
+    }),
+
+    // Flex grow/shrink
+    ...['grow', 'grow-0', 'shrink', 'shrink-0'].flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}${i}`]);
+    }),
+
+    // Flex basis
+    ...Object.keys(config.theme.flexBasis).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}basis-${i}`]);
+    }),
+
+    // Gap
+    ...Object.keys(config.theme.gap).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [
+        `${bp}gap-${i}`,
+        `${bp}gap-x-${i}`,
+        `${bp}gap-y-${i}`,
+      ]);
+    }),
+
+    // Grid
+    ...Object.keys(config.theme.gridTemplateColumns).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}grid-cols-${i}`]);
+    }),
+    ...Object.keys(config.theme.gridTemplateRows).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}grid-rows-${i}`]);
+    }),
+    ...Object.keys(config.theme.gridColumn).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}col-${i}`]);
+    }),
+    ...Object.keys(config.theme.gridRow).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}row-${i}`]);
+    }),
+
+    // Borders
+    ...['t', 'r', 'b', 'l'].flatMap((side) => {
+      return [
+        ...Object.keys(config.theme.colors).flatMap((i) => {
+          return breakpointsPrefixes.flatMap((bp) => [
+            `${bp}border-${side}-${i}`,
+          ]);
+        }),
+        ...Object.keys(config.theme.borderWidth).flatMap((i) => {
+          return breakpointsPrefixes.flatMap((bp) => [
+            `${bp}border-${side}-${i}`,
+          ]);
+        }),
+        ...Object.keys(config.theme.borderStyle).flatMap((i) => {
+          return breakpointsPrefixes.flatMap((bp) => [
+            `${bp}border-${side}-${i}`,
+          ]);
+        }),
+      ];
+    }),
+
+    // Border radius
+    ...['tr', 'tl', 'br', 'bl'].flatMap((corner) => {
+      return [
+        ...Object.keys(config.theme.borderRadius).flatMap((i) => {
+          return breakpointsPrefixes.flatMap((bp) => [
+            `${bp}rounded-${corner}-${i}`,
+          ]);
+        }),
+      ];
+    }),
+
+    // Opacity for hidden block
+    ...breakpointsPrefixes.flatMap((bp) => [`${bp}opacity-30`]),
+
+    // Orders
+    ...Object.keys(config.theme.order).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}order-${i}`]);
+    }),
+
+    // Aspect ratio
+    ...Object.keys(config.theme.aspectRatio).flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}aspect-${i}`]);
+    }),
+  ];
+};
 
 // Build safelist
-config.safelist = [
-  'bg-white',
-  'bg-black',
-
-  // Custom typography classes
-  ...customTypographyKeys.flatMap((item) => {
-    return [`${item.key}`];
-  }),
-
-  // WP classes
-  ...Object.keys(config.theme.colors).flatMap((color) => {
-    if (typeof config.theme.colors[color] === 'string') {
-      return [`has-${color}-color`, `has-${color}-background-color`];
-    } else {
-      return Object.keys(config.theme.colors[color]).flatMap((subColor) => {
-        return [
-          `has-${color}-${subColor}-color`,
-          `has-${color}-${subColor}-background-color`,
-        ];
-      });
-    }
-  }),
-  ...Object.keys(config.theme.fontSize).flatMap((size) => {
-    return [`has-${size}-font-size`];
-  }),
-  ...Object.keys(config.theme.fontFamily).flatMap((family) => {
-    return [`has-${family}-font-family`];
-  }),
-
-  /**
-   * IMPORTANT: We are adding responsive settings for Gutenberg which would dynamically generate TW classes.
-   * That's why we need to add all of them to safelist.
-   */
-
-  // Padding
-  ...Object.keys(config.theme.padding).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [
-      `${bp}pt-${i}`,
-      `${bp}pr-${i}`,
-      `${bp}pb-${i}`,
-      `${bp}pl-${i}`,
-    ]);
-  }),
-
-  // Margin
-  ...Object.keys(config.theme.margin).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [
-      `${bp}mt-${i}`,
-      `${bp}mr-${i}`,
-      `${bp}mb-${i}`,
-      `${bp}ml-${i}`,
-    ]);
-  }),
-
-  // Object fit
-  ...[
-    'object-contain',
-    'object-cover',
-    'object-fill',
-    'object-none',
-    'object-scale-down',
-  ].flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}${i}`]);
-  }),
-
-  // Object position
-  ...Object.keys(config.theme.objectPosition).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}object-${i}`]);
-  }),
-
-  // Display
-  ...['block', 'hidden', 'flex', 'grid', 'inline-block', 'inline'].flatMap(
-    (i) => {
-      return breakpointsPrefixes.flatMap((bp) => [`${bp}${i}`]);
-    },
-  ),
-
-  // Height
-  ...Object.keys(config.theme.height).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}h-${i}`]);
-  }),
-
-  // Min height
-  ...Object.keys(config.theme.minHeight).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}min-h-${i}`]);
-  }),
-
-  // Max height
-  ...Object.keys(config.theme.maxHeight).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}max-h-${i}`]);
-  }),
-
-  // Width
-  ...Object.keys(config.theme.width).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}w-${i}`]);
-  }),
-
-  // Min width
-  ...Object.keys(config.theme.minWidth).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}min-w-${i}`]);
-  }),
-
-  // Max width
-  ...Object.keys(config.theme.maxWidth).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}max-w-${i}`]);
-  }),
-
-  // Flex flow
-  ...[
-    'flex-row',
-    'flex-row-reverse',
-    'flex-col',
-    'flex-col-reverse',
-    'flex-wrap',
-    'flex-wrap-reverse',
-    'flex-nowrap',
-  ].flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}${i}`]);
-  }),
-
-  // Justify content
-  ...[
-    'justify-normal',
-    'justify-start',
-    'justify-end',
-    'justify-center',
-    'justify-between',
-    'justify-around',
-    'justify-evenly',
-    'justify-stretch',
-  ].flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}${i}`]);
-  }),
-
-  // Align items
-  ...[
-    'items-start',
-    'items-end',
-    'items-center',
-    'items-baseline',
-    'items-stretch',
-  ].flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}${i}`]);
-  }),
-
-  // Align content
-  ...[
-    'content-normal',
-    'content-start',
-    'content-end',
-    'content-center',
-    'content-between',
-    'content-around',
-    'content-evenly',
-    'content-baseline',
-    'content-stretch',
-  ].flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}${i}`]);
-  }),
-
-  // Flex grow/shrink
-  ...['grow', 'grow-0', 'shrink', 'shrink-0'].flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}${i}`]);
-  }),
-
-  // Flex basis
-  ...Object.keys(config.theme.flexBasis).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}basis-${i}`]);
-  }),
-
-  // Gap
-  ...Object.keys(config.theme.gap).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [
-      `${bp}gap-${i}`,
-      `${bp}gap-x-${i}`,
-      `${bp}gap-y-${i}`,
-    ]);
-  }),
-
-  // Grid
-  ...Object.keys(config.theme.gridTemplateColumns).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}grid-cols-${i}`]);
-  }),
-  ...Object.keys(config.theme.gridTemplateRows).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}grid-rows-${i}`]);
-  }),
-  ...Object.keys(config.theme.gridColumn).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}col-${i}`]);
-  }),
-  ...Object.keys(config.theme.gridRow).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}row-${i}`]);
-  }),
-
-  // Borders
-  ...['t', 'r', 'b', 'l'].flatMap((side) => {
-    return [
-      ...Object.keys(config.theme.colors).flatMap((i) => {
-        return breakpointsPrefixes.flatMap((bp) => [
-          `${bp}border-${side}-${i}`,
-        ]);
-      }),
-      ...Object.keys(config.theme.borderWidth).flatMap((i) => {
-        return breakpointsPrefixes.flatMap((bp) => [
-          `${bp}border-${side}-${i}`,
-        ]);
-      }),
-      ...Object.keys(config.theme.borderStyle).flatMap((i) => {
-        return breakpointsPrefixes.flatMap((bp) => [
-          `${bp}border-${side}-${i}`,
-        ]);
-      }),
-    ];
-  }),
-
-  // Border radius
-  ...['tr', 'tl', 'br', 'bl'].flatMap((corner) => {
-    return [
-      ...Object.keys(config.theme.borderRadius).flatMap((i) => {
-        return breakpointsPrefixes.flatMap((bp) => [
-          `${bp}rounded-${corner}-${i}`,
-        ]);
-      }),
-    ];
-  }),
-
-  // Opacity for hidden block
-  ...breakpointsPrefixes.flatMap((bp) => [`${bp}opacity-30`]),
-
-  // Orders
-  ...Object.keys(config.theme.order).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}order-${i}`]);
-  }),
-
-  // Aspect ratio
-  ...Object.keys(config.theme.aspectRatio).flatMap((i) => {
-    return breakpointsPrefixes.flatMap((bp) => [`${bp}aspect-${i}`]);
-  }),
-];
+config.safelist = ['bg-white', 'bg-black', ...buildSafelist(config)];
 
 export default config;
