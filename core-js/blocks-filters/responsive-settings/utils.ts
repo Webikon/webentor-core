@@ -63,9 +63,7 @@ export const prepareTailwindClassesFromSettings = (
             if (type === 'flexItem') {
               if (
                 parentBlockAttributes?.display?.display?.value?.[bpName] !==
-                  'flex' &&
-                parentBlockAttributes?.display?.display?.value?.[bpName] !==
-                  undefined
+                'flex'
               ) {
                 return;
               }

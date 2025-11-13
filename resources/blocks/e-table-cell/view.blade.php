@@ -12,6 +12,9 @@
   $tag = !empty($attributes['showAsTh']) ? 'th' : 'td';
 @endphp
 
-<{{ $tag }} {!! !empty($attributes['rowSpan']) ? "rowspan={$attributes['rowSpan']}" : '' !!}>
+<{{ $tag }}
+  {!! !empty($attributes['rowSpan']) ? "rowspan={$attributes['rowSpan']}" : '' !!}
+  {!! !empty($attributes['colSpan']) ? "colspan={$attributes['colSpan']}" : '' !!}
+>
   {!! $innerBlocksContent ?? '' !!}
   </{{ $tag }}>

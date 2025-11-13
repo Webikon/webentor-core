@@ -103,9 +103,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
                 'webentor',
               )}
               value={rowSpan}
-              onChange={(rowSpan) =>
-                setAttributes({ rowSpan: Number(rowSpan) })
-              }
+              onChange={(rowSpan) => setAttributes({ rowSpan })}
               min={0}
             />
           </PanelRow>
@@ -118,9 +116,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
                 'webentor',
               )}
               value={colSpan}
-              onChange={(colSpan) =>
-                setAttributes({ colSpan: Number(colSpan) })
-              }
+              onChange={(colSpan) => setAttributes({ colSpan })}
               min={0}
             />
           </PanelRow>
