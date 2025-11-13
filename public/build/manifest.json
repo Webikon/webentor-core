@@ -27,6 +27,15 @@
       "resources/blocks/e-icon-picker/style.css"
     ]
   },
+  "resources/blocks/e-table/script.ts": {
+    "file": "assets/resources/blocks/e-table/script-CCCYmQvz.js",
+    "name": "resources/blocks/e-table/script",
+    "src": "resources/blocks/e-table/script.ts",
+    "isEntry": true,
+    "imports": [
+      "__utils-D2fkz5kU.js"
+    ]
+  },
   "resources/blocks/l-mobile-nav/style.css": {
     "file": "assets/resources/blocks/l-mobile-nav/style-QMBn75AN.css",
     "src": "resources/blocks/l-mobile-nav/style.css",
@@ -73,7 +82,7 @@
     ]
   },
   "resources/styles/app.css": {
-    "file": "assets/coreAppStyles-CHPFdE9m.css",
+    "file": "assets/coreAppStyles-Cn6204uX.css",
     "src": "resources/styles/app.css",
     "isEntry": true,
     "name": "coreAppStyles",
@@ -82,7 +91,7 @@
     ]
   },
   "resources/styles/editor.css": {
-    "file": "assets/coreEditorStyles-BrzrQhBe.css",
+    "file": "assets/coreEditorStyles-BqD9LpIL.css",
     "src": "resources/styles/editor.css",
     "isEntry": true,
     "name": "coreEditorStyles",
