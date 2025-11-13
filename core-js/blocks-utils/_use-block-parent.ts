@@ -1,6 +1,6 @@
 import {
   store as blockEditorStore,
-  useBlockEditContext,
+  useBlockProps,
 } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 
@@ -9,18 +9,18 @@ import { useSelect } from '@wordpress/data';
  * parent of the current block
  */
 export const useBlockParent = () => {
-  const { clientId } = useBlockEditContext();
-  const parentBlocks = useSelect(
-    // @ts-expect-error - The type definitions for the core store are incomplete.
-    (select) => select(blockEditorStore).getBlockParents(clientId),
+  // Get the client id from the block props, because the useBlockEditContext is for some reason not returning correct client id in various cases
+  const { id } = useBlockProps();
+  const clientId = id.replace('block-', '');
+
+  const parentClientId = useSelect(
+    (select) => select(blockEditorStore).getBlockRootClientId(clientId),
     [clientId],
   );
-  const parentBlockClientId = parentBlocks[parentBlocks.length - 1];
 
   const parentBlock = useSelect(
-    // @ts-expect-error - The type definitions for the core store are incomplete.
-    (select) => select(blockEditorStore).getBlock(parentBlockClientId),
-    [parentBlockClientId],
+    (select) => select(blockEditorStore).getBlock(parentClientId),
+    [parentClientId],
   );
 
   return parentBlock;

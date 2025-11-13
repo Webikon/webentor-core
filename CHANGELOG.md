@@ -4,6 +4,8 @@
 
 - Fix webentorConfig safelist
 - Fix image object-fit defaults
+- Fix useParentBlock hook to get proper parent block
+- Adjust responsive settings to be conditioned by parent block
 
 ## 0.9.11
 

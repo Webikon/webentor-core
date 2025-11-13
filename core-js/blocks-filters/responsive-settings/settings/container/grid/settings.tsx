@@ -1,11 +1,10 @@
-import { store as blockEditorStore } from '@wordpress/block-editor';
 import { SelectControl } from '@wordpress/components';
-import { useSelect } from '@wordpress/data';
 import { Fragment } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import { setImmutably } from '@webentorCore/_utils';
 import { BlockPanelProps } from '@webentorCore/block-filters/responsive-settings/types';
+import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 
 import { DisabledSliderInfo } from '../../../components/DisabledSliderInfo';
 import { isSliderEnabledForBreakpoint } from '../../../utils';
@@ -21,7 +20,6 @@ export const GridSettings = ({
   setAttributes,
   name,
   breakpoint,
-  clientId,
   twTheme,
 }: GridSettingsProps) => {
   const isSliderEnabled = isSliderEnabledForBreakpoint(
@@ -31,15 +29,9 @@ export const GridSettings = ({
   );
 
   // Get parent block data
-  const parentClientId = useSelect(
-    (select) => select(blockEditorStore).getBlockRootClientId(clientId),
-    [clientId],
-  );
-  const parentBlock = useSelect(
-    (select) => select(blockEditorStore).getBlock(parentClientId),
-    [parentClientId],
-  );
+  const parentBlock = useBlockParent();
 
+  // TODO: how to check all previous breakpoints and determine if any of them is grid so we can display the settings?
   const isParentGrid =
     parentBlock?.attributes?.display?.display?.value?.[breakpoint] === 'grid';
   const isCurrentGrid =

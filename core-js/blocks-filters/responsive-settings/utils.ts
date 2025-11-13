@@ -1,6 +1,8 @@
 import { useBlockProps } from '@wordpress/block-editor';
 import { getBlockType } from '@wordpress/blocks';
 
+import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
+
 export const getPixelFromRemValue = (value: string): string => {
   if (value.includes('rem')) {
     const remValue = value.replace('rem', '');
@@ -42,23 +44,51 @@ export const prepareTailwindClassesFromSettings = (
 ): string[] => {
   const classes: string[] = [];
 
+  const parentBlock = useBlockParent();
+  const parentBlockAttributes = parentBlock?.attributes;
+
   if (settings[type]) {
     Object.entries(settings[type]).forEach(([, prop]: [string, any]) => {
       if (prop?.value) {
         Object.entries(prop?.value).forEach(
           ([bpName, bpPropValue]: [string, any]) => {
-            if (type === 'flex' || type === 'flexItem') {
+            // Skip flex related settings when display is not flex
+            if (type === 'flex') {
               if (settings?.display?.display?.value?.[bpName] !== 'flex') {
                 return;
               }
             }
 
-            if (type === 'grid' || type === 'gridItem') {
+            // Skip flex item related settings when parent display is not flex
+            if (type === 'flexItem') {
+              if (
+                parentBlockAttributes?.display?.display?.value?.[bpName] !==
+                  'flex' &&
+                parentBlockAttributes?.display?.display?.value?.[bpName] !==
+                  undefined
+              ) {
+                return;
+              }
+            }
+
+            // Skip grid related settings when display is not grid
+            if (type === 'grid') {
               if (settings?.display?.display?.value?.[bpName] !== 'grid') {
                 return;
               }
             }
 
+            // Skip grid item related settings when parent display is not grid
+            if (type === 'gridItem') {
+              if (
+                parentBlockAttributes?.display?.display?.value?.[bpName] !=
+                'grid'
+              ) {
+                return;
+              }
+            }
+
+            // Skip when slider is enabled
             if (settings?.slider?.enabled?.value?.[bpName]) {
               return;
             }

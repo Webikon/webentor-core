@@ -2,10 +2,11 @@ import { PanelBody, TabPanel } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 import { BlockPanelProps } from '@webentorCore/block-filters/responsive-settings/types';
+import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 
 import { DisplaySettings, getDisplayProperties } from './display';
-import { FlexboxSettings } from './flexbox';
-import { GridSettings } from './grid';
+import { FlexboxSettings, getFlexboxItemProperties } from './flexbox';
+import { getGridItemProperties, GridSettings } from './grid';
 
 export const ContainerPanel = (props: BlockPanelProps) => {
   const { attributes, breakpoints, twTheme } = props;
@@ -20,16 +21,38 @@ export const ContainerPanel = (props: BlockPanelProps) => {
     return null;
   }
 
-  const checkIfHasAnyDisplaySettings = (breakpoint: string): boolean => {
+  const checkIfHasAnyActiveSettings = (breakpoint: string): boolean => {
+    const parentBlock = useBlockParent();
     const displayProperties = getDisplayProperties(props.name, twTheme);
+    const flexboxItemProperties = getFlexboxItemProperties(twTheme);
+    const gridItemProperties = getGridItemProperties(twTheme);
 
-    return displayProperties.some((property) => {
+    const hasDisplaySettings = displayProperties.some((property) => {
       return !!attributes?.display?.[property.name]?.value?.[breakpoint];
     });
+
+    const isParentFlexbox =
+      parentBlock?.attributes?.display?.display?.value?.[breakpoint] === 'flex';
+    const isParentGrid =
+      parentBlock?.attributes?.display?.display?.value?.[breakpoint] === 'grid';
+
+    const hasFlexboxItemSettings =
+      isParentFlexbox &&
+      flexboxItemProperties.some((property) => {
+        return !!attributes?.flexboxItem?.[property.name]?.value?.[breakpoint];
+      });
+
+    const hasGridItemSettings =
+      isParentGrid &&
+      gridItemProperties.some((property) => {
+        return !!attributes?.gridItem?.[property.name]?.value?.[breakpoint];
+      });
+
+    return hasDisplaySettings || hasFlexboxItemSettings || hasGridItemSettings;
   };
 
   const hasContainerSettings = (breakpoint: string): boolean => {
-    return checkIfHasAnyDisplaySettings(breakpoint);
+    return checkIfHasAnyActiveSettings(breakpoint);
   };
 
   return (
