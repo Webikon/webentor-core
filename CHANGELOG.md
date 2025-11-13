@@ -3,6 +3,7 @@
 ## DEV
 
 - Fix webentorConfig safelist
+- Fix image object-fit defaults
 
 ## 0.9.11
 

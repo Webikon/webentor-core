@@ -6,9 +6,7 @@
   "description": "Display selected images in a gallery.",
   "category": "webentor-elements",
   "icon": "update",
-  "keywords": [
-    "gallery"
-  ],
+  "keywords": ["gallery"],
   "attributes": {
     "images": {
       "type": "array",
@@ -28,7 +26,7 @@
     },
     "objectFit": {
       "type": "string",
-      "default": "none"
+      "default": "fill"
     },
     "objectPosition": {
       "type": "string",

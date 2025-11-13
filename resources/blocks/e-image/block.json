@@ -49,7 +49,7 @@
     },
     "objectFit": {
       "type": "string",
-      "default": "none"
+      "default": "fill"
     },
     "objectPosition": {
       "type": "string",
