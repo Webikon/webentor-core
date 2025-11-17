@@ -40,9 +40,9 @@ Usage:
 @if (!empty($element) && $element === 'a')
   <a
     class="{{ $classes ?? '' }}"
-    title="{{ $title }}"
+    title="{!! $title !!}"
     @if (!empty($id)) id="{{ $id }}" @endif
-    @if (!empty($url)) href="{{ $url }}" @endif
+    @if (!empty($url)) href="{!! $url !!}" @endif
     @if (!empty($openInNewTab)) target="_blank" rel="noopener noreferrer" @endif
     @if (!empty($disabled)) disabled @endif
     @if (!empty($useAsToggle)) @click.prevent="toggleOpen = !toggleOpen" @endif
@@ -56,7 +56,7 @@ Usage:
 @elseif (!empty($element) && $element === 'button')
   <button
     class="{{ $classes ?? '' }}"
-    title="{{ $title }}"
+    title="{!! $title !!}"
     @if (!empty($id)) id="{{ $id }}" @endif
     @if (!empty($disabled)) disabled @endif
     @if (!empty($buttonType)) type="{{ $buttonType }}" @endif
