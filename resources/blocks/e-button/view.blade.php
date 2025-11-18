@@ -8,6 +8,10 @@
    * @param string $block_classes Block classes.
    * @param object $block WP_Block_Type instance.
    **/
+
+  if (empty($attributes['button']['showButton'])) {
+      return;
+  }
 @endphp
 
 <x-button

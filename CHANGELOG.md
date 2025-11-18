@@ -7,7 +7,7 @@
 - Fix useParentBlock hook to get proper parent block
 - Adjust responsive settings to be conditioned by parent block
 - Fix Table block cell colspan
-- Fix button url escaping
+- Fix button url escaping & show conditional
 
 ## 0.9.11
 
