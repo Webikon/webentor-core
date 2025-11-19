@@ -83,11 +83,15 @@
     x-ref="accordionContent"
     x-cloak
     x-collapse
-    class="w-accordion__content accordion-content wbtr:flex wbtr:w-full wbtr:flex-col wbtr:items-start wbtr:justify-start wbtr:gap-3 wbtr:pt-3"
+    class="w-accordion__content-wrapper"
   >
-    {{-- Show InnerBlocks if $content is not set --}}
-    @if (!empty($accordion_content))
-      {!! $accordion_content !!}
-    @endif
+    <div
+      class="w-accordion__content accordion-content wbtr:flex wbtr:w-full wbtr:flex-col wbtr:items-start wbtr:justify-start wbtr:gap-3 wbtr:pt-3"
+    >
+      {{-- Show InnerBlocks if $content is not set --}}
+      @if (!empty($accordion_content))
+        {!! $accordion_content !!}
+      @endif
+    </div>
   </div>
 </div>

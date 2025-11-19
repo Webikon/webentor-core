@@ -1,32 +1,24 @@
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { v4wp } from '@kucrut/vite-for-wp';
 import { wp_scripts } from '@kucrut/vite-for-wp/plugins';
 // import { wordpressPlugin } from '@roots/vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { glob } from 'glob';
-import { defineConfig } from 'vite';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import { defineConfig, normalizePath } from 'vite';
 
 // Get all styles and scripts from blocks
 const blockStylesEntries = [];
-const blocksStyles = glob.sync(
-  resolve(__dirname, 'resources/blocks/**/style.css'),
-);
+const blocksStyles = glob.sync('./resources/blocks/**/style.css');
 blocksStyles.forEach((style) => {
-  blockStylesEntries[style.replace(`${__dirname}/`, '').replace('.css', '')] =
-    style.replace(`${__dirname}/`, '');
+  const normalizedPath = normalizePath(style.replace(`./`, ''));
+  blockStylesEntries[normalizedPath.replace('.css', '')] = normalizedPath;
 });
 
 const blockScriptsEntries = [];
-const blocksScripts = glob.sync(
-  resolve(__dirname, 'resources/blocks/**/script.ts'),
-);
+const blocksScripts = glob.sync('./resources/blocks/**/script.ts');
 blocksScripts.forEach((js) => {
-  blockScriptsEntries[js.replace(`${__dirname}/`, '').replace('.ts', '')] =
-    js.replace(`${__dirname}/`, '');
+  const normalizedPath = normalizePath(js.replace(`./`, ''));
+  blockScriptsEntries[normalizedPath.replace('.ts', '')] = normalizedPath;
 });
 
 export default defineConfig({

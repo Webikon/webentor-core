@@ -8,6 +8,8 @@
 - Adjust responsive settings to be conditioned by parent block
 - Fix Table block cell colspan
 - Fix button url escaping & show conditional
+- Fix Vite blocks build on Windows Herd
+- **BREAKING**: Fix accordion collapse animation - if you customized accordion blade view, adjust its content wrapper
 
 ## 0.9.11
 
