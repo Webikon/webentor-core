@@ -1,4 +1,5 @@
 import { PanelBody, TabPanel } from '@wordpress/components';
+import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 
 import { BlockPanelProps } from '@webentorCore/block-filters/responsive-settings/types';
@@ -55,8 +56,16 @@ export const ContainerPanel = (props: BlockPanelProps) => {
     return checkIfHasAnyActiveSettings(breakpoint);
   };
 
+  // Allow themes/plugins to add custom content before responsive tabs
+  const beforeTabsContent = applyFilters(
+    'webentor.containerPanel.beforeTabs',
+    null,
+    props,
+  );
+
   return (
     <PanelBody title={__('Container Settings', 'webentor')} initialOpen={true}>
+      {beforeTabsContent}
       <TabPanel
         activeClass="is-active"
         className="w-responsive-settings-tabs"
