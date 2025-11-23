@@ -46,6 +46,10 @@ add_filter('webentor/block_custom_classes', function ($custom_classes, $block, $
         ];
         $custom_classes = implode(' ', $custom_classes);
 
+        // Add container class that can be filtered
+        $container_class = apply_filters('webentor/l-section/container_classes', 'container', $block);
+        $custom_classes .= ' ' . $container_class;
+
         return $custom_classes;
     }
 

@@ -6,7 +6,8 @@
    * @param string $innerBlocksContent The block inner HTML (empty).
    * @param string $anchor Anchor (ID attribute) HTML.
    * @param string $block_classes Block classes.
-   * @param object $block WP_Block_Type instance.
+   * @param string $custom_classes Custom container classes (includes flexbox, grid, and filtered container class).
+   * @param WP_Block $block WP_Block instance.
    **/
 
   $img_id = $attributes['img']['id'] ?? null;
@@ -85,7 +86,7 @@
     </picture>
   @endif
 
-  <div class="w-section-inner wbtr:flex wbtr:flex-col wbtr:relative wbtr:z-[2] {{ $custom_classes }} container">
+  <div class="w-section-inner wbtr:flex wbtr:flex-col wbtr:relative wbtr:z-[2] {{ $custom_classes }}">
     {!! $innerBlocksContent ?? '' !!}
   </div>
 </section>
