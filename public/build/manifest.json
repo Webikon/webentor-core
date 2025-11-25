@@ -55,7 +55,7 @@
     ]
   },
   "resources/core-components/slider/slider.script.ts": {
-    "file": "assets/sliderJs-DAOONIEz.js",
+    "file": "assets/sliderJs-BaknVn72.js",
     "name": "sliderJs",
     "src": "resources/core-components/slider/slider.script.ts",
     "isEntry": true,
@@ -64,7 +64,7 @@
     ]
   },
   "resources/core-components/slider/slider.style.css": {
-    "file": "assets/sliderStyles-CNqbBX4L.css",
+    "file": "assets/sliderStyles-8eH5OEQS.css",
     "src": "resources/core-components/slider/slider.style.css",
     "isEntry": true,
     "name": "sliderStyles",
