@@ -32,6 +32,8 @@
       title="{{ $attributes['button']['title'] ?? __('Go to homepage', 'webentor') }}"
       openInNewTab="{{ false }}"
       variant="{{ $attributes['button']['variant'] ?? 'primary' }}"
+      icon="{{ !empty($attributes['button']['showIcon']) && !empty($attributes['button']['icon']['name']) ? $attributes['button']['icon']['name'] : '' }}"
+      iconPosition="{{ $attributes['button']['iconPosition'] ?? 'right' }}"
     />
   @endif
 </div>

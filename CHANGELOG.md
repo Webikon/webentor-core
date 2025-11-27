@@ -10,6 +10,8 @@
 - Fix button url escaping & show conditional
 - Fix Vite blocks build on Windows Herd
 - **BREAKING**: Fix accordion collapse animation - if you customized accordion blade view, adjust its content wrapper
+- Fix l-404 block button
+- Fix $anchor passed variable in inner blocks
 
 ## 0.9.11
 

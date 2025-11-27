@@ -297,8 +297,8 @@ function render_inner_block_blade($block, $parent_block = null)
 
     // Create ID HTML attribute from anchor value
     $anchor = '';
-    if (!empty($block->parsed_block['anchor'])) {
-        $anchor = 'id="' . esc_attr($block->parsed_block['anchor']) . '" ';
+    if (!empty($block->parsed_block['anchor']) || !empty($block->parsed_block['attrs']['anchor'])) {
+        $anchor = 'id="' . esc_attr($block->parsed_block['anchor'] ?? $block->parsed_block['attrs']['anchor']) . '" ';
     }
 
     $block_name = $block->parsed_block['blockName']; // in format "namespace/block-name"
@@ -545,4 +545,3 @@ add_filter('render_blade_block', function ($block_content, $block) {
         return '';
     }
 }, 10, 3);
-
