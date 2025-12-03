@@ -2,6 +2,8 @@
 
 ## DEV
 
+## 0.9.12
+
 - Fix webentorConfig safelist
 - Fix image object-fit defaults
 - Fix useParentBlock hook to get proper parent block
