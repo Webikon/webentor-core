@@ -15,9 +15,7 @@
   "noPhpSyntaxCheck": false,
   "overrides": [
     {
-      "files": [
-        "*.blade.php"
-      ],
+      "files": ["*.blade.php"],
       "options": {
         "tabWidth": 2,
         "parser": "blade"
