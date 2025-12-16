@@ -257,7 +257,7 @@ export const WebentorButton = (props) => {
                           item.slug,
                         )
                       }
-                      className={`wbtr:pr-2 ${variant === item.slug ? 'wbtr:font-bold' : ''}`}
+                      className={`wbtr:pr-2 ${variant === item.slug ? 'wbtr:font-bold!' : ''}`}
                     >
                       {item.label}
                     </button>
@@ -280,7 +280,7 @@ export const WebentorButton = (props) => {
                       }
                       className={`wbtr:pr-2 ${
                         attributes[attributeName]?.size === item.slug
-                          ? 'wbtr:font-bold'
+                          ? 'wbtr:font-bold!'
                           : ''
                       }`}
                     >
