@@ -2,6 +2,8 @@
 
 ## DEV
 
+- Add `webentor.core.button.output` filter
+
 ## 0.9.12
 
 - Fix webentorConfig safelist

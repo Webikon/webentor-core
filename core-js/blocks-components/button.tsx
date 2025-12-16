@@ -171,6 +171,32 @@ export const WebentorButton = (props) => {
       iconSet: value.iconSet,
     });
 
+  const ButtonOutput = applyFilters(
+    'webentor.core.button.output',
+    <button
+      type="button"
+      className={`btn btn--${variant} btn--size-${size} ${buttonClassName ?? ''} wbtr:prevent-hover ${attributes[attributeName]?.showIcon && attributes[attributeName]?.icon?.name ? 'btn--icon' : ''} ${attributes[attributeName]?.iconPosition ? `btn--icon-${attributes[attributeName]?.iconPosition}` : ''} ${!attributes[attributeName]?.showButton ? 'wbtr:opacity-40' : ''}`}
+    >
+      <span className="btn__text">
+        {attributes[attributeName] && attributes[attributeName]?.title
+          ? attributes[attributeName]?.title
+          : ''}
+      </span>
+
+      {attributes[attributeName]?.showIcon &&
+        attributes[attributeName]?.icon?.name && (
+          <span className="btn__icon svg-icon">
+            <Icon10up
+              name={attributes[attributeName]?.icon.name}
+              iconSet={attributes[attributeName]?.icon.iconSet}
+            />
+          </span>
+        )}
+    </button>,
+    props,
+    buttonClassName,
+  );
+
   return (
     <span className={`${className ?? ''} wbtr:relative wbtr:inline-block`}>
       {visible && (
@@ -348,9 +374,12 @@ export const WebentorButton = (props) => {
         </Popover>
       )}
 
-      <span className={`${innerClassName ?? ''} wbtr:inline-block`}>
+      <span
+        className={`${innerClassName ?? ''} wbtr:inline-block`}
+        onClick={handleTogglePopover}
+      >
         {!attributes[attributeName]?.showButton && (
-          <span className="wbtr:absolute wbtr:-right-1 wbtr:-top-1 wbtr:z-10 wbtr:flex wbtr:h-4 wbtr:w-6 wbtr:items-center wbtr:justify-center wbtr:rounded wbtr:bg-white wbtr:shadow">
+          <span className="wbtr:rounded wbtr:absolute wbtr:-top-1 wbtr:-right-1 wbtr:z-10 wbtr:flex wbtr:h-4 wbtr:w-6 wbtr:items-center wbtr:justify-center wbtr:bg-white wbtr:shadow">
             <svg
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
@@ -369,27 +398,7 @@ export const WebentorButton = (props) => {
           </span>
         )}
 
-        <button
-          type="button"
-          className={`btn btn--${variant} btn--size-${size} ${buttonClassName ?? ''} wbtr:prevent-hover ${attributes[attributeName]?.showIcon && attributes[attributeName]?.icon?.name ? 'btn--icon' : ''} ${attributes[attributeName]?.iconPosition ? `btn--icon-${attributes[attributeName]?.iconPosition}` : ''} ${!attributes[attributeName]?.showButton ? 'wbtr:opacity-40' : ''}`}
-          onClick={handleTogglePopover}
-        >
-          <span className="btn__text">
-            {attributes[attributeName] && attributes[attributeName]?.title
-              ? attributes[attributeName]?.title
-              : ''}
-          </span>
-
-          {attributes[attributeName]?.showIcon &&
-            attributes[attributeName]?.icon?.name && (
-              <span className="btn__icon svg-icon">
-                <Icon10up
-                  name={attributes[attributeName]?.icon.name}
-                  iconSet={attributes[attributeName]?.icon.iconSet}
-                />
-              </span>
-            )}
-        </button>
+        {ButtonOutput}
       </span>
     </span>
   );
