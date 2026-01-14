@@ -73,7 +73,7 @@
     ]
   },
   "resources/scripts/editor.ts": {
-    "file": "assets/coreEditorJs-BQJxjLDI.js",
+    "file": "assets/coreEditorJs-Cp-1rApb.js",
     "name": "coreEditorJs",
     "src": "resources/scripts/editor.ts",
     "isEntry": true,
@@ -82,7 +82,7 @@
     ]
   },
   "resources/styles/app.css": {
-    "file": "assets/coreAppStyles-BwbSWUaN.css",
+    "file": "assets/coreAppStyles-Ds4pmuOU.css",
     "src": "resources/styles/app.css",
     "isEntry": true,
     "name": "coreAppStyles",
@@ -91,7 +91,7 @@
     ]
   },
   "resources/styles/editor.css": {
-    "file": "assets/coreEditorStyles-Ddo-mqu5.css",
+    "file": "assets/coreEditorStyles-84LoyFEd.css",
     "src": "resources/styles/editor.css",
     "isEntry": true,
     "name": "coreEditorStyles",

@@ -3,6 +3,7 @@
 ## DEV
 
 - Add `webentor.core.button.output` filter
+- Allow picking up multiple post types in Query Loop block
 
 ## 0.9.12
 

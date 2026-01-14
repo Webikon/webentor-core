@@ -39,7 +39,7 @@ type AttributesType = {
   coverImage: string;
   query: {
     perPage: number;
-    postType: string;
+    postType: string[];
     queryId: string;
     taxQuery: Record<string, string[]>;
     parents: number[];
@@ -105,10 +105,14 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
     setAttributes({ query: { ...query, ...newQuery } });
 
   const onPostTypeChange = (newValue) => {
-    const updateQuery = { postType: newValue };
+    // Taxonomies are supported only for single post type, so we need to handle that
+    const singlePostType =
+      Array.isArray(newValue) && newValue.length === 1 ? newValue[0] : newValue;
+
+    const updateQuery = { postType: singlePostType };
     // We need to dynamically update the `taxQuery` property,
     // by removing any not supported taxonomy from the query.
-    const supportedTaxonomies = postTypesTaxonomiesMap[newValue];
+    const supportedTaxonomies = postTypesTaxonomiesMap[singlePostType];
     const updatedTaxQuery = Object.entries(taxQuery || {}).reduce(
       (accumulator, [taxonomySlug, terms]) => {
         if (supportedTaxonomies.includes(taxonomySlug)) {
@@ -122,7 +126,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
       ? updatedTaxQuery
       : undefined;
 
-    if (newValue !== 'post') {
+    if (singlePostType !== 'post') {
       updateQuery.sticky = '';
     }
     // We need to reset `parents` because they are tied to each post type.
@@ -158,8 +162,9 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
           <SelectControl
             __nextHasNoMarginBottom
             options={postTypesSelectOptions}
-            value={postType}
+            value={Array.isArray(postType) ? postType : [postType]}
             label={__('Post type')}
+            multiple
             onChange={onPostTypeChange}
             help={__(
               'WordPress contains different types of content and they are divided into collections called “Post types”. By default there are a few different ones such as blog posts and pages, but plugins could add more.',
@@ -194,7 +199,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
           }}
           dropdownMenuProps={TOOLSPANEL_DROPDOWNMENU_PROPS}
         >
-          {showTaxControl && (
+          {showTaxControl && !Array.isArray(query.postType) && (
             <ToolsPanelItem
               label={__('Taxonomies')}
               hasValue={() =>

@@ -14,7 +14,7 @@
         "perPage": null,
         "pages": 0,
         "offset": 0,
-        "postType": "post",
+        "postType": ["post"],
         "order": "desc",
         "orderBy": "date",
         "author": "",
