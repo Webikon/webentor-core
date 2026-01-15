@@ -4,6 +4,7 @@
 
 - Add `webentor.core.button.output` filter
 - Allow picking up multiple post types in Query Loop block
+- Add e-button HTML Element setting
 
 ## 0.9.12
 

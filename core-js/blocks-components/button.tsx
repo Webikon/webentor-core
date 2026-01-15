@@ -69,6 +69,9 @@ import { __ } from '@wordpress/i18n';
       "iconPosition": {
         "type": "string",
       }
+      "htmlElement": {
+        "type": "string"
+      }
     },
     "default": {
       "showButton": true,
@@ -78,7 +81,8 @@ import { __ } from '@wordpress/i18n';
       "newTab": false,
       "showIcon": false,
       "icon": null,
-      "iconPosition": "right"
+      "iconPosition": "right",
+      "htmlElement": "a"
     }
   }
  */
@@ -242,10 +246,10 @@ export const WebentorButton = (props) => {
             />
 
             {!hideVariant && (
-              <div className="wbtr:mb-2">
-                <p className="wbtr:mb-2 wbtr:text-12 wbtr:uppercase">
+              <div className="wbtr:mb-3">
+                <div className="wbtr:mt-0 wbtr:mb-2 wbtr:text-[11px] wbtr:uppercase">
                   {__('Button Variant', 'webentor')}
-                </p>
+                </div>
                 {variants.map((item) => {
                   return (
                     <button
@@ -267,10 +271,10 @@ export const WebentorButton = (props) => {
             )}
 
             {!hideSize && (
-              <div className="wbtr:mb-2">
-                <p className="wbtr:mb-2 wbtr:text-12 wbtr:uppercase">
+              <div className="wbtr:mb-3">
+                <div className="wbtr:mt-0 wbtr:mb-2 wbtr:text-[11px] wbtr:uppercase">
                   {__('Button Size', 'webentor')}
-                </p>
+                </div>
                 {sizes.map((item) => {
                   return (
                     <button
@@ -293,8 +297,23 @@ export const WebentorButton = (props) => {
 
             {ExtensionComponent}
 
-            {!hideLink && (
+            <SelectControl
+              label={__('Button HTML Element', 'webentor')}
+              value={attributes[attributeName]?.htmlElement}
+              options={[
+                { label: __('Link (<a>)', 'webentor'), value: 'a' },
+                { label: __('Button (<button>)', 'webentor'), value: 'button' },
+              ]}
+              onChange={(value) =>
+                updateObjectAttribute(attributeName, 'htmlElement', value)
+              }
+            />
+
+            {!hideLink && attributes[attributeName]?.htmlElement === 'a' && (
               <>
+                <div className="wbtr:mt-0 wbtr:mb-2 wbtr:text-[11px] wbtr:uppercase">
+                  {__('Button URL', 'webentor')}
+                </div>
                 <URLInput
                   // label={__('Button URL', 'webentor')}
                   value={

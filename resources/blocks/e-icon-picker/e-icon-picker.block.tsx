@@ -94,8 +94,6 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   const handleIconSelection = (value) =>
     setAttributes({ icon: { name: value.name, iconSet: value.iconSet } });
 
-  console.log(attributes?.icon);
-
   return (
     <>
       <InspectorControls>

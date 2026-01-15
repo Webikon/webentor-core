@@ -19,7 +19,8 @@
         "newTab": false,
         "showIcon": false,
         "icon": null,
-        "iconPosition": "right"
+        "iconPosition": "right",
+        "htmlElement": "a"
       }
     }
   },
