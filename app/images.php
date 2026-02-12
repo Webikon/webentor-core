@@ -7,18 +7,23 @@ namespace Webentor\Core;
  * For crop modes see https://cloudinary.com/documentation/resizing_and_cropping#resize_and_crop_modes.
  * You can also use null instead of width or height integer to keep aspect ratio.
  *
- * @param string $url
- * @param array  $default_size E.g. [1024, 500, 'fill'] (width, height, crop)
- * @param array  $sizes        Sizes for <picture>. E.g. [480 => [520, 500, 'fill'], 768 => [620, 500, 'fill']].
- * @param array  $attr         Additional <img> tag attributes
- * @param array  $options      Cloudinary options, e.g. for gravity to face: ['g' => 'face']
+ * @param string       $url
+ * @param array|string $default_size E.g. [1024, 500, 'fill'] (width, height, crop) or 'full'
+ * @param array        $sizes        Sizes for <picture>. E.g. [480 => [520, 500, 'fill'], 768 => [620, 500, 'fill']].
+ * @param array        $attr         Additional <img> tag attributes
+ * @param array        $options      Cloudinary options, e.g. for gravity to face: ['g' => 'face']
  *
  * @return string <picture> html
  */
-function get_resized_cloud_picture_by_url(string $url, array $default_size, array $sizes = [], array $attr = [], array $options = []): string
+function get_resized_cloud_picture_by_url(string $url, array|string $default_size, array $sizes = [], array $attr = [], array $options = []): string
 {
     // Turn on retina by default
     $attr['retina'] = $attr['retina'] ?? true;
+
+    // Handle also WP image size string (e.g. 'full')
+    if (is_string($default_size)) {
+        $default_size = [0, 0];
+    }
 
     $html = '<picture>';
     if (is_array($sizes)) {
@@ -56,20 +61,25 @@ function get_resized_cloud_picture_by_url(string $url, array $default_size, arra
 /**
  * Wrapper for Cloudinary image resizing function for whole <picture> element by attachment ID.
  *
- * @param int   $attachment_id
- * @param array $default_size
- * @param array $sizes
- * @param array $attr
- * @param array $options
+ * @param int          $attachment_id
+ * @param array|string $default_size
+ * @param array        $sizes
+ * @param array        $attr
+ * @param array        $options
  *
  * @return string <picture> html
  */
-function get_resized_cloud_picture(int $attachment_id, array $default_size, array $sizes = [], array $attr = [], array $options = [])
+function get_resized_cloud_picture(int $attachment_id, array|string $default_size, array $sizes = [], array $attr = [], array $options = [])
 {
     $url = wp_get_attachment_image_url($attachment_id, 'full');
 
     if (empty($url)) {
         return '';
+    }
+
+    // Handle also WP image size string (e.g. 'full')
+    if (is_string($default_size)) {
+        $default_size = [0, 0];
     }
 
     return get_resized_cloud_picture_by_url($url, $default_size, $sizes, $attr, $options);
