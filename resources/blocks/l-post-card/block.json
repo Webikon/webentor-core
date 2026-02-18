@@ -1,0 +1,13 @@
+{
+  "$schema": "../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "name": "webentor/l-post-card",
+  "title": "Post Card",
+  "description": "Post card for use in e.g. posts loop.",
+  "category": "webentor-layout",
+  "icon": "embed-post",
+  "keywords": ["post-card", "post", "post-template"],
+  "usesContext": ["itemNumber"],
+  "attributes": {},
+  "supports": {}
+}

@@ -1,0 +1,134 @@
+@layer components {
+  /** Plugins **/
+  @import 'swiper/css';
+  @import 'swiper/css/a11y';
+  @import 'swiper/css/navigation';
+  @import 'swiper/css/pagination';
+  @import 'swiper/css/effect-fade';
+
+  :root {
+    --slider-timer-progress: 0;
+
+    --slider-arrow-color: var(--color-gray-900);
+    --slider-arrow-color-inverted: var(--color-white);
+    --slider-arrow-height: 30px;
+    --slider-arrow-width: 30px;
+
+    --slider-pagination-color: var(--color-gray-900);
+    --slider-pagination-color-inverted: var(--color-white);
+
+    --slider-pagination-bullet-height: 8px;
+    --slider-pagination-bullet-width: 32px;
+    --slider-pagination-bullet-border-radius: var(--border-radius-full);
+    --slider-pagination-bullet-opacity: 0.4;
+    --slider-pagination-bullet-opacity-active: 1;
+  }
+
+  .slider-enabled {
+    .swiper-container {
+      .swiper-wrapper {
+        /* Reset all flex properties to initial (default) values to avoid conflicts with Swiper slider and Gutenberg responsive settings for other breakpoints */
+        display: flex; /* Swiper slider must always be flex */
+        gap: 0;
+        flex-direction: initial;
+        justify-content: initial;
+        align-items: initial;
+        align-content: initial;
+        flex-wrap: initial;
+        flex-grow: initial;
+        flex-shrink: initial;
+        flex-basis: initial;
+      }
+    }
+
+    .slider-pagination {
+      .swiper-pagination-bullets {
+        display: flex;
+
+        &.swiper-pagination-lock {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .slider {
+    &.has-autoplay-control {
+      .swiper-pagination-bullets.swiper-pagination-horizontal {
+        width: auto;
+      }
+
+      .slider-autoplay-icon--play {
+        display: block;
+      }
+
+      &.is-playing .slider-autoplay-icon--play {
+        display: none;
+      }
+
+      .slider-autoplay-icon--stop {
+        display: none;
+      }
+
+      &.is-playing .slider-autoplay-icon--stop {
+        display: block;
+      }
+
+      .slider-timer {
+        display: block;
+      }
+
+      .slider-timer-circle {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        stroke-width: 4px;
+        stroke: currentcolor;
+        fill: none;
+        stroke-dashoffset: calc(125.6px * (1 - var(--slider-timer-progress)));
+        stroke-dasharray: 125.6; /* 2 * Math.PI * 20 */
+        transform: rotate(-90deg);
+      }
+    }
+
+    .slider-arrow-btn {
+      color: var(--slider-arrow-color);
+      width: var(--slider-arrow-width);
+      height: var(--slider-arrow-height);
+
+      &:hover {
+        opacity: 0.6;
+      }
+    }
+
+    .slider-pagination,
+    .slider-timer {
+      color: var(--slider-pagination-color);
+    }
+
+    .slider-pagination-bullet {
+      background-color: currentcolor;
+      opacity: var(--slider-pagination-bullet-opacity);
+      width: var(--slider-pagination-bullet-width);
+      height: var(--slider-pagination-bullet-height);
+      border-radius: var(--slider-pagination-bullet-border-radius);
+
+      &.is-active {
+        opacity: var(--slider-pagination-bullet-opacity-active);
+      }
+    }
+
+    &.has-darkmode {
+      .slider-arrow-btn {
+        color: var(--slider-arrow-color-inverted);
+      }
+
+      .slider-pagination,
+      .slider-timer {
+        color: var(--slider-pagination-color-inverted);
+      }
+    }
+  }
+}

@@ -1,0 +1,134 @@
+/* TODO maybe adjust nested CSS to be compatible with native nesting */
+.menu-container {
+  .menu-item {
+    font-family: var(--font-primary);
+    font-size: 18px;
+    font-weight: 500;
+
+    > a {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px;
+      color: var(--color-primary);
+
+      &:hover {
+        color: var(--color-primary-alt);
+        text-decoration: underline;
+      }
+    }
+  }
+
+  /* Horizontal menu style */
+  &.direction-row {
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .menu-item {
+      position: relative;
+
+      > a {
+        color: var(--color-white);
+
+        &:hover {
+          color: var(--color-primary-alt);
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .menu-item-has-children {
+      > a {
+        &::after {
+          width: 12px;
+          height: 13px;
+          display: inline-block;
+          content: '';
+          mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 12 13' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.75 3.875L6 9.125L11.25 3.875' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+            no-repeat 50% 50%;
+          mask-size: cover;
+          background-color: var(--color-white);
+        }
+
+        &:hover::after {
+          background-color: var(--color-primary-alt);
+        }
+      }
+
+      .sub-menu {
+        display: none;
+        position: absolute;
+        background-color: var(--color-white);
+        white-space: nowrap;
+        border-bottom: 2px solid var(--color-primary);
+
+        .menu-item a {
+          color: var(--color-primary);
+          font-size: 16px;
+
+          &:hover {
+            color: var(--color-primary-alt);
+            text-decoration: underline;
+          }
+        }
+      }
+
+      &:hover {
+        .sub-menu {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          padding: 12px 18px;
+        }
+      }
+    }
+  }
+
+  /* Vertical menu style */
+  &.direction-col {
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .menu-item-has-children {
+      > a {
+        color: var(--color-gray-200);
+      }
+
+      .sub-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        .menu-item a {
+          font-size: 16px;
+          padding-left: 16px;
+        }
+      }
+    }
+  }
+
+  /* Footer menu style */
+  footer & .menu {
+    gap: 16px;
+
+    .menu-item {
+      font-size: 16px;
+      font-weight: 400;
+
+      a {
+        color: var(--color-primary);
+        padding: 0;
+
+        &:hover {
+          color: var(--color-white);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../schemas/webentor-block.json",
+  "name": "webentor/l-mobile-nav",
+  "title": "Mobile Navigation Wrapper",
+  "description": "Navigation menu block",
+  "category": "webentor-layout",
+  "icon": "menu",
+  "keywords": ["menu", "navigation", "mobile", "responsive", "hamburger"],
+  "attributes": {},
+  "supports": {
+    "webentor": {
+      "display": true
+    }
+  }
+}

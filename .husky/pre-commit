@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# Skip install on CI
+[ -n "$CI" ] && exit 0
+
+# Check if any TypeScript, JavaScript, CSS files, or package files are staged for commit
+if git diff --cached --name-only | grep -E '\.(ts|tsx|js|jsx|css|scss|sass|less)$|package\.json$|pnpm-lock\.yaml$' > /dev/null; then
+    echo "🔨 TypeScript/JavaScript/CSS/Package files detected, running pnpm build..."
+
+    # Run the build process
+    pnpm build
+
+    # Check if build was successful
+    if [ $? -ne 0 ]; then
+        echo "❌ Build failed! Commit aborted."
+        exit 1
+    fi
+
+    echo "✅ Build completed successfully!"
+
+    # Check if there are any changes in the public/ folder
+    if [ -n "$(git status --porcelain public/)" ]; then
+        echo "📦 Found changes in public/ folder, adding to commit..."
+
+        # Add all changes in public/ folder to the current commit
+        git add public/
+
+        # Show what was added
+        echo "📋 Added files to commit:"
+        git status --porcelain public/ | sed 's/^/  /'
+
+        echo "✅ Public folder changes have been automatically added to this commit!"
+    else
+        echo "ℹ️  No changes detected in public/ folder."
+    fi
+else
+    echo "ℹ️  No TypeScript/JavaScript/CSS/Package files changed, skipping build."
+fi
+
+echo "🚀 Proceeding with commit..."

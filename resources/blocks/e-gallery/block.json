@@ -1,0 +1,90 @@
+{
+  "$schema": "../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "name": "webentor/e-gallery",
+  "title": "Custom Gallery",
+  "description": "Display selected images in a gallery.",
+  "category": "webentor-elements",
+  "icon": "update",
+  "keywords": ["gallery"],
+  "attributes": {
+    "images": {
+      "type": "array",
+      "default": []
+    },
+    "lazyload": {
+      "type": "boolean",
+      "default": true
+    },
+    "openInLightbox": {
+      "type": "boolean",
+      "default": false
+    },
+    "aspectRatio": {
+      "type": "string",
+      "default": "auto"
+    },
+    "objectFit": {
+      "type": "string",
+      "default": "fill"
+    },
+    "objectPosition": {
+      "type": "string",
+      "default": "center"
+    },
+    "imageSize": {
+      "type": "string",
+      "default": "large"
+    },
+    "customSizeEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "customSize": {
+      "type": "object",
+      "default": {}
+    },
+    "display": {
+      "type": "object",
+      "default": {
+        "display": {
+          "value": {
+            "basic": "flex"
+          }
+        }
+      }
+    },
+    "flexbox": {
+      "type": "object",
+      "default": {
+        "gap": {
+          "value": {
+            "basic": "gap-4"
+          }
+        },
+        "flex-wrap": {
+          "value": {
+            "basic": "flex-wrap"
+          }
+        }
+      }
+    },
+    "border": {
+      "type": "object",
+      "default": {
+        "border": null,
+        "borderRadius": null
+      }
+    }
+  },
+  "supports": {
+    "webentor": {
+      "spacing": true,
+      "display": {
+        "display": true
+      },
+      "flexbox": true,
+      "grid": true
+    }
+  }
+}

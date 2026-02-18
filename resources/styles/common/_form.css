@@ -1,0 +1,83 @@
+:root {
+  --form-field-label-color: #000;
+  --form-field-label-font-size: 16px;
+  --form-field-input-border: #000;
+  --form-field-input-background: #ffffff;
+  --form-field-placeholder-color: #000;
+  --form-field-font-size: 16px;
+  --form-confirmation-message-color: green;
+  --form-validation-error-color: red;
+}
+
+.gform_wrapper.gform-theme {
+  width: 100%;
+  align-self: center;
+
+  .gfield {
+    padding: 4px 0;
+  }
+
+  .gform_fields {
+    row-gap: 8px;
+  }
+
+  .gform_heading {
+    display: none;
+  }
+
+  .gform_validation_errors,
+  .gform_submission_error {
+    font-size: 18px;
+    outline: none;
+    border: none;
+  }
+
+  .gfield_label {
+    color: var(--form-field-label-color);
+    font-size: var(--form-field-label-font-size);
+    font-weight: 400;
+    margin-bottom: 4px;
+  }
+
+  input,
+  textarea {
+    border: 2px solid var(--form-field-input-border);
+    background-color: var(--form-field-input-background);
+    padding: 16px 16px;
+    font-size: var(--form-field-font-size);
+    line-height: 1.5;
+    border-radius: 0;
+
+    &::placeholder {
+      color: var(--form-field-placeholder-color);
+    }
+  }
+
+  .gform_footer {
+    margin-top: 20px;
+    justify-content: left;
+  }
+
+  .gform_confirmation_message {
+    color: var(--form-confirmation-message-color);
+  }
+
+  .gfield_required > span,
+  .gfield_description.validation_message,
+  .gform_submission_error,
+  .gform_validation_errors .gform-icon {
+    color: var(--form-validation-error-color);
+  }
+
+  .gform_validation_errors,
+  .gform_validation_errors .gform-icon {
+    background-color: transparent;
+    border-color: var(--form-validation-error-color);
+  }
+
+  .gfield_visibility_hidden {
+    left: -9999px;
+    position: absolute;
+    visibility: hidden;
+  }
+}

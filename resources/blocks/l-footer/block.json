@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "name": "webentor/l-footer",
+  "title": "Footer",
+  "description": "Footer block with various settings.",
+  "category": "webentor-layout",
+  "icon": "list-view",
+  "keywords": ["footer", "layout"],
+  "attributes": {
+    "sticky": {
+      "type": "string",
+      "default": ""
+    },
+    "hasContainer": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "anchor": true
+  }
+}

@@ -1,0 +1,1 @@
+export { BorderSettings } from './settings';

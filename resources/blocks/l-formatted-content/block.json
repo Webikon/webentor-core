@@ -1,0 +1,28 @@
+{
+  "$schema": "../../../schemas/webentor-block.json",
+  "name": "webentor/l-formatted-content",
+  "apiVersion": 3,
+  "title": "Formatted Content",
+  "description": "Use this block to wrap your content to apply formatting styles.",
+  "category": "webentor-layout",
+  "icon": "text-page",
+  "keywords": ["formatted", "content"],
+  "attributes": {
+    "anchor": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "anchor": true,
+    "color": {
+      "background": true,
+      "text": true
+    },
+    "webentor": {
+      "spacing": true,
+      "border": true,
+      "borderRadius": true
+    }
+  }
+}

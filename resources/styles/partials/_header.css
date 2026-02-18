@@ -1,0 +1,21 @@
+.header {
+  &.is-sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    transition: transform 0.2s ease-in-out;
+  }
+}
+
+.admin-bar {
+  .header.is-sticky {
+    padding-top: 32px;
+
+    /* stylelint-disable-next-line */
+    @media screen and (max-width: 782px) {
+      padding-top: 46px;
+    }
+  }
+}

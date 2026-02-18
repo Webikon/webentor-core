@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../schemas/webentor-block.json",
+  "name": "webentor/l-site-logo",
+  "title": "Site Logo",
+  "description": "Website logo with link to homepage",
+  "category": "webentor-layout",
+  "icon": "admin-site-alt3",
+  "keywords": [
+    "logo",
+    "site logo",
+    "website logo"
+  ],
+  "attributes": {},
+  "supports": {}
+}

@@ -1,0 +1,102 @@
+:root {
+  /* TODO adjust variables */
+  --wbtr-table-row-border-width: 1px;
+  --wbtr-table-row-border-color: #e5e5e5;
+}
+
+.table-scroll-shadow {
+  &.has-scroll {
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      right: 0;
+      width: 16px; /* same as cell right padding */
+      height: 100%;
+      pointer-events: none;
+      background-image: linear-gradient(
+        270deg,
+        var(--color-white) 0%,
+        rgba(255 255 255 / 0%) 100%
+      );
+
+      @media (min-width: theme(--breakpoint-sm)) {
+        width: 24px;
+      }
+
+      @media (min-width: theme(--breakpoint-md)) {
+        width: 36px;
+      }
+
+      @media (min-width: theme(--breakpoint-lg)) {
+        width: 48px;
+      }
+    }
+  }
+}
+
+.table,
+.wp-block-table {
+  width: 100%;
+  display: block;
+  overflow-x: auto;
+  position: relative;
+
+  table {
+    width: 100%;
+    font-family: var(--font-primary);
+    text-align: left;
+  }
+  thead {
+    border-bottom: none;
+  }
+
+  th,
+  td {
+    padding-right: 16px;
+    border: none;
+    border-bottom: var(--wbtr-table-row-border-width) solid
+      var(--wbtr-table-row-border-color);
+    max-width: 200px;
+
+    @media (min-width: theme(--breakpoint-sm)) {
+      padding-right: 24px;
+      max-width: 400px;
+    }
+
+    @media (min-width: theme(--breakpoint-md)) {
+      padding-right: 36px;
+    }
+
+    @media (min-width: theme(--breakpoint-lg)) {
+      padding-right: 48px;
+    }
+  }
+
+  th {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    font-size: 16px;
+    font-weight: var(--font-weight-bold);
+
+    @media (min-width: theme(--breakpoint-sm)) {
+      font-size: 18px;
+    }
+  }
+
+  td {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  table.has-fixed-layout {
+    table-layout: fixed;
+
+    th,
+    td {
+      white-space: normal;
+    }
+  }
+}

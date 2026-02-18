@@ -1,0 +1,89 @@
+{
+  "$schema": "../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "name": "webentor/l-section",
+  "title": "Section",
+  "description": "Section wrapper",
+  "category": "webentor-layout",
+  "icon": "align-wide",
+  "keywords": [
+    "section",
+    "container",
+    "layout"
+  ],
+  "attributes": {
+    "img": {
+      "type": "object",
+      "default": null
+    },
+    "mobileImg": {
+      "type": "object",
+      "default": null
+    },
+    "imgSize": {
+      "type": "object",
+      "default": null
+    },
+    "spacing": {
+      "type": "object",
+      "default": {
+        "padding-top": {
+          "value": {
+            "basic": "pt-10",
+            "lg": "pt-20"
+          }
+        },
+        "padding-bottom": {
+          "value": {
+            "basic": "pb-10",
+            "lg": "pb-20"
+          }
+        }
+      }
+    },
+    "display": {
+      "type": "object",
+      "default": {
+        "display": {
+          "value": {
+            "basic": "flex"
+          }
+        }
+      }
+    },
+    "flexbox": {
+      "type": "object",
+      "default": {
+        "flex-direction": {
+          "value": {
+            "basic": "flex-col"
+          }
+        }
+      }
+    },
+    "anchor": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "anchor": true,
+    "color": {
+      "text": true,
+      "background": true
+    },
+    "webentor": {
+      "spacing": true,
+      "display": {
+        "height": true,
+        "minHeight": true,
+        "display": true
+      },
+      "flexbox": true,
+      "flexboxItem": true,
+      "grid": true,
+      "border": true,
+      "borderRadius": true
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "name": "webentor/e-slider",
+  "title": "Slider",
+  "description": "Slider block.",
+  "category": "webentor-elements",
+  "icon": "slides",
+  "keywords": ["slider", "carousel"],
+  "example": {
+    "attributes": {
+      "mode": "preview",
+      "data": {
+        "preview_image_help": true
+      }
+    }
+  },
+  "attributes": {
+    "slider": {
+      "type": "object",
+      "default": {}
+    },
+    "template": {
+      "type": "array",
+      "default": null
+    }
+  },
+  "supports": {
+    "color": {
+      "background": false,
+      "text": true
+    },
+    "webentor": {
+      "spacing": true,
+      "display": true,
+      "grid": true,
+      "gridItem": true,
+      "flexbox": true,
+      "flexboxItem": true
+    }
+  }
+}

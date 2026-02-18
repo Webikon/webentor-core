@@ -1,0 +1,21 @@
+@import 'tailwindcss' prefix(wbtr);
+@source "../views/";
+@source "../core-components/";
+@source "../blocks/";
+@source "../../app/";
+
+/* Tailwind Config */
+@import './common/_theme';
+@import './common/_utilities';
+
+/** Common **/
+@import './common/_global';
+@import './common/_wordpress';
+@import './common/_form';
+
+/** Components */
+@import './components/_table';
+
+/** Partials */
+@import './partials/_header';
+@import './partials/_pagination';

@@ -1,0 +1,100 @@
+{
+  "name": "@webikon/webentor-core",
+  "homepage": "https://webikon.sk",
+  "version": "0.9.12",
+  "description": "Core functionality and useful utilities for Webentor Stack",
+  "license": "MIT",
+  "author": "Webikon s.r.o.",
+  "maintainers": [
+    {
+      "name": "Webikon s.r.o.",
+      "email": "support@webikon.sk"
+    },
+    {
+      "name": "Pavol Caban",
+      "email": "pavol.caban@webikon.sk"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webikon/webentor-core.git"
+  },
+  "keywords": [
+    "wordpress",
+    "gutenberg",
+    "blocks",
+    "webentor",
+    "sage"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "npm run lint:js && npm run lint:css",
+    "lint:js": "eslint resources/scripts resources/blocks",
+    "lint:css": "stylelint \"resources/**/*.{vue,css,sass,scss,less}\"",
+    "prettier-check": "prettier --check 'resources/**/*.{js,ts,tsx,css}'",
+    "prettier-check:js": "prettier --check 'resources/**/*.{js,ts,tsx}'",
+    "prettier-check:css": "prettier --check 'resources/**/*.css'",
+    "prettier-check:blade": "prettier --check 'resources/**/*.blade.php'",
+    "prettier-fix": "prettier --write 'resources/**/*.{js,ts,tsx,css}'",
+    "prettier-fix:js": "prettier --write 'resources/**/*.{js,ts,tsx}'",
+    "prettier-fix:css": "prettier --write 'resources/**/*.css'",
+    "prettier-fix:blade": "prettier --write 'resources/**/*.blade.php'",
+    "prepare": "husky || true"
+  },
+  "devDependencies": {
+    "@10up/block-components": "^1.21.4",
+    "@eslint/js": "^9.39.1",
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
+    "@kucrut/vite-for-wp": "^0.12.0",
+    "@roots/vite-plugin": "^1.2.3",
+    "@shufo/prettier-plugin-blade": "^1.16.1",
+    "@tailwindcss/postcss": "^4.1.17",
+    "@tailwindcss/vite": "^4.1.17",
+    "@types/wordpress__block-editor": "^14.21.2",
+    "@vitejs/plugin-react": "^5.1.1",
+    "@webikon/webentor-configs": "^1.0.0",
+    "@wordpress/block-editor": "^15.9.0",
+    "@wordpress/block-library": "^9.36.0",
+    "@wordpress/blocks": "^15.9.0",
+    "@wordpress/components": "^30.9.0",
+    "@wordpress/dependency-extraction-webpack-plugin": "^6.36.0",
+    "@wordpress/i18n": "^6.9.0",
+    "@wordpress/icons": "^11.3.0",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react": "^7.37.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "patch-package": "^8.0.1",
+    "postcss": "^8.5.6",
+    "postcss-pxtorem": "^6.1.0",
+    "prettier": "^3.7.4",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "rollup-plugin-external-globals": "^0.13.0",
+    "stylelint": "^16.26.1",
+    "stylelint-config-recommended": "^17.0.0",
+    "tailwindcss": "^4.1.17",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.1",
+    "vite": "^7.2.6",
+    "vite-plugin-external": "^6.2.2"
+  },
+  "dependencies": {
+    "@alpinejs/collapse": "^3.15.2",
+    "alpinejs": "^3.15.2",
+    "swiper": "^12.0.3"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": "npm run lint:js --",
+    "*.css": "npm run lint:css --"
+  },
+  "packageManager": "pnpm@10.15.1+sha512.34e538c329b5553014ca8e8f4535997f96180a1d0f614339357449935350d924e22f8614682191264ec33d1462ac21561aff97f6bb18065351c162c7e8f6de67"
+}

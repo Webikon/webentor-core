@@ -1,0 +1,33 @@
+.bg-image-underlay {
+  position: relative;
+
+  &::before {
+    position: absolute;
+    display: block;
+    inset: 0;
+    background-color: var(--color-gray-900);
+    opacity: 0.2;
+    content: '';
+  }
+
+  > * {
+    z-index: 1;
+  }
+}
+
+/* Border utilities */
+@utility border-t-* {
+  border-top-style: --value('none', 'solid', 'dashed', 'dotted', 'double');
+}
+
+@utility border-r-* {
+  border-right-style: --value('none', 'solid', 'dashed', 'dotted', 'double');
+}
+
+@utility border-b-* {
+  border-bottom-style: --value('none', 'solid', 'dashed', 'dotted', 'double');
+}
+
+@utility border-l-* {
+  border-left-style: --value('none', 'solid', 'dashed', 'dotted', 'double');
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "title": "Table",
+  "description": "Improved table with possibility to add inner rows and cells.",
+  "name": "webentor/e-table",
+  "icon": "editor-table",
+  "category": "webentor-elements",
+  "example": {
+    "attributes": {
+      "mode": "preview",
+      "data": {
+        "preview_image_help": true
+      }
+    }
+  },
+  "attributes": {
+    "template": {
+      "type": "array",
+      "default": null
+    }
+  },
+  "supports": {
+    "html": false,
+    "webentor": {
+      "spacing": true,
+      "border": true
+    }
+  }
+}

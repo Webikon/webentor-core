@@ -1,0 +1,51 @@
+{
+  "$schema": "../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "name": "webentor/l-404",
+  "title": "Block 404",
+  "description": "Block for 404",
+  "category": "webentor-layout",
+  "icon": "block-default",
+  "keywords": [
+    "404",
+    "block",
+    "layout"
+  ],
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Nothing found"
+    },
+    "button": {
+      "type": "object",
+      "properties": {
+        "showButton": {
+          "type": "boolean"
+        },
+        "title": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "default": {
+        "showButton": true,
+        "title": "Go to homepage",
+        "variant": "primary",
+        "url": ""
+      }
+    }
+  },
+  "supports": {
+    "align": false,
+    "anchor": true,
+    "color": {
+      "background": true
+    },
+    "jsx": true
+  }
+}

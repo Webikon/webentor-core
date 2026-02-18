@@ -1,0 +1,55 @@
+# Development files
+.github/
+docs/
+node_modules/
+vendor/
+.git/
+.gitignore
+
+# Build artifacts
+*.log
+*.tgz
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+tests/
+__tests__/
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+
+# Development configs
+eslint.config.js
+tsconfig.json
+vite.config.js
+postcss.config.js
+phpcs.xml
+composer.json
+composer.lock
+yarn.lock
+pnpm-lock.yaml
+.bladeformatterrc
+.editorconfig
+.prettierrc
+.php_cs.dist
+.stylelintignore
+.stylelintrc.js
+
+# Source files
+schemas/
+app/
+docs/
+*.php
+TODO.md
+DOC.md
+

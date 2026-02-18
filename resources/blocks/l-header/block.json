@@ -1,0 +1,26 @@
+{
+  "$schema": "../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "name": "webentor/l-header",
+  "title": "Header",
+  "description": "Header block with various settings.",
+  "category": "webentor-layout",
+  "icon": "list-view",
+  "keywords": [
+    "header",
+    "layout"
+  ],
+  "attributes": {
+    "sticky": {
+      "type": "string",
+      "default": ""
+    },
+    "hasContainer": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "anchor": true
+  }
+}

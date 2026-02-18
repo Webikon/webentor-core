@@ -1,0 +1,25 @@
+{
+  "$schema": "../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "name": "webentor/e-picker-query-loop",
+  "title": "Posts Picker Query Loop",
+  "description": "Display selected posts in a loop.",
+  "category": "webentor-elements",
+  "icon": "update",
+  "keywords": ["loop", "query", "picker"],
+  "attributes": {
+    "query": {
+      "type": "object",
+      "default": {
+        "postType": ["post"],
+        "posts": [],
+        "queryId": ""
+      }
+    },
+    "template": {
+      "type": "array",
+      "default": null
+    }
+  },
+  "supports": {}
+}

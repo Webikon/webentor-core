@@ -1,0 +1,40 @@
+{
+  "$schema": "../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "title": "Table Cell",
+  "description": "Cell with inner content.",
+  "name": "webentor/e-table-cell",
+  "parent": ["webentor/e-table-row"],
+  "category": "webentor-elements",
+  "example": {
+    "attributes": {
+      "mode": "preview",
+      "data": {
+        "preview_image_help": true
+      }
+    }
+  },
+  "attributes": {
+    "rowSpan": {
+      "type": "string",
+      "default": ""
+    },
+    "colSpan": {
+      "type": "string",
+      "default": ""
+    },
+    "showAsTh": {
+      "type": "boolean",
+      "default": false
+    },
+    "template": {
+      "type": "array",
+      "default": null
+    }
+  },
+  "supports": {
+    "html": false,
+    "multiple": true,
+    "customClassName": false
+  }
+}

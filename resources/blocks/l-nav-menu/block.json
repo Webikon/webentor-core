@@ -1,0 +1,27 @@
+{
+  "$schema": "../../../schemas/webentor-block.json",
+  "name": "webentor/l-nav-menu",
+  "title": "Navigation Menu",
+  "description": "Navigation menu block",
+  "category": "webentor-layout",
+  "icon": "menu",
+  "keywords": [
+    "menu",
+    "navigation"
+  ],
+  "attributes": {
+    "menuId": {
+      "type": "string",
+      "default": "0"
+    },
+    "direction": {
+      "type": "string",
+      "default": "direction-row"
+    }
+  },
+  "supports": {
+    "webentor": {
+      "display": true
+    }
+  }
+}

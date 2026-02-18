@@ -1,0 +1,75 @@
+@theme {
+  /* Fonts */
+  --font-*: initial;
+  --font-primary:
+    ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-secondary: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-heading:
+    ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+  --default-font-family: var(--font-primary);
+
+  --font-weight-300: 300;
+  --font-weight-400: 400;
+  --font-weight-500: 500;
+  --font-weight-600: 600;
+  --font-weight-700: 700;
+  --font-weight-900: 900;
+
+  --leading-*: initial;
+  --leading-100: 1;
+  --leading-110: 1.1;
+  --leading-125: 1.25;
+  --leading-150: 1.5;
+
+  --text-*: initial;
+  --text-10: 0.625rem;
+  --text-12: 0.75rem;
+  --text-14: 0.875rem;
+  --text-16: 1rem;
+  --text-18: 1.125rem;
+  --text-20: 1.25rem;
+  --text-22: 1.375rem;
+  --text-24: 1.5rem;
+  --text-26: 1.625rem;
+  --text-28: 1.75rem;
+  --text-30: 1.875rem;
+  --text-32: 2rem;
+  --text-34: 2.125rem;
+  --text-36: 2.25rem;
+  --text-38: 2.375rem;
+  --text-40: 2.5rem;
+  --text-44: 2.75rem;
+  --text-48: 3rem;
+  --text-50: 3.125rem;
+  --text-56: 3.5rem;
+  --text-60: 3.75rem;
+  --text-80: 5rem;
+
+  /* Breakpoints */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 30rem; /* 480px */
+  --breakpoint-md: 48rem; /* 768px */
+  --breakpoint-lg: 64rem; /* 1024px */
+  --breakpoint-xl: 75rem; /* 1200px */
+  --breakpoint-2xl: 100rem; /* 1600px */
+
+  /* Colors */
+  --color-editor-border: #ddd;
+
+  /* Borders */
+  --radius-*: initial;
+  --radius-none: 0;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-full: 9999px;
+}

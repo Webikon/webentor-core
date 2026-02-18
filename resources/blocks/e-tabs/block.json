@@ -1,0 +1,27 @@
+{
+  "$schema": "../../../schemas/webentor-block.json",
+  "apiVersion": 3,
+  "name": "webentor/e-tabs",
+  "title": "Tabs",
+  "description": "Tabs block.",
+  "category": "webentor-elements",
+  "icon": "feedback",
+  "allowedBlocks": ["webentor/e-tab-container"],
+  "keywords": ["tabs", "elements"],
+  "attributes": {},
+  "example": {
+    "attributes": {
+      "mode": "preview",
+      "data": {
+        "preview_image_help": true
+      }
+    }
+  },
+  "supports": {
+    "anchor": true,
+    "webentor": {
+      "display": true,
+      "spacing": true
+    }
+  }
+}
