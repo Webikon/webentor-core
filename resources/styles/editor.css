@@ -1,8 +1,8 @@
 @import 'tailwindcss' prefix(wbtr);
-@source "../views/";
-@source "../core-components/";
-@source "../blocks/";
-@source "../../app/";
+@source '../views/';
+@source '../core-components/';
+@source '../blocks/';
+@source '../../app/';
 
 /* Tailwind Config */
 @import './common/_theme';

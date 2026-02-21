@@ -29,7 +29,9 @@
   }
 
   svg {
-    transition: fill 0.15s ease-out, stroke 0.15s ease-out;
+    transition:
+      fill 0.15s ease-out,
+      stroke 0.15s ease-out;
   }
 }
 

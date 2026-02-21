@@ -64,8 +64,8 @@
 
 /* Dirty fix for hiding empty typography panel, see https://github.com/WordPress/gutenberg/issues/61231 */
 .typography-block-support-panel:has(
-    .components-tools-panel-header + :empty:last-child
-  ) {
+  .components-tools-panel-header + :empty:last-child
+) {
   display: none;
 }
 
