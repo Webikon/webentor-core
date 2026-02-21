@@ -1,0 +1,2 @@
+import{t as c}from"../../../_utils-PDaZ1Dn1.js";const e=o=>{const l=o.offsetWidth;return o.scrollWidth>l},t=o=>{o.closest(".table-scroll-shadow")?.classList.add("has-scroll")},s=o=>{o.closest(".table-scroll-shadow")?.classList.remove("has-scroll")};document.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll(".wp-block-table").forEach(l=>{e(l)?t(l):s(l)})});window.addEventListener("resize",c(()=>{document.querySelectorAll(".wp-block-table").forEach(l=>{e(l)?t(l):s(l)})},100));
+//# sourceMappingURL=script-BIchbcPK.js.map
