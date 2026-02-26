@@ -1,5 +1,10 @@
 # Webentor Core Changelog
 
+## 0.9.14
+
+- Fix Button link display
+- Disable auto sizes styles for images
+
 ## 0.9.13
 
 - Fix CSS formatting (quote style normalization, multiline transitions, selector indentation)
