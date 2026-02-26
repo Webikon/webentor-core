@@ -1,7 +1,5 @@
 # Webentor Core Changelog
 
-## DEV
-
 ## 0.9.13
 
 - Fix CSS formatting (quote style normalization, multiline transitions, selector indentation)
