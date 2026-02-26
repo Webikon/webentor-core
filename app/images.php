@@ -481,3 +481,8 @@ add_filter('wp_get_attachment_metadata', function ($data, $attachment_id) {
 
     return $data;
 }, 10, 2);
+
+/**
+ * Disable auto sizes styles for images
+ */
+add_filter('wp_img_tag_add_auto_sizes', '__return_false');

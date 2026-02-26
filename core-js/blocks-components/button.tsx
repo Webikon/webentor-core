@@ -309,38 +309,40 @@ export const WebentorButton = (props) => {
               }
             />
 
-            {!hideLink && attributes[attributeName]?.htmlElement === 'a' && (
-              <>
-                <div className="wbtr:mt-0 wbtr:mb-2 wbtr:text-[11px] wbtr:uppercase">
-                  {__('Button URL', 'webentor')}
-                </div>
-                <URLInput
-                  // label={__('Button URL', 'webentor')}
-                  value={
-                    attributes[attributeName] && attributes[attributeName]?.url
-                      ? attributes[attributeName]?.url
-                      : ''
-                  }
-                  onChange={(value) =>
-                    updateObjectAttribute(attributeName, 'url', value)
-                  }
-                  className="wbtr:mb-2"
-                />
+            {!hideLink &&
+              attributes[attributeName]?.htmlElement != 'button' && (
+                <>
+                  <div className="wbtr:mt-0 wbtr:mb-2 wbtr:text-[11px] wbtr:uppercase">
+                    {__('Button URL', 'webentor')}
+                  </div>
+                  <URLInput
+                    // label={__('Button URL', 'webentor')}
+                    value={
+                      attributes[attributeName] &&
+                      attributes[attributeName]?.url
+                        ? attributes[attributeName]?.url
+                        : ''
+                    }
+                    onChange={(value) =>
+                      updateObjectAttribute(attributeName, 'url', value)
+                    }
+                    className="wbtr:mb-2"
+                  />
 
-                <ToggleControl
-                  label={__('Open in new tab', 'webentor')}
-                  checked={
-                    attributes[attributeName] &&
-                    attributes[attributeName]?.newTab
-                      ? attributes[attributeName]?.newTab
-                      : false
-                  }
-                  onChange={(value) =>
-                    updateObjectAttribute(attributeName, 'newTab', value)
-                  }
-                />
-              </>
-            )}
+                  <ToggleControl
+                    label={__('Open in new tab', 'webentor')}
+                    checked={
+                      attributes[attributeName] &&
+                      attributes[attributeName]?.newTab
+                        ? attributes[attributeName]?.newTab
+                        : false
+                    }
+                    onChange={(value) =>
+                      updateObjectAttribute(attributeName, 'newTab', value)
+                    }
+                  />
+                </>
+              )}
 
             <div className="wbtr:border wbtr:border-editor-border wbtr:p-2">
               <div className="wbtr:my-2">
