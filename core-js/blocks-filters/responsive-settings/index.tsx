@@ -6,158 +6,58 @@ import { addFilter, applyFilters } from '@wordpress/hooks';
 import { WebentorConfig } from '@webentorCore/types/_webentor-config';
 
 import { includedBlocks } from './constants';
-import { BlockLinkPanel } from './settings/block-link';
-import { BorderPanel } from './settings/border';
-import { ContainerPanel } from './settings/container';
-import { SpacingPanel } from './settings/spacing';
+import { registry } from './registry';
 import { generateClassNames, inlineStyleGenerator } from './utils';
 
+// Side-effect imports: each module self-registers with the SettingsRegistry
+import './settings/block-link';
+import './settings/border';
+import './settings/container';
+import './settings/spacing';
+
 const initResponsiveSettings = () => {
-  // Make sure new attributes are present in blocks so we can conditionally show their settings
+  // Attribute registration driven by the registry instead of 8 hardcoded blocks
   addFilter(
     'blocks.registerBlockType',
     'webentor/addResponsiveSettingsAttributes',
     (settings, name) => {
-      if (
-        includedBlocks['blockLink'].includes(name) ||
-        settings?.supports?.webentor?.blockLink
-      ) {
-        settings.attributes = {
-          ...settings.attributes,
-          ...{
-            blockLink: {
-              type: 'object',
-              default: settings.attributes?.blockLink?.default || {},
-            },
-          },
-        };
-      }
+      const allDefs = registry.getAll();
 
-      if (
-        includedBlocks['display'].includes(name) ||
-        settings?.supports?.webentor?.display
-      ) {
-        const displaySupport =
-          settings?.supports?.webentor?.display === true ||
-          settings?.supports?.webentor?.display?.display === true;
+      for (const def of allDefs) {
+        const supportedByRegistry = registry.isSupported(
+          settings?.supports,
+          def,
+        );
 
-        settings.attributes = {
-          ...settings.attributes,
-          ...{
-            display: {
-              type: 'object',
-              default: {
-                ...settings?.attributes?.display?.default,
-                display: {
-                  value: {
-                    // Default display is FLEX
-                    ...(displaySupport ? { basic: 'flex' } : {}),
-                    ...settings?.attributes?.display?.default?.display?.value,
-                  },
-                },
-              },
-            },
-          },
-        };
-      }
+        // Legacy fallback: includedBlocks arrays (currently all empty)
+        const supportedByLegacy = Array.isArray(def.supportKey)
+          ? def.supportKey.some((k) => includedBlocks[k]?.includes(name))
+          : includedBlocks[def.supportKey]?.includes(name);
 
-      if (
-        includedBlocks['spacing'].includes(name) ||
-        settings?.supports?.webentor?.spacing
-      ) {
-        settings.attributes = {
-          ...settings.attributes,
-          ...{
-            spacing: {
-              type: 'object',
-              default: settings.attributes?.spacing?.default || {},
-            },
-          },
-        };
-      }
+        if (!supportedByRegistry && !supportedByLegacy) continue;
 
-      if (
-        includedBlocks['grid'].includes(name) ||
-        settings?.supports?.webentor?.grid
-      ) {
-        settings.attributes = {
-          ...settings.attributes,
-          ...{
-            grid: {
-              type: 'object',
-              default: settings.attributes?.grid?.default || {},
+        // Merge attribute schemas from the definition
+        for (const [attrKey, schema] of Object.entries(def.attributeSchema)) {
+          settings.attributes = {
+            ...settings.attributes,
+            [attrKey]: {
+              ...schema,
+              default:
+                settings.attributes?.[attrKey]?.default || schema.default,
             },
-          },
-        };
-      }
+          };
+        }
 
-      if (
-        includedBlocks['gridItem'].includes(name) ||
-        settings?.supports?.webentor?.gridItem
-      ) {
-        settings.attributes = {
-          ...settings.attributes,
-          ...{
-            gridItem: {
-              type: 'object',
-              default: settings.attributes?.gridItem?.default || {},
-            },
-          },
-        };
-      }
-
-      if (
-        includedBlocks['flexbox'].includes(name) ||
-        settings?.supports?.webentor?.flexbox
-      ) {
-        settings.attributes = {
-          ...settings.attributes,
-          ...{
-            flexbox: {
-              type: 'object',
-              default: settings.attributes?.flexbox?.default || {},
-            },
-          },
-        };
-      }
-
-      if (
-        includedBlocks['flexboxItem'].includes(name) ||
-        settings?.supports?.webentor?.flexboxItem
-      ) {
-        settings.attributes = {
-          ...settings.attributes,
-          ...{
-            flexboxItem: {
-              type: 'object',
-              default: settings.attributes?.flexboxItem?.default || {},
-            },
-          },
-        };
-      }
-
-      if (
-        includedBlocks['border'].includes(name) ||
-        includedBlocks['borderRadius'].includes(name) ||
-        settings?.supports?.webentor?.border ||
-        settings?.supports?.webentor?.borderRadius
-      ) {
-        settings.attributes = {
-          ...settings.attributes,
-          ...{
-            border: {
-              type: 'object',
-              default: settings.attributes?.border?.default || {},
-            },
-          },
-        };
+        // Custom attribute initialiser (e.g. display defaults)
+        if (def.initAttributes) {
+          settings = def.initAttributes(settings, name);
+        }
       }
 
       return settings;
     },
   );
 
-  // Register block extension for all blocks
   registerBlockExtension('*', {
     extensionName: 'webentor.core.addResponsiveSettings',
     attributes: {},
@@ -177,17 +77,21 @@ const BlockEdit = (props) => {
     {},
   );
 
+  const allSettings = registry.getAll();
+
+  console.log(allSettings);
+
   return (
     <Fragment>
       <InspectorControls>
-        <SpacingPanel {...props} breakpoints={breakpoints} twTheme={twTheme} />
-        <ContainerPanel
-          {...props}
-          breakpoints={breakpoints}
-          twTheme={twTheme}
-        />
-        <BorderPanel {...props} breakpoints={breakpoints} twTheme={twTheme} />
-        <BlockLinkPanel {...props} />
+        {allSettings.map((setting) => (
+          <setting.PanelComponent
+            key={setting.name}
+            {...props}
+            breakpoints={breakpoints}
+            twTheme={twTheme}
+          />
+        ))}
       </InspectorControls>
     </Fragment>
   );

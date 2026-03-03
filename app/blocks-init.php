@@ -212,8 +212,10 @@ function render_block_blade($block, $parent_block = null)
     $block_name = $block->parsed_block['blockName']; // in format "namespace/block-name"
     $block_slug = substr($block_name, strrpos($block_name, "/") + 1); // get only "block-name"
 
-    $classes = prepareBlockClassesFromSettings($block->attributes, $block, $parent_block)['classes'];
-    $classes_by_property = prepareBlockClassesFromSettings($block->attributes, $block, $parent_block)['classes_by_property'];
+    // Single call to avoid duplicate attribute iteration
+    $block_classes_result = prepareBlockClassesFromSettings($block->attributes, $block, $parent_block);
+    $classes = $block_classes_result['classes'];
+    $classes_by_property = $block_classes_result['classes_by_property'];
     $bg_classes = prepareBgBlockClassesFromSettings($block->attributes);
 
     $additional_data = [];
@@ -304,8 +306,10 @@ function render_inner_block_blade($block, $parent_block = null)
     $block_name = $block->parsed_block['blockName']; // in format "namespace/block-name"
     $block_slug = substr($block_name, strrpos($block_name, "/") + 1); // get only "block-name"
 
-    $classes = prepareBlockClassesFromSettings($block->attributes, $block, $parent_block)['classes'];
-    $classes_by_property = prepareBlockClassesFromSettings($block->attributes, $block, $parent_block)['classes_by_property'];
+    // Single call to avoid duplicate attribute iteration
+    $block_classes_result = prepareBlockClassesFromSettings($block->attributes, $block, $parent_block);
+    $classes = $block_classes_result['classes'];
+    $classes_by_property = $block_classes_result['classes_by_property'];
     $bg_classes = prepareBgBlockClassesFromSettings($block->attributes);
 
     // Let's have ability to modify classes and additional data for specific blocks

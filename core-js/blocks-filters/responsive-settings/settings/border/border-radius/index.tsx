@@ -1,1 +1,2 @@
-export { BorderRadiusPanel } from './panel';
+export { BorderRadiusSettings } from './settings';
+export { getBorderRadiusValues } from './properties';

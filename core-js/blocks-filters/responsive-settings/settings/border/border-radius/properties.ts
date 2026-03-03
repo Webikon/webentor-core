@@ -1,31 +1,9 @@
-import { __ } from '@wordpress/i18n';
-
 import { WebentorConfig } from '@webentorCore/types/_webentor-config';
 
-export const getBorderRadiusValues = (twTheme: WebentorConfig['theme']) => {
-  const values = Object.keys(twTheme?.borderRadius).map((key) => ({
-    label: `${key} (${twTheme?.borderRadius[key]})`,
-    value: key,
-  }));
+import { createTwThemeValues } from '../../shared/tw-values';
 
-  values.unshift({
-    label: __('None selected', 'webentor'),
-    value: '',
+export const getBorderRadiusValues = (twTheme: WebentorConfig['theme']) =>
+  createTwThemeValues(twTheme, 'borderRadius', '', {
+    sort: false,
+    labelFormatter: (key, rawValue) => `${key} (${rawValue})`,
   });
-
-  return values;
-};
-
-// export const getBorderRadiusProperties = (twTheme: WebentorConfig['theme']) => [
-//   {
-//     name: 'radius',
-//     label: __('Radius', 'webentor'),
-//     values: [
-//       { label: __('None selected', 'webentor'), value: '' },
-//       ...Object.keys(twTheme?.borderRadius || {}).map((key) => ({
-//         label: key,
-//         value: key,
-//       })),
-//     ],
-//   },
-// ];

@@ -3,6 +3,93 @@
 namespace Webentor\Core;
 
 /**
+ * PHP-side Settings Registry.
+ * Mirrors the JS SettingsRegistry pattern: each setting type registers a handler,
+ * and prepareBlockClassesFromSettings iterates over all registered handlers.
+ */
+class SettingsRegistry
+{
+    /** @var array<string, array{generator: callable, attributeSchema: array}> */
+    private static array $handlers = [];
+
+    /**
+     * Register a setting handler.
+     *
+     * @param string   $name            Setting identifier (e.g. 'spacing', 'display')
+     * @param callable $classGenerator  function(array $attributes, $block, $parentBlock): array{classes: string, classes_by_property: array}
+     * @param array    $attributeSchema Optional attribute schema for auto-registration
+     */
+    public static function register(string $name, callable $classGenerator, array $attributeSchema = []): void
+    {
+        self::$handlers[$name] = [
+            'generator' => $classGenerator,
+            'attributeSchema' => $attributeSchema,
+        ];
+    }
+
+    /**
+     * Generate classes for all registered settings that the block supports.
+     *
+     * @param  array     $attributes
+     * @param  \WP_Block $block
+     * @param  \WP_Block $parentBlock
+     * @return array{classes: string, classes_by_property: array}
+     */
+    public static function generateClasses(array $attributes, $block = null, $parentBlock = null): array
+    {
+        $classes = '';
+        $classes_by_prop = [];
+
+        foreach (self::$handlers as $name => $handler) {
+            $supportKey = self::getSupportKeyForHandler($name);
+
+            // Check if the block supports this setting (any of the support keys)
+            $isSupported = false;
+            foreach ((array) $supportKey as $key) {
+                if (!empty($block->block_type->supports['webentor'][$key])) {
+                    $isSupported = true;
+                    break;
+                }
+            }
+
+            if (!$isSupported) {
+                continue;
+            }
+
+            $result = ($handler['generator'])($attributes, $block, $parentBlock);
+            $classes .= $result['classes'];
+            $classes_by_prop = array_merge($classes_by_prop, $result['classes_by_property']);
+        }
+
+        return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
+    }
+
+    /**
+     * Map handler names to their block support keys.
+     */
+    private static function getSupportKeyForHandler(string $name): array
+    {
+        $map = [
+            'spacing'     => ['spacing'],
+            'display'     => ['display'],
+            'grid'        => ['grid'],
+            'gridItem'    => ['gridItem'],
+            'flexbox'     => ['flexbox'],
+            'flexboxItem' => ['flexboxItem'],
+            'border'      => ['border', 'borderRadius'],
+        ];
+
+        return $map[$name] ?? [$name];
+    }
+
+    /** @return array<string, array> */
+    public static function getAll(): array
+    {
+        return self::$handlers;
+    }
+}
+
+/**
  * If some defaults are needed for block attributes, they must be set via this hook.
  * Its because we are adding custom attributes via hook and not directly in block.json
  *
@@ -203,9 +290,12 @@ function prepareBgBlockClassesFromSettings($attributes, $block = null, $parent_b
 }
 
 /**
- *  Prepare block (and Tailwind) classes from block attributes
+ *  Prepare block (and Tailwind) classes from block attributes.
+ *  Orchestrates all registered setting handlers via SettingsRegistry,
+ *  plus className/align/backgroundColor/textColor which are always present.
  *
  * @param  array     $attributes
+ * @param  \WP_Block $block
  * @param  \WP_Block $parent_block
  * @return array ['classes' => string, 'classes_by_property' => array]
  */
@@ -250,50 +340,15 @@ function prepareBlockClassesFromSettings($attributes, $block = null, $parent_blo
         $classes .= $text_color_classes;
     }
 
-    if (!empty($block->block_type->supports['webentor']['spacing'])) {
-        $spacing_classes = prepareSpacingBlockClassesFromSettings($attributes, $block, $parent_block);
-        $classes .= $spacing_classes['classes'];
-        $classes_by_prop = array_merge($classes_by_prop, $spacing_classes['classes_by_property']);
-    }
-
-    if (!empty($block->block_type->supports['webentor']['display'])) {
-        $display_classes = prepareDisplayBlockClassesFromSettings($attributes, $block, $parent_block);
-        $classes .= $display_classes['classes'];
-        $classes_by_prop = array_merge($classes_by_prop, $display_classes['classes_by_property']);
-    }
-
-    if (!empty($block->block_type->supports['webentor']['grid'])) {
-        $grid_classes = prepareGridBlockClassesFromSettings($attributes, $block, $parent_block);
-        $classes .= $grid_classes['classes'];
-        $classes_by_prop = array_merge($classes_by_prop, $grid_classes['classes_by_property']);
-    }
-
-    if (!empty($block->block_type->supports['webentor']['gridItem'])) {
-        $grid_item_classes = prepareGridItemBlockClassesFromSettings($attributes, $block, $parent_block);
-        $classes .= $grid_item_classes['classes'];
-        $classes_by_prop = array_merge($classes_by_prop, $grid_item_classes['classes_by_property']);
-    }
-
-    if (!empty($block->block_type->supports['webentor']['flexbox'])) {
-        $flexbox_classes = prepareFlexboxBlockClassesFromSettings($attributes, $block, $parent_block);
-        $classes .= $flexbox_classes['classes'];
-        $classes_by_prop = array_merge($classes_by_prop, $flexbox_classes['classes_by_property']);
-    }
-
-    if (!empty($block->block_type->supports['webentor']['flexboxItem'])) {
-        $flexbox_item_classes = prepareFlexboxItemBlockClassesFromSettings($attributes, $block, $parent_block);
-        $classes .= $flexbox_item_classes['classes'];
-        $classes_by_prop = array_merge($classes_by_prop, $flexbox_item_classes['classes_by_property']);
-    }
-
-    if (!empty($block->block_type->supports['webentor']['border'])) {
-        $border_classes = prepareBorderBlockClassesFromSettings($attributes, $block, $parent_block);
-        $classes .= $border_classes['classes'];
-        $classes_by_prop = array_merge($classes_by_prop, $border_classes['classes_by_property']);
-    }
+    // Delegate to the registry for all setting-type handlers
+    $registry_result = SettingsRegistry::generateClasses($attributes, $block, $parent_block);
+    $classes .= $registry_result['classes'];
+    $classes_by_prop = array_merge($classes_by_prop, $registry_result['classes_by_property']);
 
     return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
 }
+
+// ── Setting handler functions (registered below) ──
 
 function prepareSpacingBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
 {
@@ -579,6 +634,16 @@ function prepareBorderBlockClassesFromSettings($attributes, $block = null, $pare
 
     return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
 }
+
+// ── Register all handlers with the SettingsRegistry ──
+
+SettingsRegistry::register('spacing', __NAMESPACE__ . '\prepareSpacingBlockClassesFromSettings');
+SettingsRegistry::register('display', __NAMESPACE__ . '\prepareDisplayBlockClassesFromSettings');
+SettingsRegistry::register('grid', __NAMESPACE__ . '\prepareGridBlockClassesFromSettings');
+SettingsRegistry::register('gridItem', __NAMESPACE__ . '\prepareGridItemBlockClassesFromSettings');
+SettingsRegistry::register('flexbox', __NAMESPACE__ . '\prepareFlexboxBlockClassesFromSettings');
+SettingsRegistry::register('flexboxItem', __NAMESPACE__ . '\prepareFlexboxItemBlockClassesFromSettings');
+SettingsRegistry::register('border', __NAMESPACE__ . '\prepareBorderBlockClassesFromSettings');
 
 /**
  * Add Custom Typography classes to Post Title block

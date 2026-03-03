@@ -2,37 +2,24 @@ import { __ } from '@wordpress/i18n';
 
 import { WebentorConfig } from '@webentorCore/types/_webentor-config';
 
-const getSpacingValues = (property = '', twTheme: WebentorConfig['theme']) => {
-  const values = Object.keys(twTheme?.spacing)
-    .sort((a, b) => Number(a) - Number(b))
-    .map((key) => ({
-      label: `${Number(key) * 4}px`,
-      value: `${property}-${key}`,
-    }));
+import { createTwThemeValues, spacingLabel } from '../shared/tw-values';
 
-  values.unshift({
-    label: __('None selected', 'webentor'),
-    value: '',
+const getSpacingValues = (
+  property: string,
+  twTheme: WebentorConfig['theme'],
+) =>
+  createTwThemeValues(twTheme, 'spacing', property, {
+    labelFormatter: spacingLabel,
   });
 
-  return values;
-};
-
-export const getSpacingProperties = (twTheme: WebentorConfig['theme']) => [
+/** Margin sides for BoxModelControl (includes Auto option) */
+export const getMarginSides = (twTheme: WebentorConfig['theme']) => [
   {
     label: __('Margin Top', 'webentor'),
     name: 'margin-top',
     values: [
       ...getSpacingValues('mt', twTheme),
       { label: 'Auto', value: 'mt-auto' },
-    ],
-  },
-  {
-    label: __('Margin Left', 'webentor'),
-    name: 'margin-left',
-    values: [
-      ...getSpacingValues('ml', twTheme),
-      { label: 'Auto', value: 'ml-auto' },
     ],
   },
   {
@@ -52,14 +39,21 @@ export const getSpacingProperties = (twTheme: WebentorConfig['theme']) => [
     ],
   },
   {
+    label: __('Margin Left', 'webentor'),
+    name: 'margin-left',
+    values: [
+      ...getSpacingValues('ml', twTheme),
+      { label: 'Auto', value: 'ml-auto' },
+    ],
+  },
+];
+
+/** Padding sides for BoxModelControl */
+export const getPaddingSides = (twTheme: WebentorConfig['theme']) => [
+  {
     label: __('Padding Top', 'webentor'),
     name: 'padding-top',
     values: getSpacingValues('pt', twTheme),
-  },
-  {
-    label: __('Padding Left', 'webentor'),
-    name: 'padding-left',
-    values: getSpacingValues('pl', twTheme),
   },
   {
     label: __('Padding Right', 'webentor'),
@@ -71,4 +65,36 @@ export const getSpacingProperties = (twTheme: WebentorConfig['theme']) => [
     name: 'padding-bottom',
     values: getSpacingValues('pb', twTheme),
   },
+  {
+    label: __('Padding Left', 'webentor'),
+    name: 'padding-left',
+    values: getSpacingValues('pl', twTheme),
+  },
 ];
+
+/** Flat list of all spacing properties (backward compat for getSpacingProperties) */
+export const getSpacingProperties = (twTheme: WebentorConfig['theme']) => [
+  ...getMarginSides(twTheme),
+  ...getPaddingSides(twTheme),
+];
+
+const SPACING_PROPERTY_NAMES = [
+  'margin-top',
+  'margin-bottom',
+  'margin-left',
+  'margin-right',
+  'padding-top',
+  'padding-bottom',
+  'padding-left',
+  'padding-right',
+];
+
+/** Check if any spacing value is set for a given breakpoint */
+export const hasSpacingSettingsForBreakpoint = (
+  attributes: Record<string, any>,
+  breakpoint: string,
+): boolean => {
+  return SPACING_PROPERTY_NAMES.some(
+    (prop) => !!attributes?.spacing?.[prop]?.value?.[breakpoint],
+  );
+};
