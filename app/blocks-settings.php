@@ -7,8 +7,8 @@ namespace Webentor\Core;
  * Mirrors the JS SettingsRegistry pattern: each setting type registers a handler,
  * and prepareBlockClassesFromSettings iterates over all registered handlers.
  *
- * v2 adds dual reading: handlers check both v2 attribute keys (layout, sizing, flexItem)
- * and v1 keys (display, flexboxItem) for backward compatibility during migration.
+ * Handlers read the canonical responsive setting keys (layout, sizing, flexItem, etc.)
+ * and prepare class lists that mirror the editor-side registry.
  */
 class SettingsRegistry
 {
@@ -101,8 +101,7 @@ class SettingsRegistry
  * If some defaults are needed for block attributes, they must be set via this hook.
  * Its because we are adding custom attributes via hook and not directly in block.json
  *
- * Seeds layout defaults from canonical v2 support keys while still honoring
- * legacy display defaults present in some block.json files.
+ * Seeds layout defaults from canonical support keys.
  *
  * @param array $settings
  * @param array $metadata
@@ -116,7 +115,6 @@ add_filter('block_type_metadata_settings', function ($settings, $metadata) {
         $display_property_support = ($webentor_supports['layout'] ?? false) === true
             || ($webentor_supports['layout']['display'] ?? false) === true;
 
-        $display_default = $settings['attributes']['display']['default'] ?? [];
         $layout_default = $settings['attributes']['layout']['default'] ?? [];
 
         $default_value = [
@@ -124,7 +122,6 @@ add_filter('block_type_metadata_settings', function ($settings, $metadata) {
                 'value' => [
                     // Default display property must be FLEX!
                     ...$display_property_support ? ['basic' => 'flex'] : [],
-                    ...$display_default['display']['value'] ?? [],
                     ...$layout_default['display']['value'] ?? [],
                 ]
             ],
@@ -230,12 +227,10 @@ function prepareBlockClassesFromSettings($attributes, $block = null, $parent_blo
         'spacing' => [],
         'layout' => [],
         'sizing' => [],
-        'display' => [],
         'grid' => [],
         'gridItem' => [],
         'flexbox' => [],
         'flexItem' => [],
-        'flexboxItem' => [],
         'border' => [],
         'borderRadius' => [],
     ];
@@ -278,7 +273,6 @@ function prepareBlockClassesFromSettings($attributes, $block = null, $parent_blo
 }
 
 // ── Setting handler functions ──
-// v2 handlers use dual-read: check v2 keys first, fallback to v1 keys.
 
 function prepareSpacingBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
 {
@@ -296,18 +290,8 @@ function prepareSpacingBlockClassesFromSettings($attributes, $block = null, $par
 
             if (!empty($property_data['value'])) {
                 $spacing_classes = '';
-                // Determine type (margin/padding) for link-mode lookup
-                $type = str_starts_with($property_name, 'margin') ? 'margin' : 'padding';
-                $link_mode_key = "_{$type}LinkMode";
-
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     if (!empty($breakpoint_property_value)) {
-                        // Skip sides suppressed by the active link mode
-                        $link_mode = $attributes['spacing'][$link_mode_key]['value'][$breakpoint_name] ?? 'individual';
-                        if (is_spacing_side_suppressed($property_name, $link_mode)) {
-                            continue;
-                        }
-
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                         $spacing_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
@@ -322,25 +306,7 @@ function prepareSpacingBlockClassesFromSettings($attributes, $block = null, $par
 }
 
 /**
- * Check if a spacing side is suppressed by its link mode.
- * Mirrors the JS isSideSuppressed() logic.
- */
-function is_spacing_side_suppressed(string $property_name, string $link_mode): bool
-{
-    if ($link_mode === 'all' || $link_mode === 'individual') {
-        return false;
-    }
-    if ($link_mode === 'horizontal') {
-        return str_contains($property_name, 'top') || str_contains($property_name, 'bottom');
-    }
-    if ($link_mode === 'vertical') {
-        return str_contains($property_name, 'left') || str_contains($property_name, 'right');
-    }
-    return false;
-}
-
-/**
- * Layout handler — reads display mode from v2 'layout' key, falls back to v1 'display' key.
+ * Layout handler — reads display mode from the 'layout' attribute.
  * Only generates classes for the 'display' property itself; sizing is separate.
  */
 function prepareLayoutBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
@@ -350,12 +316,10 @@ function prepareLayoutBlockClassesFromSettings($attributes, $block = null, $pare
         'layout' => [],
     ];
 
-    // Resolve display value: v2 layout.display takes priority over v1 display.display
     $layout_attr = $attributes['layout'] ?? [];
-    $display_attr = $attributes['display'] ?? [];
 
     // Only handle the 'display' property here
-    $display_prop = $layout_attr['display'] ?? $display_attr['display'] ?? null;
+    $display_prop = $layout_attr['display'] ?? null;
 
     if (!empty($display_prop['value'])) {
         $layout_classes = '';
@@ -373,8 +337,8 @@ function prepareLayoutBlockClassesFromSettings($attributes, $block = null, $pare
 }
 
 /**
- * Sizing handler — reads from v2 'sizing' key, falls back to v1 'display' key
- * for height, width, min/max dimension properties.
+ * Sizing handler — reads from the 'sizing' attribute for height, width,
+ * and min/max dimension properties.
  */
 function prepareSizingBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
 {
@@ -385,11 +349,9 @@ function prepareSizingBlockClassesFromSettings($attributes, $block = null, $pare
 
     $sizing_properties = ['height', 'min-height', 'max-height', 'width', 'min-width', 'max-width'];
     $sizing_attr = $attributes['sizing'] ?? [];
-    $display_attr = $attributes['display'] ?? [];
 
     foreach ($sizing_properties as $prop_name) {
-        // v2 key takes priority, fallback to v1 display attribute
-        $prop_data = $sizing_attr[$prop_name] ?? $display_attr[$prop_name] ?? null;
+        $prop_data = $sizing_attr[$prop_name] ?? null;
 
         if (!empty($prop_data['value'])) {
             $sizing_classes = '';
@@ -409,12 +371,10 @@ function prepareSizingBlockClassesFromSettings($attributes, $block = null, $pare
 
 /**
  * Helper: resolve the explicit display value for a breakpoint (no cascade).
- * Checks v2 layout.display first, then v1 display.display.
  */
 function get_display_value_for_breakpoint($attributes, $breakpoint_name)
 {
     return $attributes['layout']['display']['value'][$breakpoint_name]
-        ?? $attributes['display']['display']['value'][$breakpoint_name]
         ?? null;
 }
 
@@ -549,7 +509,7 @@ function prepareFlexboxBlockClassesFromSettings($attributes, $block = null, $par
 }
 
 /**
- * Flex-item handler — reads from v2 'flexItem', falls back to v1 'flexboxItem'.
+ * Flex-item handler — reads from the 'flexItem' attribute.
  */
 function prepareFlexItemBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
 {
@@ -558,7 +518,7 @@ function prepareFlexItemBlockClassesFromSettings($attributes, $block = null, $pa
         'flexItem' => [],
     ];
 
-    $flex_item_attr = $attributes['flexItem'] ?? $attributes['flexboxItem'] ?? [];
+    $flex_item_attr = $attributes['flexItem'] ?? [];
 
     if (!empty($flex_item_attr)) {
         foreach ($flex_item_attr as $property_name => $property_data) {
@@ -667,8 +627,8 @@ function prepareBorderBlockClassesFromSettings($attributes, $block = null, $pare
 }
 
 // ── Register all handlers with the SettingsRegistry ──
-// v2 registration: layout and sizing replace the old display handler,
-// flexItem replaces flexboxItem. Old handlers removed.
+// Layout and sizing are handled separately. Flex-item settings are registered
+// under the canonical flexItem key.
 
 SettingsRegistry::register('spacing', __NAMESPACE__ . '\prepareSpacingBlockClassesFromSettings');
 SettingsRegistry::register('layout', __NAMESPACE__ . '\prepareLayoutBlockClassesFromSettings');

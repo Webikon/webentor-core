@@ -46,11 +46,7 @@ export const hasLayoutSettingsForBreakpoint = (
   attributes: Record<string, any>,
   breakpoint: string,
 ): boolean => {
-  const isV2 = attributes?._responsiveSettingsVersion === 2;
   return LAYOUT_PROPERTY_NAMES.some(
-    (prop) =>
-      !!attributes?.layout?.[prop]?.value?.[breakpoint] ||
-      // Only fall back to v1 'display' key for un-migrated blocks
-      (!isV2 && !!attributes?.display?.[prop]?.value?.[breakpoint]),
+    (prop) => !!attributes?.layout?.[prop]?.value?.[breakpoint],
   );
 };

@@ -2,7 +2,6 @@
  * LayoutSettings — display mode selector.
  *
  * Rendered inside the DisplayLayoutPanel at order: 10.
- * Reads from v2 'layout' attribute with v1 'display' fallback.
  */
 import { getBlockSupport } from '@wordpress/blocks';
 import { Fragment } from '@wordpress/element';
@@ -23,8 +22,7 @@ export const LayoutSettings = ({
   breakpoints,
   twTheme,
 }: SettingsComponentProps) => {
-  // Accept both v2 'layout' and v1 'display' attribute keys
-  if (!attributes?.layout && !attributes?.display) {
+  if (!attributes?.layout) {
     return null;
   }
 
@@ -45,8 +43,7 @@ export const LayoutSettings = ({
     return supports?.[camelize(property.name)] === true;
   };
 
-  // Use v2 key if available, fallback to v1 for un-migrated blocks
-  const attributeKey = attributes?.layout ? 'layout' : 'display';
+  const attributeKey = 'layout';
 
   return (
     <Fragment>

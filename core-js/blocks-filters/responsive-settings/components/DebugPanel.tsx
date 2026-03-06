@@ -25,9 +25,7 @@ const ATTRIBUTE_KEYS = [
   '_preset',
   '_presetClasses',
   'blockLink',
-  '_responsiveSettingsVersion',
-
-  // v1 keys (stale data can cause phantom asterisks / reset issues)
+  // v1 keys are not supported anymore, kept here for debugging reference
   'display',
   'flexboxItem',
 ] as const;

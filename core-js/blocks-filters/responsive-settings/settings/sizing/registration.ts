@@ -17,13 +17,10 @@ const generateSizingClasses = (
 ): string[] => {
   const classes: string[] = [];
 
-  // Read from v2 'sizing' key, fallback to v1 'display' key
   const sizingAttr = attributes?.sizing || {};
-  const displayAttr = attributes?.display || {};
 
   for (const propName of SIZING_PROPERTY_NAMES) {
-    // Prefer v2 key, then v1 fallback
-    const propData = sizingAttr[propName] || displayAttr[propName];
+    const propData = sizingAttr[propName];
     if (!propData?.value) continue;
     const bpValue = propData.value[breakpoint];
     if (!bpValue) continue;

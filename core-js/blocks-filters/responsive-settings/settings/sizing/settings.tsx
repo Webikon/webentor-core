@@ -2,7 +2,6 @@
  * SizingSettings — width, height, min/max dimension controls.
  *
  * Rendered inside the DisplayLayoutPanel at order: 20.
- * Reads from v2 'sizing' attribute with v1 'display' fallback.
  */
 import { getBlockSupport } from '@wordpress/blocks';
 import { Fragment, useMemo } from '@wordpress/element';
@@ -28,8 +27,7 @@ export const SizingSettings = ({
   breakpoints,
   twTheme,
 }: SettingsComponentProps) => {
-  // Accept both v2 'sizing' and v1 'display' (where sizing props lived)
-  if (!attributes?.sizing && !attributes?.display) {
+  if (!attributes?.sizing) {
     return null;
   }
 
@@ -76,8 +74,7 @@ export const SizingSettings = ({
     return supports?.[camelize(property.name)] === true;
   };
 
-  // Use v2 key if available, fallback to v1 for un-migrated blocks
-  const attributeKey = attributes?.sizing ? 'sizing' : 'display';
+  const attributeKey = 'sizing';
 
   return (
     <Fragment>

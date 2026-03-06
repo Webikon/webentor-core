@@ -12,7 +12,7 @@
       "type": "array",
       "default": null
     },
-    "display": {
+    "sizing": {
       "type": "object",
       "default": {
         "width": {

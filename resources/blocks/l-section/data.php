@@ -16,8 +16,8 @@ add_filter('webentor/block_classes', function ($classes, $block, $classes_by_pro
             \Webentor\Core\get_classes_by_property($classes_by_property, ['backgroundColor']),
             \Webentor\Core\get_classes_by_property($classes_by_property, ['textColor']),
             \Webentor\Core\get_classes_by_property($classes_by_property, ['spacing']),
-            \Webentor\Core\get_classes_by_property($classes_by_property, ['display', 'height']),
-            \Webentor\Core\get_classes_by_property($classes_by_property, ['display', 'min-height']),
+            \Webentor\Core\get_classes_by_property($classes_by_property, ['sizing', 'height']),
+            \Webentor\Core\get_classes_by_property($classes_by_property, ['sizing', 'min-height']),
             \Webentor\Core\get_classes_by_property($classes_by_property, ['border']),
             \Webentor\Core\get_classes_by_property($classes_by_property, ['borderRadius']),
         ];
@@ -40,7 +40,7 @@ add_filter('webentor/block_classes', function ($classes, $block, $classes_by_pro
 add_filter('webentor/block_custom_classes', function ($custom_classes, $block, $classes_by_property) {
     if ($block->name === 'webentor/l-section') {
         $custom_classes = [
-            \Webentor\Core\get_classes_by_property($classes_by_property, ['display', 'display']),
+            \Webentor\Core\get_classes_by_property($classes_by_property, ['layout', 'display']),
             \Webentor\Core\get_classes_by_property($classes_by_property, ['flexbox']),
             \Webentor\Core\get_classes_by_property($classes_by_property, ['grid']),
         ];

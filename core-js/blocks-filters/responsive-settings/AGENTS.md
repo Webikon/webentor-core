@@ -17,8 +17,7 @@ class names and output as CSS classes on the block wrapper.
 responsive-settings/
   index.tsx              — Entry point: attribute filter, registerBlockExtension, BlockEdit
   registry.ts            — SettingsRegistry singleton (Map-based, panelGroup queries)
-  migration.ts           — Display value helpers (v1/v2 dual-read); on-load migrator removed (PHP handles it)
-  migration-cleanup.md   — Checklist of all remaining v1 fallbacks to remove later
+  migration.ts           — Display value helpers + display-specific cascade helpers
   utils.ts               — Class generation orchestrator + border preview helpers + generic breakpoint cascade utilities
   constants.ts           — Legacy includedBlocks map (currently empty, kept for fallback)
   types/index.ts         — All TypeScript interfaces (SettingDefinition, PanelGroup, BlockAttributes, etc.)
@@ -38,7 +37,6 @@ responsive-settings/
     BoxModelControl.tsx       — Margin/padding box-model layout with link modes
     LinkedValuesControl.tsx   — Link/unlink toggle + reset button
     DisabledSliderInfo.tsx    — Info message when slider overrides settings
-    LayoutModeSettings.tsx    — Backward-compat container+item layout component
     InheritedIndicator.tsx    — "Inherited from {breakpoint}" label for cascaded settings
 
   settings/
@@ -107,7 +105,6 @@ Key methods:
 2. **Editor rendering** (`BlockEdit` in `index.tsx`):
    - Renders SpacingPanel, DisplayLayoutPanel, BorderPanel, BlockLinkPanel
    - Each panel queries registry and renders SettingsComponents
-   - v1→v2 migration is handled globally in PHP (no JS on-load migrator)
 
 3. **Class generation** (`generateClassNames` in `utils.ts`):
    - Called by `registerBlockExtension` classNameGenerator hook
@@ -137,28 +134,16 @@ Example:
 }
 ```
 
-## v1 → v2 Migration
+## Migration
 
-### Attribute Key Changes
-
-| v1 Key | v2 Key | Notes |
-|--------|--------|-------|
-| `display.display` | `layout.display` | Display mode |
-| `display.height/width/min-*/max-*` | `sizing.*` | Sizing properties |
-| `flexboxItem` | `flexItem` | Renamed |
-| `spacing`, `grid`, `gridItem`, `flexbox`, `border` | unchanged | |
-
-### How It Works
-
-- v1→v2 migration is handled globally in PHP (JS on-load migrator has been removed)
-- `_responsiveSettingsVersion` attribute: absent/1 = v1, 2 = v2
-- `getDisplayValue()` / `getParentDisplayValue()` are the canonical way to read display mode — they check v2 key first, fall back to v1
-- v1 fallbacks still exist in the attribute readers; see `migration-cleanup.md` for the full removal checklist
+- Runtime code only reads canonical v2 keys
+- PHP migration lives in `app/blocks-migration.php`
+- `getDisplayValue()` / `getParentDisplayValue()` are the canonical display readers for `layout.display`
 
 ## PHP Side (`app/blocks-settings.php`)
 
 - `SettingsRegistry` class mirrors the JS pattern
-- `get_display_value_for_breakpoint()` helper for v2/v1 dual reading (explicit only)
+- `get_display_value_for_breakpoint()` helper for explicit display reads
 - `get_effective_display_value_for_breakpoint()` cascaded display (min-width inheritance)
 - `get_effective_parent_display_value_for_breakpoint()` cascaded parent display
 - Handlers: `prepareLayoutBlockClassesFromSettings`, `prepareSizingBlockClassesFromSettings`,
@@ -226,11 +211,11 @@ explicit value, because the effective display cascades from `basic`. An
 | `getEffectiveObjectValue(attrs, attrKey, prop, bp, bps)` | Cascade for object-typed values (borders, radius) |
 | `getObjectInheritedFromBreakpoint(attrs, attrKey, prop, bp, bps)` | Source breakpoint for inherited object values |
 
-### Display Cascade Functions (`migration.ts`, v1/v2 aware)
+### Display Cascade Functions (`migration.ts`)
 
 | Function | Purpose |
 |----------|---------|
-| `getEffectiveDisplayValue(attrs, bp, bps)` | Cascaded display mode (v1/v2 dual-read) |
+| `getEffectiveDisplayValue(attrs, bp, bps)` | Cascaded display mode |
 | `getEffectiveParentDisplayValue(parentAttrs, bp, bps)` | Cascaded parent display |
 | `getDisplayInheritedFromBreakpoint(attrs, bp, bps)` | Display-specific inheritance source |
 
@@ -263,7 +248,7 @@ The `breakpoints` prop is threaded from `SettingsComponentProps` → `Responsive
 
 ## Common Mistakes to Avoid
 
-- **Don't read `attributes.display.display` directly** — use `getDisplayValue()` from `migration.ts`
+- **Don't read `attributes.layout.display` directly in contextual modules** — use `getDisplayValue()` from `migration.ts`
 - **Don't read parent display directly** — use `getParentDisplayValue()`
 - **Don't create a new PanelBody in a SettingsComponent** — it renders inline within an existing panel
 - **Don't forget both JS and PHP** — class generation runs on both sides

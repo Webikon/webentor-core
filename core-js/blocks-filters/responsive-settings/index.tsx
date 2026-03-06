@@ -11,7 +11,7 @@
  * - BlockEdit renders the panels in InspectorControls
  *
  * @see ./registry.ts — SettingsRegistry singleton
- * @see ./migration.ts — display value helpers (v1/v2 dual-read)
+ * @see ./migration.ts — display value helpers
  */
 import { registerBlockExtension } from '@10up/block-components';
 import { BlockControls, InspectorControls } from '@wordpress/block-editor';
@@ -87,14 +87,6 @@ const initResponsiveSettings = () => {
         }
       }
 
-      // Add migration version attribute to all blocks that have any responsive settings
-      if (settings.attributes?.display || settings.attributes?.layout) {
-        settings.attributes._responsiveSettingsVersion = {
-          type: 'number',
-          default: 2,
-        };
-      }
-
       return settings;
     },
   );
@@ -115,7 +107,7 @@ const initResponsiveSettings = () => {
  * Uses panel wrappers (SpacingPanel, DisplayLayoutPanel, BorderPanel, BlockLinkPanel)
  * which internally query the registry for their panelGroup's modules.
  *
- * v1→v2 attribute migration is handled globally in PHP.
+ * Responsive settings migration is handled globally in PHP.
  */
 const BlockEdit = (props: BlockPanelProps) => {
   const breakpoints: string[] = applyFilters('webentor.core.twBreakpoints', [

@@ -18,7 +18,7 @@ export const generateFlexItemClasses = (
 ): string[] => {
   const classes: string[] = [];
 
-  const flexItemAttr = attributes?.flexItem || attributes?.flexboxItem;
+  const flexItemAttr = attributes?.flexItem;
   if (!flexItemAttr) return classes;
 
   // Cascaded parent display check
@@ -55,7 +55,7 @@ const hasFlexItemActiveSettings = (
   );
   if (effectiveParentDisplay !== 'flex') return false;
 
-  const flexItemAttr = attributes?.flexItem || attributes?.flexboxItem;
+  const flexItemAttr = attributes?.flexItem;
   if (!flexItemAttr) return false;
 
   return FLEX_ITEM_PROPERTY_NAMES.some(

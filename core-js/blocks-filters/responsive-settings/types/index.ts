@@ -74,20 +74,13 @@ export interface PropertyDefinition {
 
 /**
  * Block attributes shape for responsive settings.
- * v1 keys (display, flexboxItem) coexist with v2 keys (layout, sizing, flexItem)
- * during the migration period.
  */
 export interface BlockAttributes {
   blockLink?: any;
   spacing?: ResponsiveAttribute;
-  // v1 attribute keys (kept for backward compat during migration)
-  display?: ResponsiveAttribute;
-  flexboxItem?: ResponsiveAttribute;
-  // v2 attribute keys
   layout?: ResponsiveAttribute;
   sizing?: ResponsiveAttribute;
   flexItem?: ResponsiveAttribute;
-  // Unchanged between versions
   grid?: ResponsiveAttribute;
   gridItem?: ResponsiveAttribute;
   flexbox?: ResponsiveAttribute;
@@ -95,9 +88,6 @@ export interface BlockAttributes {
   slider?: {
     enabled?: ResponsiveValue;
   };
-  // Migration version marker (absent = v1, 2 = v2)
-  _responsiveSettingsVersion?: number;
-  // Preset marker and custom classes from presets
   _preset?: string;
   _presetClasses?: string[];
 }

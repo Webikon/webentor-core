@@ -66,10 +66,7 @@ export const hasSizingSettingsForBreakpoint = (
   attributes: Record<string, any>,
   breakpoint: string,
 ): boolean => {
-  const isV2 = attributes?._responsiveSettingsVersion === 2;
   return SIZING_PROPERTY_NAMES.some(
-    (prop) =>
-      !!attributes?.sizing?.[prop]?.value?.[breakpoint] ||
-      (!isV2 && !!attributes?.display?.[prop]?.value?.[breakpoint]),
+    (prop) => !!attributes?.sizing?.[prop]?.value?.[breakpoint],
   );
 };

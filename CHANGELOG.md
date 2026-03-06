@@ -1,5 +1,22 @@
 # Webentor Core Changelog
 
+## 1.0.0
+
+- Refactor responsive settings and improve UX
+  - **BREAKING**: Run keys migrator from `Settings -> Webentor Migrator`
+  - **BREAKING**: Attributes keys changed, so supports in `block.json` and other usage in theme needs to be checked and renamed:
+    - `flexboxItem` -> `flexItem`
+    - `display` -> `layout` (for `display`) and `sizing` (for `width`, `height`, `minWidth`, `minHeight`, `maxWidth`, `maxHeight`)
+  - Added reset buttons for breakpoints
+  - Better values grouping
+  - Better cascade breakpoints conditioning
+  - Spacing linking
+- Add Wrap with Flexible container
+- Add applied classes viewer to see which responsive classes are applied
+- Add Quick layout presets, customizable with filter `webentor.core.responsiveSettings.layoutPresets`
+- Fix PHP path in `init.php`
+
+
 ## 0.9.14
 
 - Fix Button link display

@@ -2,7 +2,6 @@
  * FlexItemSettings — flex child controls (grow, shrink, basis, order).
  *
  * Contextual: only shows when the parent block's display is 'flex'.
- * Reads from v2 'flexItem' attribute, falls back to v1 'flexboxItem'.
  */
 import { Fragment } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -43,11 +42,10 @@ export const FlexItemSettings = ({
 
   if (effectiveParentDisplay !== 'flex') return null;
 
-  // Support both v2 'flexItem' and v1 'flexboxItem' attribute keys
-  const hasFlexItem = attributes?.flexItem || attributes?.flexboxItem;
+  const hasFlexItem = attributes?.flexItem;
   if (!hasFlexItem) return null;
 
-  const attributeKey = attributes?.flexItem ? 'flexItem' : 'flexboxItem';
+  const attributeKey = 'flexItem';
   const isSliderEnabled = isSliderEnabledForBreakpoint(
     name,
     attributes,

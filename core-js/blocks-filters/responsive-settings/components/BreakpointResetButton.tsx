@@ -25,7 +25,7 @@ export const BreakpointResetButton = ({
   const modules = registry.getByPanelGroup(panelGroup);
 
   const hasAnyValues = modules.some((def) => {
-    // Check all attribute keys the module owns (e.g. layout + display for v1 compat)
+    // Check all attribute keys the module owns.
     for (const key of Object.keys(def.attributeSchema)) {
       const attrGroup = attributes?.[key];
       if (!attrGroup || typeof attrGroup !== 'object') continue;
@@ -45,8 +45,7 @@ export const BreakpointResetButton = ({
     const patch: Record<string, any> = {};
 
     for (const def of modules) {
-      // Iterate all attribute keys in the module's schema
-      // (e.g. layout module owns both 'layout' and 'display' keys)
+      // Iterate all attribute keys in the module's schema.
       for (const key of Object.keys(def.attributeSchema)) {
         const attrGroup = attributes?.[key];
         if (!attrGroup || typeof attrGroup !== 'object') continue;

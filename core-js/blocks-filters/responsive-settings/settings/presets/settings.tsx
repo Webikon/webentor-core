@@ -36,14 +36,6 @@ const applyPreset = (
             [attrKey, propName, 'value', bp],
             bpValue,
           );
-          // Also write to v1 keys for backward compat
-          if (attrKey === 'layout') {
-            newAttrs = setImmutably(
-              newAttrs,
-              ['display', propName, 'value', bp],
-              bpValue,
-            );
-          }
         }
       }
     }

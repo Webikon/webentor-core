@@ -41,7 +41,7 @@
         }
       }
     },
-    "display": {
+    "layout": {
       "type": "object",
       "default": {
         "display": {

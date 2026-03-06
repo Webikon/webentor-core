@@ -44,7 +44,7 @@
       "type": "object",
       "default": {}
     },
-    "display": {
+    "layout": {
       "type": "object",
       "default": {
         "display": {

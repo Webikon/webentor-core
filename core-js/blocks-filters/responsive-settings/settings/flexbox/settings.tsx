@@ -2,8 +2,7 @@
  * FlexboxSettings — flex container controls.
  *
  * Only renders when the current block's display is 'flex' at the
- * active breakpoint. Uses the LayoutModeSettings component for
- * the container section only (flex-item is a separate module).
+ * active breakpoint. Flex-item controls are handled by a separate module.
  */
 import { Fragment } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
