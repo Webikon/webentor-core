@@ -9,7 +9,8 @@
   "attributes": {},
   "supports": {
     "webentor": {
-      "display": true
+      "layout": true,
+      "sizing": true
     }
   }
 }

@@ -20,7 +20,8 @@
   "supports": {
     "anchor": true,
     "webentor": {
-      "display": true,
+      "layout": true,
+      "sizing": true,
       "spacing": true
     }
   }

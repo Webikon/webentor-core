@@ -16,7 +16,6 @@ import { postList } from '@wordpress/icons';
 import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 
 import { registry } from '../registry';
-import { resolveSupportKeys } from '../support-keys';
 import { BlockPanelProps, ClassGenContext, PanelGroup } from '../types';
 
 interface ClassGroup {
@@ -51,9 +50,7 @@ const collectGroupedClasses = (
   orderedBreakpoints: string[],
 ): ClassGroup[] => {
   const blockSettings = getBlockType(blockName);
-  const rawSupports = blockSettings?.supports;
-  const webentorSupports = resolveSupportKeys(rawSupports?.webentor);
-  const supports = { ...rawSupports, webentor: webentorSupports };
+  const supports = blockSettings?.supports;
 
   const context: ClassGenContext = {
     blockName,

@@ -1,11 +1,12 @@
 export const includedBlocks = {
   blockLink: [],
   spacing: [],
-  display: [],
+  layout: [],
+  sizing: [],
   grid: [],
   gridItem: [],
   flexbox: [],
-  flexboxItem: [],
+  flexItem: [],
   border: [],
   borderRadius: [],
 };

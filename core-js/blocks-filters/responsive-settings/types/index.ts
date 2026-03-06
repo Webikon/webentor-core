@@ -183,18 +183,23 @@ export interface SettingsComponentProps extends BlockPanelProps {
  * Selecting a preset fills in the underlying attribute values
  * and optionally attaches custom CSS classes for edge cases.
  */
+export interface LayoutPresetValue {
+  value: Record<string, unknown>;
+}
+
+export interface LayoutPresetApplies {
+  [attributeKey: string]: {
+    [propertyName: string]: LayoutPresetValue;
+  };
+}
+
 export interface LayoutPreset {
   id: string;
   label: string;
   icon?: string;
   description: string;
-  /** Attribute values this preset sets (partial per module) */
-  applies: {
-    layout?: Partial<ResponsiveAttribute>;
-    grid?: Partial<ResponsiveAttribute>;
-    flexbox?: Partial<ResponsiveAttribute>;
-    sizing?: Partial<ResponsiveAttribute>;
-  };
+  /** Attribute values keyed by module attribute key, then property name */
+  applies: LayoutPresetApplies;
   /** Non-TW custom classes for edge cases (e.g. flex-wrap + gap calc) */
   customClasses?: string[];
 }

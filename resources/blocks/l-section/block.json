@@ -74,13 +74,15 @@
     },
     "webentor": {
       "spacing": true,
-      "display": {
-        "height": true,
-        "minHeight": true,
+      "layout": {
         "display": true
       },
+      "sizing": {
+        "height": true,
+        "minHeight": true
+      },
       "flexbox": true,
-      "flexboxItem": true,
+      "flexItem": true,
       "grid": true,
       "border": true,
       "borderRadius": true

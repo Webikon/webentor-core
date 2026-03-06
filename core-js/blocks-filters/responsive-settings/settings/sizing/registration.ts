@@ -3,7 +3,7 @@
  *
  * panelGroup: displayLayout, order: 20
  * Handles width, height, min/max dimensions.
- * Support key: 'sizing' (normalized from 'display' sub-properties)
+ * Support key: 'sizing'
  */
 import { registry } from '../../registry';
 import { ClassGenContext } from '../../types';
@@ -42,7 +42,7 @@ registry.register({
   panelGroup: 'displayLayout',
   order: 20,
   attributeKey: 'sizing',
-  supportKey: ['sizing', 'display'],
+  supportKey: 'sizing',
   attributeSchema: {
     sizing: { type: 'object', default: {} },
   },

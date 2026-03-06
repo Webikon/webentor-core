@@ -80,7 +80,7 @@
   "supports": {
     "webentor": {
       "spacing": true,
-      "display": {
+      "layout": {
         "display": true
       },
       "flexbox": true,

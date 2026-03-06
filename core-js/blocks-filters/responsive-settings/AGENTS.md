@@ -19,7 +19,6 @@ responsive-settings/
   registry.ts            — SettingsRegistry singleton (Map-based, panelGroup queries)
   migration.ts           — Display value helpers (v1/v2 dual-read); on-load migrator removed (PHP handles it)
   migration-cleanup.md   — Checklist of all remaining v1 fallbacks to remove later
-  support-keys.ts        — Normalizes v1 support keys to v2 (display→layout+sizing, flexboxItem→flexItem)
   utils.ts               — Class generation orchestrator + border preview helpers + generic breakpoint cascade utilities
   constants.ts           — Legacy includedBlocks map (currently empty, kept for fallback)
   types/index.ts         — All TypeScript interfaces (SettingDefinition, PanelGroup, BlockAttributes, etc.)
@@ -154,21 +153,11 @@ Example:
 - v1→v2 migration is handled globally in PHP (JS on-load migrator has been removed)
 - `_responsiveSettingsVersion` attribute: absent/1 = v1, 2 = v2
 - `getDisplayValue()` / `getParentDisplayValue()` are the canonical way to read display mode — they check v2 key first, fall back to v1
-- v1 fallbacks still exist in the JS codebase for safety; see `migration-cleanup.md` for the full removal checklist
-
-### Support Key Normalization
-
-`support-keys.ts` → `resolveSupportKeys()` (JS) / `resolve_support_keys()` (PHP):
-
-- `display: true` → `layout: true` + `sizing: true`
-- `display: { display: true, width: true }` → `layout: { display }` + `sizing: { width }`
-- `flexboxItem` → `flexItem`
-- Old keys kept alongside new ones
+- v1 fallbacks still exist in the attribute readers; see `migration-cleanup.md` for the full removal checklist
 
 ## PHP Side (`app/blocks-settings.php`)
 
 - `SettingsRegistry` class mirrors the JS pattern
-- `resolve_support_keys()` mirrors JS `resolveSupportKeys()`
 - `get_display_value_for_breakpoint()` helper for v2/v1 dual reading (explicit only)
 - `get_effective_display_value_for_breakpoint()` cascaded display (min-width inheritance)
 - `get_effective_parent_display_value_for_breakpoint()` cascaded parent display
@@ -193,7 +182,7 @@ Custom CSS utilities for presets live in `resources/styles/common/_utilities.css
 
 ## Block.json Support Keys
 
-### v2 Keys (preferred for new blocks)
+### Supported Keys
 
 ```json
 "webentor": {
@@ -211,20 +200,9 @@ Custom CSS utilities for presets live in `resources/styles/common/_utilities.css
 }
 ```
 
-### v1 Keys (still accepted, auto-normalized)
-
-```json
-"webentor": {
-  "display": true,        // → layout + sizing
-  "display": { "display": true, "width": true },  // → granular split
-  "flexboxItem": true     // → flexItem
-}
-```
-
 ## JSON Schema
 
-`schemas/webentor-block.json` defines both v1 and v2 keys under `supports.webentor`.
-Old keys are marked deprecated in their descriptions.
+`schemas/webentor-block.json` defines the canonical support keys under `supports.webentor`.
 
 ## Contextual Rendering Rules
 

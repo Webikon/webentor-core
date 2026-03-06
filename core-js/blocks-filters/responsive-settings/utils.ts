@@ -18,7 +18,6 @@ import { applyFilters } from '@wordpress/hooks';
 import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 
 import { registry } from './registry';
-import { resolveSupportKeys } from './support-keys';
 import { ClassGenContext } from './types';
 
 export const getPixelFromRemValue = (value: string): string => {
@@ -156,11 +155,7 @@ export const generateClassNames = (attributes: any): string => {
   const blockProps = useBlockProps();
   const blockName = blockProps['data-type'];
   const blockSettings = getBlockType(blockName);
-  const rawSupports = blockSettings?.supports;
-
-  // Normalize support keys for v2 resolution
-  const webentorSupports = resolveSupportKeys(rawSupports?.webentor);
-  const supports = { ...rawSupports, webentor: webentorSupports };
+  const supports = blockSettings?.supports;
 
   // useBlockParent hoisted to top level (hook-safe)
   const parentBlock = useBlockParent();

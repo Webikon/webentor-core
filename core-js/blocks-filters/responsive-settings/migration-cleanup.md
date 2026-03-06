@@ -77,8 +77,6 @@ sites and all blocks are confirmed v2, remove each item below.
   **Action:** Remove `|| attributes?.flexboxItem` fallbacks.
 - `attributeSchema` registers `flexboxItem: { type: 'object', default: {} }`.
   **Action:** Remove the `flexboxItem` schema entry.
-- `supportKey` includes `'flexboxItem'`.
-  **Action:** Change to `supportKey: 'flexItem'`.
 
 ### settings/flex-item/settings.tsx
 
@@ -86,20 +84,6 @@ sites and all blocks are confirmed v2, remove each item below.
   **Action:** Simplify to `attributes?.flexItem`.
 - `attributeKey` fallback: `attributes?.flexItem ? 'flexItem' : 'flexboxItem'`.
   **Action:** Hardcode `'flexItem'`.
-
----
-
-## Support key normalization
-
-### support-keys.ts
-
-- Normalizes `display` → `layout` + `sizing` and `flexboxItem` → `flexItem`.
-  **Action:** Remove the normalization logic once all `block.json` files use v2 keys exclusively.
-
-### constants.ts
-
-- `includedBlocks` map has `flexboxItem: []`.
-  **Action:** Remove the `flexboxItem` entry.
 
 ---
 
@@ -114,5 +98,5 @@ sites and all blocks are confirmed v2, remove each item below.
 
 ## PHP side (out of scope for this file, tracked separately)
 
-- `blocks-settings.php` has its own v1 handler registration and `resolve_support_keys()`.
-  Coordinate JS and PHP v1 removal together to avoid mismatches.
+- `blocks-settings.php` still contains v1 attribute readers for runtime compatibility.
+  Coordinate JS and PHP attribute-fallback removal together to avoid mismatches.

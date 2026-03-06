@@ -3,7 +3,7 @@
  *
  * panelGroup: displayLayout, order: 50
  * Contextual: only shows when parent block display=flex.
- * Support key: 'flexItem' (normalized from 'flexboxItem')
+ * Support key: 'flexItem'
  */
 import { getEffectiveParentDisplayValue } from '../../migration';
 import { registry } from '../../registry';
@@ -68,7 +68,7 @@ registry.register({
   panelGroup: 'displayLayout',
   order: 50,
   attributeKey: 'flexItem',
-  supportKey: ['flexItem', 'flexboxItem'],
+  supportKey: 'flexItem',
   attributeSchema: {
     flexItem: { type: 'object', default: {} },
   },

@@ -11,7 +11,7 @@ import { __ } from '@wordpress/i18n';
 import { setImmutably } from '@webentorCore/_utils';
 
 import { BlockPanelProps, LayoutPreset } from '../../types';
-import { layoutPresets } from './presets';
+import { getLayoutPresets } from './presets';
 
 /**
  * Apply a preset's attribute values to the current block.
@@ -63,8 +63,15 @@ const applyPreset = (
 export const PresetSettings = ({
   attributes,
   setAttributes,
+  name,
+  twTheme,
 }: BlockPanelProps) => {
   const activePreset = attributes?._preset;
+  const presets = getLayoutPresets(name, twTheme);
+
+  if (!presets.length) {
+    return null;
+  }
 
   return (
     <div style={{ marginTop: '8px', marginBottom: '8px' }}>
@@ -85,7 +92,7 @@ export const PresetSettings = ({
           gap: '4px',
         }}
       >
-        {layoutPresets.map((preset) => (
+        {presets.map((preset) => (
           <Button
             key={preset.id}
             variant={activePreset === preset.id ? 'primary' : 'secondary'}

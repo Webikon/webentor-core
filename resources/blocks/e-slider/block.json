@@ -32,11 +32,12 @@
     },
     "webentor": {
       "spacing": true,
-      "display": true,
+      "layout": true,
+      "sizing": true,
       "grid": true,
       "gridItem": true,
       "flexbox": true,
-      "flexboxItem": true
+      "flexItem": true
     }
   }
 }

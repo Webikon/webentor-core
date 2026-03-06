@@ -41,15 +41,17 @@
   "supports": {
     "anchor": true,
     "webentor": {
-      "display": {
-        "display": true,
+      "layout": {
+        "display": true
+      },
+      "sizing": {
         "minHeight": true,
         "width": true
       },
       "grid": true,
       "gridItem": true,
       "flexbox": true,
-      "flexboxItem": true,
+      "flexItem": true,
       "spacing": true
     }
   }

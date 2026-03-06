@@ -17,7 +17,6 @@ import {
   SettingsComponentProps,
 } from '../../types';
 import { isSliderEnabledForBreakpoint } from '../../utils';
-import { resolveSupportKeys } from '../../support-keys';
 import { createGroupedTwThemeValues } from '../shared/tw-values';
 import { getSizingProperties } from './properties';
 
@@ -67,10 +66,10 @@ export const SizingSettings = ({
     return groups;
   }, [twTheme]);
 
-  const resolved = resolveSupportKeys(
-    getBlockSupport(name, 'webentor') as Record<string, any>,
-  );
-  const supports = resolved.sizing;
+  const webentorSupports = getBlockSupport(name, 'webentor') as
+    | Record<string, any>
+    | undefined;
+  const supports = webentorSupports?.sizing;
 
   const isPropertyVisible = (property: PropertyDefinition) => {
     if (supports === true) return true;

@@ -5,8 +5,8 @@
  * Provides one-click layout configurations that populate the individual
  * settings below.
  *
- * Support key: 'presets' — blocks must opt in to show the preset UI.
- * When presets support isn't declared, the module is silently skipped.
+ * Support keys: dedicated 'presets' opt-in plus 'layout' so existing
+ * blocks keep the current preset UI behavior during the v2 support-key migration.
  */
 import { registry } from '../../registry';
 import { ClassGenContext } from '../../types';
@@ -39,7 +39,7 @@ registry.register({
   panelGroup: 'displayLayout',
   order: 0,
   attributeKey: '_preset',
-  supportKey: ['layout', 'display'],
+  supportKey: ['presets', 'layout'],
   attributeSchema: {
     _preset: { type: 'string', default: '' },
     _presetClasses: { type: 'array', default: [] },

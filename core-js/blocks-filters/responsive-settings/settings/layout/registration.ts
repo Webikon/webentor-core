@@ -3,7 +3,7 @@
  *
  * panelGroup: displayLayout, order: 10
  * Handles the CSS display property (block/flex/grid/hidden/etc).
- * Supports key: 'layout' (normalized from 'display' via support-keys.ts)
+ * Support key: 'layout'
  */
 import { getDisplayValue, getEffectiveDisplayValue } from '../../migration';
 import { registry } from '../../registry';
@@ -57,7 +57,7 @@ registry.register({
   panelGroup: 'displayLayout',
   order: 10,
   attributeKey: 'layout',
-  supportKey: ['layout', 'display'],
+  supportKey: 'layout',
   attributeSchema: {
     layout: { type: 'object', default: {} },
   },
@@ -65,9 +65,7 @@ registry.register({
     const webentorSupport = settings?.supports?.webentor;
     const displaySupport =
       webentorSupport?.layout === true ||
-      webentorSupport?.layout?.display === true ||
-      webentorSupport?.display === true ||
-      webentorSupport?.display?.display === true;
+      webentorSupport?.layout?.display === true;
 
     if (displaySupport) {
       const defaultValue = {

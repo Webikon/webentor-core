@@ -12,7 +12,6 @@
  *
  * @see ./registry.ts — SettingsRegistry singleton
  * @see ./migration.ts — display value helpers (v1/v2 dual-read)
- * @see ./support-keys.ts — backward-compatible support key resolution
  */
 import { registerBlockExtension } from '@10up/block-components';
 import { BlockControls, InspectorControls } from '@wordpress/block-editor';
@@ -32,7 +31,6 @@ import {
   SpacingPanel,
 } from './panels';
 import { registry } from './registry';
-import { resolveSupportKeys } from './support-keys';
 import { BlockPanelProps } from './types';
 import { generateClassNames, inlineStyleGenerator } from './utils';
 
@@ -54,24 +52,15 @@ const initResponsiveSettings = () => {
    * Attribute registration filter.
    * Iterates over all registered setting modules and merges their
    * attribute schemas into blocks that declare support for them.
-   * Also normalizes v1 support keys to v2 via resolveSupportKeys().
    */
   addFilter(
     'blocks.registerBlockType',
     'webentor/addResponsiveSettingsAttributes',
     (settings, name) => {
-      // Normalize support keys so downstream code only sees v2 names
-      const webentorSupports = resolveSupportKeys(
-        settings?.supports?.webentor,
-      );
-
       const allDefs = registry.getAll();
 
       for (const def of allDefs) {
-        const supportedByRegistry = registry.isSupported(
-          { ...settings?.supports, webentor: webentorSupports },
-          def,
-        );
+        const supportedByRegistry = registry.isSupported(settings?.supports, def);
 
         // Legacy fallback: includedBlocks arrays (currently all empty)
         const supportedByLegacy = Array.isArray(def.supportKey)

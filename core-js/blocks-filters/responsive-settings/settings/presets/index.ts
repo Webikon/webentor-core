@@ -1,4 +1,4 @@
 export { PresetSettings } from './settings';
-export { layoutPresets } from './presets';
+export { getLayoutPresets, layoutPresets } from './presets';
 
 import './registration';

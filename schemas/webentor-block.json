@@ -623,7 +623,7 @@
           "default": false
         },
         "webentor": {
-          "description": "Custom property for enabling Webentor responsive settings features. Supports both v1 and v2 key names (v1 keys are deprecated but still accepted).",
+          "description": "Custom property for enabling Webentor responsive settings features.",
           "type": "object",
           "properties": {
             "spacing": {
@@ -631,7 +631,7 @@
               "type": "boolean"
             },
             "layout": {
-              "description": "v2: When set to true, the block will have Display mode controls (block, flex, grid, hidden, etc.).",
+              "description": "When set to true, the block will have Display mode controls (block, flex, grid, hidden, etc.).",
               "type": ["boolean", "object"],
               "properties": {
                 "display": {
@@ -641,7 +641,7 @@
               }
             },
             "sizing": {
-              "description": "v2: When set to true, the block will have Sizing controls (width, height, min/max dimensions).",
+              "description": "When set to true, the block will have Sizing controls (width, height, min/max dimensions).",
               "type": ["boolean", "object"],
               "properties": {
                 "width": {
@@ -670,33 +670,6 @@
                 }
               }
             },
-            "display": {
-              "description": "DEPRECATED (v1): Use 'layout' + 'sizing' instead. When set to true, enables all Display controls. Automatically normalized to layout + sizing at runtime.",
-              "type": ["boolean", "object"],
-              "properties": {
-                "display": {
-                  "type": "boolean"
-                },
-                "width": {
-                  "type": "boolean"
-                },
-                "minWidth": {
-                  "type": "boolean"
-                },
-                "maxWidth": {
-                  "type": "boolean"
-                },
-                "height": {
-                  "type": "boolean"
-                },
-                "minHeight": {
-                  "type": "boolean"
-                },
-                "maxHeight": {
-                  "type": "boolean"
-                }
-              }
-            },
             "grid": {
               "description": "When set to true, the block will have additional Grid container controls.",
               "type": "boolean"
@@ -710,11 +683,7 @@
               "type": "boolean"
             },
             "flexItem": {
-              "description": "v2: When set to true, the block will have additional Flex Item controls.",
-              "type": "boolean"
-            },
-            "flexboxItem": {
-              "description": "DEPRECATED (v1): Use 'flexItem' instead. Automatically normalized to flexItem at runtime.",
+              "description": "When set to true, the block will have additional Flex Item controls.",
               "type": "boolean"
             },
             "border": {

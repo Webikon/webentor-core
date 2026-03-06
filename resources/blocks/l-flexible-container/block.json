@@ -21,11 +21,12 @@
     },
     "webentor": {
       "spacing": true,
-      "display": true,
+      "layout": true,
+      "sizing": true,
       "grid": true,
       "gridItem": true,
       "flexbox": true,
-      "flexboxItem": true,
+      "flexItem": true,
       "blockLink": true,
       "border": true,
       "borderRadius": true

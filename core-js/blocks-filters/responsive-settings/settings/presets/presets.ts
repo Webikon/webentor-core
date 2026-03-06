@@ -9,7 +9,10 @@
  * settings below (which remain editable). The _preset marker tracks
  * which preset was last applied.
  */
+import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
+
+import { WebentorConfig } from '@webentorCore/types/_webentor-config';
 
 import { LayoutPreset } from '../../types';
 
@@ -108,3 +111,32 @@ export const layoutPresets: LayoutPreset[] = [
     },
   },
 ];
+
+const clonePreset = (preset: LayoutPreset): LayoutPreset => ({
+  ...preset,
+  applies: Object.fromEntries(
+    Object.entries(preset.applies).map(([attributeKey, propertyMap]) => [
+      attributeKey,
+      Object.fromEntries(
+        Object.entries(propertyMap).map(([propertyName, propertyValue]) => [
+          propertyName,
+          {
+            value: { ...propertyValue.value },
+          },
+        ]),
+      ),
+    ]),
+  ),
+  customClasses: preset.customClasses ? [...preset.customClasses] : undefined,
+});
+
+export const getLayoutPresets = (
+  blockName: string,
+  twTheme: WebentorConfig['theme'],
+): LayoutPreset[] =>
+  applyFilters(
+    'webentor.core.responsiveSettings.layoutPresets',
+    layoutPresets.map(clonePreset),
+    blockName,
+    twTheme,
+  ) as LayoutPreset[];

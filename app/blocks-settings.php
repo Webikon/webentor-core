@@ -32,7 +32,6 @@ class SettingsRegistry
 
     /**
      * Generate classes for all registered settings that the block supports.
-     * Normalizes support keys before checking (v1 display → v2 layout + sizing).
      *
      * @param  array     $attributes
      * @param  \WP_Block $block
@@ -44,8 +43,7 @@ class SettingsRegistry
         $classes = '';
         $classes_by_prop = [];
 
-        // Normalize support keys for v2 resolution
-        $webentorSupports = resolve_support_keys($block?->block_type?->supports['webentor'] ?? []);
+        $webentorSupports = $block?->block_type?->supports['webentor'] ?? [];
 
         foreach (self::$handlers as $name => $handler) {
             $supportKey = self::getSupportKeyForHandler($name);
@@ -73,20 +71,20 @@ class SettingsRegistry
 
     /**
      * Map handler names to their block support keys.
-     * Updated for v2: includes both old and new key names.
+     * Blocks now declare canonical v2 support keys only.
      */
     private static function getSupportKeyForHandler(string $name): array
     {
         $map = [
             'spacing'     => ['spacing'],
-            'layout'      => ['layout', 'display'],
-            'sizing'      => ['sizing', 'display'],
+            'layout'      => ['layout'],
+            'sizing'      => ['sizing'],
             'grid'        => ['grid'],
             'gridItem'    => ['gridItem'],
             'flexbox'     => ['flexbox'],
-            'flexItem'    => ['flexItem', 'flexboxItem'],
+            'flexItem'    => ['flexItem'],
             'border'      => ['border', 'borderRadius'],
-            'presets'     => ['layout', 'display'],
+            'presets'     => ['layout'],
         ];
 
         return $map[$name] ?? [$name];
@@ -100,84 +98,23 @@ class SettingsRegistry
 }
 
 /**
- * Normalize v1 support keys to v2 format.
- * Mirrors the JS resolveSupportKeys() function.
- *
- * Mapping:
- * - display: true        → layout: true + sizing: true
- * - display: { display } → layout: { display }
- * - display: { height }  → sizing: { height }
- * - flexboxItem          → flexItem
- *
- * @param  array|null $webentor_supports
- * @return array
- */
-function resolve_support_keys($webentor_supports): array
-{
-    if (empty($webentor_supports)) {
-        return [];
-    }
-
-    $resolved = $webentor_supports;
-
-    $layout_subkeys = ['display'];
-    $sizing_subkeys = ['height', 'minHeight', 'maxHeight', 'width', 'minWidth', 'maxWidth'];
-
-    // Expand display → layout + sizing
-    if (isset($resolved['display'])) {
-        $display_support = $resolved['display'];
-
-        if ($display_support === true) {
-            if (!isset($resolved['layout'])) $resolved['layout'] = true;
-            if (!isset($resolved['sizing'])) $resolved['sizing'] = true;
-        } elseif (is_array($display_support)) {
-            $layout_sub = [];
-            $sizing_sub = [];
-
-            foreach ($display_support as $key => $value) {
-                if (in_array($key, $layout_subkeys, true)) {
-                    $layout_sub[$key] = $value;
-                } elseif (in_array($key, $sizing_subkeys, true)) {
-                    $sizing_sub[$key] = $value;
-                }
-            }
-
-            if (!empty($layout_sub) && !isset($resolved['layout'])) {
-                $resolved['layout'] = $layout_sub;
-            }
-            if (!empty($sizing_sub) && !isset($resolved['sizing'])) {
-                $resolved['sizing'] = $sizing_sub;
-            }
-        }
-    }
-
-    // Rename flexboxItem → flexItem
-    if (isset($resolved['flexboxItem']) && !isset($resolved['flexItem'])) {
-        $resolved['flexItem'] = $resolved['flexboxItem'];
-    }
-
-    return $resolved;
-}
-
-/**
  * If some defaults are needed for block attributes, they must be set via this hook.
  * Its because we are adding custom attributes via hook and not directly in block.json
  *
- * Updated for v2: sets defaults on both layout and display attribute keys.
+ * Seeds layout defaults from canonical v2 support keys while still honoring
+ * legacy display defaults present in some block.json files.
  *
  * @param array $settings
  * @param array $metadata
  */
 add_filter('block_type_metadata_settings', function ($settings, $metadata) {
-    $webentor_supports = resolve_support_keys($metadata['supports']['webentor'] ?? []);
+    $webentor_supports = $metadata['supports']['webentor'] ?? [];
 
     // Set display/layout defaults when supported
-    if (!empty($webentor_supports['layout']) || !empty($webentor_supports['display'])) {
-        // Check if actual "display" property support is true
+    if (!empty($webentor_supports['layout'])) {
+        // Only the v2 layout support key can opt blocks into the display control.
         $display_property_support = ($webentor_supports['layout'] ?? false) === true
-            || ($webentor_supports['layout']['display'] ?? false) === true
-            || ($webentor_supports['display'] ?? false) === true
-            || ($webentor_supports['display']['display'] ?? false) === true;
+            || ($webentor_supports['layout']['display'] ?? false) === true;
 
         $display_default = $settings['attributes']['display']['default'] ?? [];
         $layout_default = $settings['attributes']['layout']['default'] ?? [];

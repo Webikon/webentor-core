@@ -13,7 +13,6 @@ import { DisabledSliderInfo } from '../../components/DisabledSliderInfo';
 import { ResponsiveSelectGroup } from '../../components/ResponsiveSelectGroup';
 import { PropertyDefinition, SettingsComponentProps } from '../../types';
 import { isSliderEnabledForBreakpoint } from '../../utils';
-import { resolveSupportKeys } from '../../support-keys';
 import { getLayoutProperties } from './properties';
 
 export const LayoutSettings = ({
@@ -36,11 +35,10 @@ export const LayoutSettings = ({
   );
   const layoutProperties = getLayoutProperties(name, twTheme);
 
-  // Resolve supports: check both 'layout' and 'display' keys
-  const resolved = resolveSupportKeys(
-    getBlockSupport(name, 'webentor') as Record<string, any>,
-  );
-  const supports = resolved.layout;
+  const webentorSupports = getBlockSupport(name, 'webentor') as
+    | Record<string, any>
+    | undefined;
+  const supports = webentorSupports?.layout;
 
   const isPropertyVisible = (property: PropertyDefinition) => {
     if (supports === true) return true;
