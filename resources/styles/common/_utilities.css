@@ -31,3 +31,110 @@
 @utility border-l-* {
   border-left-style: --value('none', 'solid', 'dashed', 'dotted', 'double');
 }
+
+/*
+ * Flex-wrap + gap + equal columns utilities.
+ *
+ * Solves the problem where pure Tailwind can't create a flex-wrap layout
+ * with N equal columns that account for gap in their width calc.
+ * Each .w-flex-cols-N sets --w-cols and child width via calc().
+ * The .w-gap-* classes set both gap and --w-col-gap CSS var.
+ *
+ * Usage: class="w-flex-cols w-flex-cols-3 w-gap-4"
+ * Responsive: class="md:w-flex-cols-3 md:w-gap-4"
+ */
+@utility w-flex-cols {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@utility w-flex-cols-2 {
+  --w-cols: 2;
+
+  > * {
+    width: calc(50% - var(--w-col-gap, 0px));
+  }
+}
+
+@utility w-flex-cols-3 {
+  --w-cols: 3;
+
+  > * {
+    width: calc(33.333% - var(--w-col-gap, 0px));
+  }
+}
+
+@utility w-flex-cols-4 {
+  --w-cols: 4;
+
+  > * {
+    width: calc(25% - var(--w-col-gap, 0px));
+  }
+}
+
+@utility w-flex-cols-5 {
+  --w-cols: 5;
+
+  > * {
+    width: calc(20% - var(--w-col-gap, 0px));
+  }
+}
+
+@utility w-flex-cols-6 {
+  --w-cols: 6;
+
+  > * {
+    width: calc(16.666% - var(--w-col-gap, 0px));
+  }
+}
+
+/* Gap utilities that also set --w-col-gap for flex-cols width calculation */
+@utility w-gap-0 {
+  gap: 0;
+  --w-col-gap: 0px;
+}
+
+@utility w-gap-1 {
+  gap: 0.25rem;
+  --w-col-gap: calc(0.25rem * (var(--w-cols, 1) - 1) / var(--w-cols, 1));
+}
+
+@utility w-gap-2 {
+  gap: 0.5rem;
+  --w-col-gap: calc(0.5rem * (var(--w-cols, 1) - 1) / var(--w-cols, 1));
+}
+
+@utility w-gap-3 {
+  gap: 0.75rem;
+  --w-col-gap: calc(0.75rem * (var(--w-cols, 1) - 1) / var(--w-cols, 1));
+}
+
+@utility w-gap-4 {
+  gap: 1rem;
+  --w-col-gap: calc(1rem * (var(--w-cols, 1) - 1) / var(--w-cols, 1));
+}
+
+@utility w-gap-5 {
+  gap: 1.25rem;
+  --w-col-gap: calc(1.25rem * (var(--w-cols, 1) - 1) / var(--w-cols, 1));
+}
+
+@utility w-gap-6 {
+  gap: 1.5rem;
+  --w-col-gap: calc(1.5rem * (var(--w-cols, 1) - 1) / var(--w-cols, 1));
+}
+
+@utility w-gap-8 {
+  gap: 2rem;
+  --w-col-gap: calc(2rem * (var(--w-cols, 1) - 1) / var(--w-cols, 1));
+}
+
+@utility w-gap-10 {
+  gap: 2.5rem;
+  --w-col-gap: calc(2.5rem * (var(--w-cols, 1) - 1) / var(--w-cols, 1));
+}
+
+@utility w-gap-12 {
+  gap: 3rem;
+  --w-col-gap: calc(3rem * (var(--w-cols, 1) - 1) / var(--w-cols, 1));
+}

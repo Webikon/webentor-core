@@ -1,7 +1,18 @@
+/**
+ * LayoutModeSettings — Unified container + item layout settings component.
+ *
+ * This component is now mainly used as a backward-compat helper.
+ * In the v2 architecture, flexbox and grid settings render their own
+ * SettingsComponent directly. This component is kept for any external
+ * code that still uses it.
+ *
+ * Uses getDisplayValue/getParentDisplayValue for v1/v2 dual-read.
+ */
 import { __ } from '@wordpress/i18n';
 
 import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 
+import { getDisplayValue, getParentDisplayValue } from '../migration';
 import { PropertyDefinition } from '../registry';
 import { BlockPanelProps } from '../types';
 import { isSliderEnabledForBreakpoint } from '../utils';
@@ -34,11 +45,6 @@ const SECTION_STYLE = {
   padding: '8px',
 };
 
-/**
- * Unified container + item layout settings component.
- * Replaces the structurally identical FlexboxSettings and GridSettings
- * components (~130 lines each of near-duplicate code).
- */
 export const LayoutModeSettings = ({
   attributes,
   setAttributes,
@@ -55,11 +61,15 @@ export const LayoutModeSettings = ({
   );
   const parentBlock = useBlockParent();
 
-  const isParentMatch =
-    parentBlock?.attributes?.display?.display?.value?.[breakpoint] ===
-    displayValue;
-  const isCurrentMatch =
-    attributes?.display?.display?.value?.[breakpoint] === displayValue;
+  // v2 dual-read: checks layout.display then display.display
+  const currentDisplayValue = getDisplayValue(attributes, breakpoint);
+  const parentDisplayValue = getParentDisplayValue(
+    parentBlock?.attributes,
+    breakpoint,
+  );
+
+  const isParentMatch = parentDisplayValue === displayValue;
+  const isCurrentMatch = currentDisplayValue === displayValue;
 
   if (!isCurrentMatch && !isParentMatch) {
     return null;

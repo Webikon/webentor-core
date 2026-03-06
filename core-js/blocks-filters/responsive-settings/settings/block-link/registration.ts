@@ -1,20 +1,24 @@
-import { ClassGenContext, registry } from '../../registry';
+/**
+ * Block link module registration.
+ *
+ * Block link is non-responsive and doesn't generate Tailwind classes.
+ * Uses its own panelGroup 'blockLink' with a standalone panel wrapper
+ * (panels/BlockLinkPanel.tsx) that renders without breakpoint tabs.
+ */
+import { registry } from '../../registry';
+import { ClassGenContext } from '../../types';
 import { BlockLinkPanel } from './panel';
 
-/**
- * Block link is non-responsive and doesn't generate Tailwind classes.
- * It's registered for attribute schema and panel rendering consistency.
- */
 registry.register({
   name: 'blockLink',
-  panelTitle: 'Block Link',
-  panelPriority: 40,
+  panelGroup: 'blockLink',
+  order: 100,
   attributeKey: 'blockLink',
   supportKey: 'blockLink',
   attributeSchema: {
     blockLink: { type: 'object', default: {} },
   },
-  PanelComponent: BlockLinkPanel,
+  SettingsComponent: BlockLinkPanel,
   generateClasses: (
     _attributes: Record<string, any>,
     _breakpoint: string,

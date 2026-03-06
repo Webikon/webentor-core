@@ -14,9 +14,6 @@ export const BlockLinkPanel = ({
 
   return (
     <div className="w-link-settings" style={{ marginBottom: '16px' }}>
-      <h3 style={{ padding: '16px', paddingBottom: '0px' }}>
-        {__('Block Link', 'webentor')}
-      </h3>
       <div style={{ padding: '16px', paddingTop: '0px', fontSize: '12px' }}>
         {__('This whole block can act like a link', 'webentor')}
       </div>

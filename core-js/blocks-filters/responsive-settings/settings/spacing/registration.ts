@@ -1,6 +1,14 @@
-import { ClassGenContext, registry } from '../../registry';
-import { SpacingPanel } from './panel';
+/**
+ * Spacing module registration.
+ *
+ * panelGroup: spacing, order: 10
+ * Handles margin and padding properties.
+ * Unchanged between v1 and v2 — attribute key 'spacing' stays the same.
+ */
+import { registry } from '../../registry';
+import { ClassGenContext } from '../../types';
 import { hasSpacingSettingsForBreakpoint } from './properties';
+import { SpacingSettings } from './settings';
 
 const generateSpacingClasses = (
   attributes: Record<string, any>,
@@ -11,14 +19,13 @@ const generateSpacingClasses = (
 
   if (!attributes.spacing) return classes;
 
-  for (const [, prop] of Object.entries(attributes.spacing)) {
+  for (const [propName, prop] of Object.entries(attributes.spacing)) {
+    if (propName.startsWith('_')) continue;
     const propData = prop as any;
-    // Skip link-mode metadata keys
     if (!propData?.value) continue;
     const bpValue = propData.value[breakpoint];
     if (!bpValue) continue;
 
-    // Skip when slider is enabled
     if (attributes?.slider?.enabled?.value?.[breakpoint]) continue;
 
     const twBreakpoint = breakpoint === 'basic' ? '' : `${breakpoint}:`;
@@ -30,8 +37,8 @@ const generateSpacingClasses = (
 
 registry.register({
   name: 'spacing',
-  panelTitle: 'Spacing Settings',
-  panelPriority: 10,
+  panelGroup: 'spacing',
+  order: 10,
   attributeKey: 'spacing',
   supportKey: 'spacing',
   attributeSchema: {
@@ -40,7 +47,7 @@ registry.register({
       default: {},
     },
   },
-  PanelComponent: SpacingPanel,
+  SettingsComponent: SpacingSettings,
   generateClasses: generateSpacingClasses,
   hasActiveSettings: hasSpacingSettingsForBreakpoint,
 });

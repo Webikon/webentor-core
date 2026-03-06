@@ -6,6 +6,9 @@ namespace Webentor\Core;
  * PHP-side Settings Registry.
  * Mirrors the JS SettingsRegistry pattern: each setting type registers a handler,
  * and prepareBlockClassesFromSettings iterates over all registered handlers.
+ *
+ * v2 adds dual reading: handlers check both v2 attribute keys (layout, sizing, flexItem)
+ * and v1 keys (display, flexboxItem) for backward compatibility during migration.
  */
 class SettingsRegistry
 {
@@ -15,7 +18,7 @@ class SettingsRegistry
     /**
      * Register a setting handler.
      *
-     * @param string   $name            Setting identifier (e.g. 'spacing', 'display')
+     * @param string   $name            Setting identifier (e.g. 'spacing', 'layout')
      * @param callable $classGenerator  function(array $attributes, $block, $parentBlock): array{classes: string, classes_by_property: array}
      * @param array    $attributeSchema Optional attribute schema for auto-registration
      */
@@ -29,6 +32,7 @@ class SettingsRegistry
 
     /**
      * Generate classes for all registered settings that the block supports.
+     * Normalizes support keys before checking (v1 display → v2 layout + sizing).
      *
      * @param  array     $attributes
      * @param  \WP_Block $block
@@ -40,13 +44,16 @@ class SettingsRegistry
         $classes = '';
         $classes_by_prop = [];
 
+        // Normalize support keys for v2 resolution
+        $webentorSupports = resolve_support_keys($block?->block_type?->supports['webentor'] ?? []);
+
         foreach (self::$handlers as $name => $handler) {
             $supportKey = self::getSupportKeyForHandler($name);
 
             // Check if the block supports this setting (any of the support keys)
             $isSupported = false;
             foreach ((array) $supportKey as $key) {
-                if (!empty($block->block_type->supports['webentor'][$key])) {
+                if (!empty($webentorSupports[$key])) {
                     $isSupported = true;
                     break;
                 }
@@ -66,17 +73,20 @@ class SettingsRegistry
 
     /**
      * Map handler names to their block support keys.
+     * Updated for v2: includes both old and new key names.
      */
     private static function getSupportKeyForHandler(string $name): array
     {
         $map = [
             'spacing'     => ['spacing'],
-            'display'     => ['display'],
+            'layout'      => ['layout', 'display'],
+            'sizing'      => ['sizing', 'display'],
             'grid'        => ['grid'],
             'gridItem'    => ['gridItem'],
             'flexbox'     => ['flexbox'],
-            'flexboxItem' => ['flexboxItem'],
+            'flexItem'    => ['flexItem', 'flexboxItem'],
             'border'      => ['border', 'borderRadius'],
+            'presets'     => ['layout', 'display'],
         ];
 
         return $map[$name] ?? [$name];
@@ -90,45 +100,105 @@ class SettingsRegistry
 }
 
 /**
+ * Normalize v1 support keys to v2 format.
+ * Mirrors the JS resolveSupportKeys() function.
+ *
+ * Mapping:
+ * - display: true        → layout: true + sizing: true
+ * - display: { display } → layout: { display }
+ * - display: { height }  → sizing: { height }
+ * - flexboxItem          → flexItem
+ *
+ * @param  array|null $webentor_supports
+ * @return array
+ */
+function resolve_support_keys($webentor_supports): array
+{
+    if (empty($webentor_supports)) {
+        return [];
+    }
+
+    $resolved = $webentor_supports;
+
+    $layout_subkeys = ['display'];
+    $sizing_subkeys = ['height', 'minHeight', 'maxHeight', 'width', 'minWidth', 'maxWidth'];
+
+    // Expand display → layout + sizing
+    if (isset($resolved['display'])) {
+        $display_support = $resolved['display'];
+
+        if ($display_support === true) {
+            if (!isset($resolved['layout'])) $resolved['layout'] = true;
+            if (!isset($resolved['sizing'])) $resolved['sizing'] = true;
+        } elseif (is_array($display_support)) {
+            $layout_sub = [];
+            $sizing_sub = [];
+
+            foreach ($display_support as $key => $value) {
+                if (in_array($key, $layout_subkeys, true)) {
+                    $layout_sub[$key] = $value;
+                } elseif (in_array($key, $sizing_subkeys, true)) {
+                    $sizing_sub[$key] = $value;
+                }
+            }
+
+            if (!empty($layout_sub) && !isset($resolved['layout'])) {
+                $resolved['layout'] = $layout_sub;
+            }
+            if (!empty($sizing_sub) && !isset($resolved['sizing'])) {
+                $resolved['sizing'] = $sizing_sub;
+            }
+        }
+    }
+
+    // Rename flexboxItem → flexItem
+    if (isset($resolved['flexboxItem']) && !isset($resolved['flexItem'])) {
+        $resolved['flexItem'] = $resolved['flexboxItem'];
+    }
+
+    return $resolved;
+}
+
+/**
  * If some defaults are needed for block attributes, they must be set via this hook.
  * Its because we are adding custom attributes via hook and not directly in block.json
+ *
+ * Updated for v2: sets defaults on both layout and display attribute keys.
  *
  * @param array $settings
  * @param array $metadata
  */
 add_filter('block_type_metadata_settings', function ($settings, $metadata) {
-    // if (!empty($metadata['supports']['webentor']['link'])) {
-    //     $settings['attributes']['blockLink'] = [
-    //         'type' => 'object',
-    //         'default' => []
-    //     ];
-    // }
+    $webentor_supports = resolve_support_keys($metadata['supports']['webentor'] ?? []);
 
-    // if (!empty($metadata['supports']['anchor'])) {
-    //     $settings['attributes']['anchor'] = [
-    //         'type' => 'string',
-    //         'default' => '',
-    //     ];
-    // }
-
-    if (!empty($metadata['supports']['webentor']['display'])) {
+    // Set display/layout defaults when supported
+    if (!empty($webentor_supports['layout']) || !empty($webentor_supports['display'])) {
         // Check if actual "display" property support is true
-        $display_property_support = (isset($settings['supports']['webentor']['display']) && $settings['supports']['webentor']['display'] === true)
-            || (isset($settings['supports']['webentor']['display']['display']) && $settings['supports']['webentor']['display']['display'] === true);
+        $display_property_support = ($webentor_supports['layout'] ?? false) === true
+            || ($webentor_supports['layout']['display'] ?? false) === true
+            || ($webentor_supports['display'] ?? false) === true
+            || ($webentor_supports['display']['display'] ?? false) === true;
 
         $display_default = $settings['attributes']['display']['default'] ?? [];
+        $layout_default = $settings['attributes']['layout']['default'] ?? [];
 
-        $settings['attributes']['display'] = [
+        $default_value = [
+            'display' => [
+                'value' => [
+                    // Default display property must be FLEX!
+                    ...$display_property_support ? ['basic' => 'flex'] : [],
+                    ...$display_default['display']['value'] ?? [],
+                    ...$layout_default['display']['value'] ?? [],
+                ]
+            ],
+        ];
+
+        // Set on v2 key
+        $settings['attributes']['layout'] = [
             'type' => 'object',
             'default' => [
-                ...$display_default ?? [],
-                'display' => [
-                    'value' => [
-                        // Default display property must be FLEX!
-                        ...$display_property_support ? ['basic' => 'flex'] : [],
-                        ...$display_default['display']['value'] ?? []
-                    ]
-                ],
+                ...$layout_default,
+                ...$default_value,
             ],
         ];
     }
@@ -181,92 +251,6 @@ add_filter('block_type_metadata_settings', function ($settings, $metadata) {
         ];
     }
 
-    // if (!empty($metadata['supports']['webentor']['spacing'])) {
-    //     $settings['attributes']['spacing'] = [
-    //         'type' => 'object',
-    //         'default' => [
-    //             'margin-top' => [
-    //                 'value' => ''
-    //             ],
-    //             'margin-right' => [
-    //                 'value' => ''
-    //             ],
-    //             'margin-bottom' => [
-    //                 'value' => ''
-    //             ],
-    //             'margin-left' => [
-    //                 'value' => ''
-    //             ],
-    //             'padding-top' => [
-    //                 'value' => ''
-    //             ],
-    //             'padding-right' => [
-    //                 'value' => ''
-    //             ],
-    //             'padding-bottom' => [
-    //                 'value' => ''
-    //             ],
-    //             'padding-left' => [
-    //                 'value' => ''
-    //             ],
-    //         ],
-    //     ];
-    // }
-
-    // if (!empty($metadata['supports']['webentor']['flexbox'])) {
-    //     $settings['attributes']['flexbox'] = [
-    //         'type' => 'object',
-    //         'default' => [
-    //             'gap' => [
-    //                 'value' => [
-    //                     'basic' => 'gap-0'
-    //                 ]
-    //             ],
-    //             'gap-x' => [
-    //                 'value' => ''
-    //             ],
-    //             'gap-y' => [
-    //                 'value' => ''
-    //             ],
-    //             'flex-direction' => [
-    //                 'value' => ''
-    //             ],
-    //             'flex-wrap' => [
-    //                 'value' => ''
-    //             ],
-    //             'justify-content' => [
-    //                 'value' => ''
-    //             ],
-    //             'align-items' => [
-    //                 'value' => ''
-    //             ],
-    //             'align-content' => [
-    //                 'value' => ''
-    //             ],
-    //         ],
-    //     ];
-    // }
-
-    // if (!empty($metadata['supports']['webentor']['flexboxItem'])) {
-    //     $settings['attributes']['flexboxItem'] = [
-    //         'type' => 'object',
-    //         'default' => [
-    //             'flex-grow' => [
-    //                 'value' => ''
-    //             ],
-    //             'flex-shrink' => [
-    //                 'value' => ''
-    //             ],
-    //             'flex-basis' => [
-    //                 'value' => ''
-    //             ],
-    //             'order' => [
-    //                 'value' => ''
-    //             ],
-    //         ],
-    //     ];
-    // }
-
     $settings = apply_filters('webentor/block_type_metadata_settings', $settings, $metadata);
 
     return $settings;
@@ -307,16 +291,18 @@ function prepareBlockClassesFromSettings($attributes, $block = null, $parent_blo
         'backgroundColor' => [],
         'textColor' => [],
         'spacing' => [],
+        'layout' => [],
+        'sizing' => [],
         'display' => [],
         'grid' => [],
         'gridItem' => [],
         'flexbox' => [],
+        'flexItem' => [],
         'flexboxItem' => [],
         'border' => [],
         'borderRadius' => [],
     ];
 
-    // Create classes attribute allowing for custom "className" and "align" values.
     $classes = '';
     if (!empty($attributes['className'])) {
         $classname_classes = ' ' . $attributes['className'];
@@ -340,6 +326,12 @@ function prepareBlockClassesFromSettings($attributes, $block = null, $parent_blo
         $classes .= $text_color_classes;
     }
 
+    // Output preset custom classes (non-decomposable, e.g. w-flex-cols-3)
+    if (!empty($attributes['_presetClasses']) && is_array($attributes['_presetClasses'])) {
+        $preset_classes = ' ' . implode(' ', $attributes['_presetClasses']);
+        $classes .= $preset_classes;
+    }
+
     // Delegate to the registry for all setting-type handlers
     $registry_result = SettingsRegistry::generateClasses($attributes, $block, $parent_block);
     $classes .= $registry_result['classes'];
@@ -348,7 +340,8 @@ function prepareBlockClassesFromSettings($attributes, $block = null, $parent_blo
     return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
 }
 
-// ── Setting handler functions (registered below) ──
+// ── Setting handler functions ──
+// v2 handlers use dual-read: check v2 keys first, fallback to v1 keys.
 
 function prepareSpacingBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
 {
@@ -359,11 +352,25 @@ function prepareSpacingBlockClassesFromSettings($attributes, $block = null, $par
 
     if (!empty($attributes['spacing'])) {
         foreach ($attributes['spacing'] as $property_name => $property_data) {
+            // Skip link-mode metadata
+            if (str_starts_with($property_name, '_')) {
+                continue;
+            }
+
             if (!empty($property_data['value'])) {
                 $spacing_classes = '';
+                // Determine type (margin/padding) for link-mode lookup
+                $type = str_starts_with($property_name, 'margin') ? 'margin' : 'padding';
+                $link_mode_key = "_{$type}LinkMode";
+
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     if (!empty($breakpoint_property_value)) {
-                        // Transform to Tailwind classes
+                        // Skip sides suppressed by the active link mode
+                        $link_mode = $attributes['spacing'][$link_mode_key]['value'][$breakpoint_name] ?? 'individual';
+                        if (is_spacing_side_suppressed($property_name, $link_mode)) {
+                            continue;
+                        }
+
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                         $spacing_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
@@ -377,31 +384,138 @@ function prepareSpacingBlockClassesFromSettings($attributes, $block = null, $par
     return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
 }
 
-function prepareDisplayBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
+/**
+ * Check if a spacing side is suppressed by its link mode.
+ * Mirrors the JS isSideSuppressed() logic.
+ */
+function is_spacing_side_suppressed(string $property_name, string $link_mode): bool
+{
+    if ($link_mode === 'all' || $link_mode === 'individual') {
+        return false;
+    }
+    if ($link_mode === 'horizontal') {
+        return str_contains($property_name, 'top') || str_contains($property_name, 'bottom');
+    }
+    if ($link_mode === 'vertical') {
+        return str_contains($property_name, 'left') || str_contains($property_name, 'right');
+    }
+    return false;
+}
+
+/**
+ * Layout handler — reads display mode from v2 'layout' key, falls back to v1 'display' key.
+ * Only generates classes for the 'display' property itself; sizing is separate.
+ */
+function prepareLayoutBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
 {
     $classes = '';
     $classes_by_prop = [
-        'display' => [],
+        'layout' => [],
     ];
 
-    if (!empty($attributes['display'])) {
-        foreach ($attributes['display'] as $property_name => $property_data) {
-            if (!empty($property_data['value'])) {
-                $display_classes = '';
-                foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
-                    if (!empty($breakpoint_property_value)) {
-                        // Transform to Tailwind classes
-                        $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
-                        $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
-                        $display_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
-                    }
-                }
-                $classes_by_prop['display'][$property_name] = $display_classes;
+    // Resolve display value: v2 layout.display takes priority over v1 display.display
+    $layout_attr = $attributes['layout'] ?? [];
+    $display_attr = $attributes['display'] ?? [];
+
+    // Only handle the 'display' property here
+    $display_prop = $layout_attr['display'] ?? $display_attr['display'] ?? null;
+
+    if (!empty($display_prop['value'])) {
+        $layout_classes = '';
+        foreach ($display_prop['value'] as $breakpoint_name => $breakpoint_property_value) {
+            if (!empty($breakpoint_property_value)) {
+                $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
+                $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
+                $layout_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
             }
+        }
+        $classes_by_prop['layout']['display'] = $layout_classes;
+    }
+
+    return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
+}
+
+/**
+ * Sizing handler — reads from v2 'sizing' key, falls back to v1 'display' key
+ * for height, width, min/max dimension properties.
+ */
+function prepareSizingBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
+{
+    $classes = '';
+    $classes_by_prop = [
+        'sizing' => [],
+    ];
+
+    $sizing_properties = ['height', 'min-height', 'max-height', 'width', 'min-width', 'max-width'];
+    $sizing_attr = $attributes['sizing'] ?? [];
+    $display_attr = $attributes['display'] ?? [];
+
+    foreach ($sizing_properties as $prop_name) {
+        // v2 key takes priority, fallback to v1 display attribute
+        $prop_data = $sizing_attr[$prop_name] ?? $display_attr[$prop_name] ?? null;
+
+        if (!empty($prop_data['value'])) {
+            $sizing_classes = '';
+            foreach ($prop_data['value'] as $breakpoint_name => $breakpoint_property_value) {
+                if (!empty($breakpoint_property_value)) {
+                    $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
+                    $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
+                    $sizing_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
+                }
+            }
+            $classes_by_prop['sizing'][$prop_name] = $sizing_classes;
         }
     }
 
     return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
+}
+
+/**
+ * Helper: resolve the explicit display value for a breakpoint (no cascade).
+ * Checks v2 layout.display first, then v1 display.display.
+ */
+function get_display_value_for_breakpoint($attributes, $breakpoint_name)
+{
+    return $attributes['layout']['display']['value'][$breakpoint_name]
+        ?? $attributes['display']['display']['value'][$breakpoint_name]
+        ?? null;
+}
+
+/**
+ * Cascaded display value — walks breakpoints from lowest to target and
+ * returns the last explicitly set display mode (min-width inheritance).
+ * Mirrors JS getEffectiveDisplayValue().
+ */
+function get_effective_display_value_for_breakpoint($attributes, $breakpoint_name)
+{
+    $breakpoints = array_keys(get_theme_breakpoints());
+    $target_index = array_search($breakpoint_name, $breakpoints, true);
+    if ($target_index === false) {
+        return null;
+    }
+
+    $effective = null;
+    for ($i = 0; $i <= $target_index; $i++) {
+        $val = get_display_value_for_breakpoint($attributes, $breakpoints[$i]);
+        if ($val !== null && $val !== '') {
+            $effective = $val;
+        }
+    }
+
+    return $effective;
+}
+
+/**
+ * Cascaded parent display value — same cascade applied to parent block attributes.
+ * Mirrors JS getEffectiveParentDisplayValue().
+ */
+function get_effective_parent_display_value_for_breakpoint($parent_block, $breakpoint_name)
+{
+    if (!$parent_block || empty($parent_block->attributes)) {
+        return null;
+    }
+
+    return get_effective_display_value_for_breakpoint($parent_block->attributes, $breakpoint_name);
 }
 
 function prepareGridBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
@@ -416,8 +530,9 @@ function prepareGridBlockClassesFromSettings($attributes, $block = null, $parent
             if (!empty($property_data['value'])) {
                 $grid_classes = '';
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
-                    if (!empty($breakpoint_property_value) && !empty($attributes['display']['display']['value'][$breakpoint_name]) && $attributes['display']['display']['value'][$breakpoint_name] === 'grid') {
-                        // Transform to Tailwind classes
+                    // Cascaded display check: grid classes apply when effective display is 'grid'
+                    $display_value = get_effective_display_value_for_breakpoint($attributes, $breakpoint_name);
+                    if (!empty($breakpoint_property_value) && $display_value === 'grid') {
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                         $grid_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
@@ -443,10 +558,10 @@ function prepareGridItemBlockClassesFromSettings($attributes, $block = null, $pa
             if (!empty($property_data['value'])) {
                 $grid_item_classes = '';
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
-                    $parent_display_value = $parent_block->attributes['display']['display']['value'][$breakpoint_name] ?? 'flex';
+                    // Cascaded parent display check
+                    $parent_display_value = get_effective_parent_display_value_for_breakpoint($parent_block, $breakpoint_name) ?? 'flex';
 
-                    if (!empty($breakpoint_property_value) && !empty($parent_display_value) && $parent_display_value === 'grid') {
-                        // Transform to Tailwind classes
+                    if (!empty($breakpoint_property_value) && $parent_display_value === 'grid') {
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                         $grid_item_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
@@ -474,38 +589,15 @@ function prepareFlexboxBlockClassesFromSettings($attributes, $block = null, $par
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     if (!empty($breakpoint_property_value)) {
                         if (!empty($attributes['slider']['enabled']['value'][$breakpoint_name])) {
-                            // Skip display classes generation if slider is enabled
                             continue;
                         }
 
-                        if (empty($attributes['display']['display']['value'][$breakpoint_name]) || $attributes['display']['display']['value'][$breakpoint_name] !== 'flex') {
-                            // Skip when display is not flex
+                        // Cascaded display check: flexbox classes apply when effective display is 'flex'
+                        $display_value = get_effective_display_value_for_breakpoint($attributes, $breakpoint_name);
+                        if (empty($display_value) || $display_value !== 'flex') {
                             continue;
                         }
 
-                        // TODO: This solution is not working with TW PurgeCSS so these classes are not generated...
-                        // Get all next breakpoints for which we're gonna check if slider is enabled.
-                        // If slider is enabled on next breakpoint, we don't want custom classes to be applied as "min-width" so we'll also add "max-width" media query,
-                        // e.g. "md:max-lg:justify-center"
-                        //
-                        // Otherwise, we'll just add "min-width" media query classes, e.g. "md:justify-center"
-                        // $next_breakpoints = get_next_breakpoint_names($breakpoint_name);
-                        // $min_width_bp = $breakpoint_name;
-                        // $max_width_bp = false;
-                        // foreach ($next_breakpoints as $key => $next_breakpoint) {
-                        //     // Transform to Tailwind classes
-                        //     if (!empty($attributes['slider']['enabled']['value'][$next_breakpoint])) {
-                        //         $max_width_bp = $next_breakpoint;
-                        //     }
-                        // }
-
-                        // if ($max_width_bp) {
-                        //     $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$min_width_bp}:max-{$max_width_bp}:" ;
-                        // } else {
-                        //     $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$min_width_bp}:";
-                        // }
-
-                        // Transform to Tailwind classes
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                         $flexbox_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
@@ -519,38 +611,41 @@ function prepareFlexboxBlockClassesFromSettings($attributes, $block = null, $par
     return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
 }
 
-function prepareFlexboxItemBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
+/**
+ * Flex-item handler — reads from v2 'flexItem', falls back to v1 'flexboxItem'.
+ */
+function prepareFlexItemBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
 {
     $classes = '';
     $classes_by_prop = [
-        'flexboxItem' => [],
+        'flexItem' => [],
     ];
 
-    if (!empty($attributes['flexboxItem'])) {
-        foreach ($attributes['flexboxItem'] as $property_name => $property_data) {
+    $flex_item_attr = $attributes['flexItem'] ?? $attributes['flexboxItem'] ?? [];
+
+    if (!empty($flex_item_attr)) {
+        foreach ($flex_item_attr as $property_name => $property_data) {
             if (!empty($property_data['value'])) {
-                $flexbox_item_classes = '';
+                $flex_item_classes = '';
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     if (!empty($breakpoint_property_value)) {
                         if (!empty($attributes['slider']['enabled']['value'][$breakpoint_name])) {
-                            // Skip display classes generation if slider is enabled
                             continue;
                         }
 
-                        $parent_display_value = $parent_block ? ($parent_block->attributes['display']['display']['value'][$breakpoint_name] ?? 'flex') : 'flex';
+                        // Cascaded parent display check
+                        $parent_display_value = get_effective_parent_display_value_for_breakpoint($parent_block, $breakpoint_name) ?? 'flex';
 
                         if (empty($parent_display_value) || $parent_display_value !== 'flex') {
-                            // Skip when display is not flex
                             continue;
                         }
 
-                        // Transform to Tailwind classes
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
-                        $flexbox_item_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
+                        $flex_item_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                     }
                 }
-                $classes_by_prop['flexboxItem'][$property_name] = $flexbox_item_classes;
+                $classes_by_prop['flexItem'][$property_name] = $flex_item_classes;
             }
         }
     }
@@ -588,7 +683,6 @@ function prepareBorderBlockClassesFromSettings($attributes, $block = null, $pare
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     if (!empty($breakpoint_property_value)) {
                         foreach ($breakpoint_property_value as $value_side => $value) {
-                            // Transform to Tailwind classes
                             $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
 
                             if (!empty($value)) {
@@ -636,13 +730,16 @@ function prepareBorderBlockClassesFromSettings($attributes, $block = null, $pare
 }
 
 // ── Register all handlers with the SettingsRegistry ──
+// v2 registration: layout and sizing replace the old display handler,
+// flexItem replaces flexboxItem. Old handlers removed.
 
 SettingsRegistry::register('spacing', __NAMESPACE__ . '\prepareSpacingBlockClassesFromSettings');
-SettingsRegistry::register('display', __NAMESPACE__ . '\prepareDisplayBlockClassesFromSettings');
+SettingsRegistry::register('layout', __NAMESPACE__ . '\prepareLayoutBlockClassesFromSettings');
+SettingsRegistry::register('sizing', __NAMESPACE__ . '\prepareSizingBlockClassesFromSettings');
 SettingsRegistry::register('grid', __NAMESPACE__ . '\prepareGridBlockClassesFromSettings');
 SettingsRegistry::register('gridItem', __NAMESPACE__ . '\prepareGridItemBlockClassesFromSettings');
 SettingsRegistry::register('flexbox', __NAMESPACE__ . '\prepareFlexboxBlockClassesFromSettings');
-SettingsRegistry::register('flexboxItem', __NAMESPACE__ . '\prepareFlexboxItemBlockClassesFromSettings');
+SettingsRegistry::register('flexItem', __NAMESPACE__ . '\prepareFlexItemBlockClassesFromSettings');
 SettingsRegistry::register('border', __NAMESPACE__ . '\prepareBorderBlockClassesFromSettings');
 
 /**

@@ -2,7 +2,7 @@ import { __ } from '@wordpress/i18n';
 
 import { WebentorConfig } from '@webentorCore/types/_webentor-config';
 
-import { SelectOption } from '../../types';
+import { SelectOption, SelectOptionGroup } from '../../types';
 import { getPixelFromRemValue } from '../../utils';
 
 export interface TwThemeValueOptions {
@@ -34,7 +34,10 @@ export const createTwThemeValues = (
 
   const keys = Object.keys(themeObj);
   if (opts?.sort !== false) {
-    keys.sort((a, b) => Number(a) - Number(b));
+    // Sort by the resolved CSS value (e.g. 0.25rem → 4, 1rem → 16)
+    keys.sort(
+      (a, b) => (parseFloat(themeObj[a]) || 0) - (parseFloat(themeObj[b]) || 0),
+    );
   }
 
   const formatter = opts?.labelFormatter ?? defaultLabelFormatter;
@@ -50,6 +53,55 @@ export const createTwThemeValues = (
   });
 
   return values;
+};
+
+/** Matches pure integers (96) and floats (3.5) — rejects units like 3rem, 100% */
+const PURE_NUMBER = /^\d+(\.\d+)?$/;
+
+/**
+ * Creates grouped SelectOptionGroup[] splitting numeric vs string values.
+ * Numeric = theme key is a pure integer or float (e.g. "96", "3.5").
+ * String  = everything else (e.g. "auto", "full", "screen", "px").
+ */
+export const createGroupedTwThemeValues = (
+  twTheme: WebentorConfig['theme'],
+  themeKey: string,
+  prefix: string,
+  opts?: TwThemeValueOptions,
+): SelectOptionGroup[] => {
+  const themeObj = twTheme?.[themeKey];
+  if (!themeObj) return [];
+
+  const keys = Object.keys(themeObj);
+  if (opts?.sort !== false) {
+    keys.sort(
+      (a, b) => (parseFloat(themeObj[a]) || 0) - (parseFloat(themeObj[b]) || 0),
+    );
+  }
+
+  const formatter = opts?.labelFormatter ?? defaultLabelFormatter;
+  const numeric: SelectOption[] = [];
+  const keyword: SelectOption[] = [];
+
+  for (const key of keys) {
+    const rawValue = themeObj[key];
+    const option: SelectOption = {
+      label: formatter(key, rawValue),
+      value: prefix ? `${prefix}-${key}` : key,
+    };
+    if (PURE_NUMBER.test(key)) {
+      numeric.push(option);
+    } else {
+      keyword.push(option);
+    }
+  }
+
+  const groups: SelectOptionGroup[] = [];
+  if (numeric.length)
+    groups.push({ label: __('Numeric', 'webentor'), options: numeric });
+  if (keyword.length)
+    groups.push({ label: __('Keyword', 'webentor'), options: keyword });
+  return groups;
 };
 
 /** Label formatter for spacing-scale keys (key × 4 = px) */

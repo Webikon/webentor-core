@@ -1,3 +1,6 @@
+// Core block-editor filters (self-registering on import)
+import '@webentorCore/blocks-filters/_wrap-with-container';
+
 // Import all core blocks
 // TODO: maybe add filter to customize this list
 import '@blocks/e-accordion/e-accordion.block';

@@ -78,9 +78,31 @@
   .components-tab-panel__tabs-item {
     padding: 0 6px;
     flex-shrink: 0;
+    /* Override WP icon-button min-width so tabs stay compact */
+    min-width: unset;
 
     &.is-active {
       font-weight: bold;
     }
+
+    /* Let SVG text inherit bold weight from .is-active */
+    svg text {
+      font-weight: inherit;
+    }
+  }
+}
+
+/* Cascade indicator: style selects showing inherited (not explicit) values */
+.wbtr-inherited-value select {
+  font-style: italic;
+  color: #757575;
+  opacity: 0.7;
+}
+
+/* Extend width of Gutenberg sidebar */
+.interface-complementary-area__fill,
+.interface-complementary-area {
+  @media (min-width: 768px) {
+    width: 350px !important;
   }
 }

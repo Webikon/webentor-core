@@ -1,10 +1,15 @@
 import { getBlockType } from '@wordpress/blocks';
 import { Button, SelectControl } from '@wordpress/components';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { link, linkOff } from '@wordpress/icons';
 
 import { isEmpty, setImmutably } from '@webentorCore/_utils';
 
+import { InheritedIndicator } from '../../../components/InheritedIndicator';
+import {
+  getEffectiveObjectValue,
+  getObjectInheritedFromBreakpoint,
+} from '../../../utils';
 import { BlockPanelProps } from '../../../types';
 import { getBorderRadiusValues } from './properties';
 
@@ -20,26 +25,47 @@ interface BorderRadiusValue {
   linked?: boolean;
 }
 
+type CornerKey = 'topLeft' | 'topRight' | 'bottomRight' | 'bottomLeft';
+
 const WebentorBorderRadiusControl = ({
   label,
   value,
   onChange,
   twTheme,
+  inheritedValue,
+  inheritedFrom,
 }: {
   label?: string;
   value?: string;
   onChange: (value: string) => void;
   twTheme: any;
+  inheritedValue?: string;
+  inheritedFrom?: string | null;
 }) => {
-  const values = getBorderRadiusValues(twTheme);
+  const allValues = getBorderRadiusValues(twTheme);
+  const isInherited = !value && !!inheritedValue && !!inheritedFrom;
+
+  let options = allValues;
+  if (isInherited) {
+    const inheritedLabel =
+      allValues.find((o) => o.value === inheritedValue)?.label ??
+      inheritedValue;
+    options = [
+      {
+        label: sprintf(__('%s (from %s)', 'webentor'), inheritedLabel, inheritedFrom),
+        value: '',
+      },
+      ...allValues.filter((o) => o.value !== ''),
+    ];
+  }
 
   return (
     <SelectControl
       label={label}
       value={value ?? ''}
-      options={values}
+      options={options}
       onChange={onChange}
-      className="wbtr:w-24"
+      className={`wbtr:w-24${isInherited ? ' wbtr-inherited-value' : ''}`}
     />
   );
 };
@@ -49,6 +75,7 @@ export const BorderRadiusSettings = ({
   setAttributes,
   name,
   breakpoint,
+  breakpoints,
   twTheme,
 }: BorderRadiusSettingsProps) => {
   if (!attributes?.border) {
@@ -129,11 +156,42 @@ export const BorderRadiusSettings = ({
     justifyItems: 'center',
   };
 
+  const radiusInheritedFrom = breakpoints?.length
+    ? getObjectInheritedFromBreakpoint(
+        attributes,
+        'border',
+        'borderRadius',
+        breakpoint,
+        breakpoints,
+      )
+    : null;
+
+  // Resolve inherited per-corner values for placeholder display
+  const effectiveRadius = breakpoints?.length
+    ? getEffectiveObjectValue<BorderRadiusValue>(
+        attributes,
+        'border',
+        'borderRadius',
+        breakpoint,
+        breakpoints,
+      )
+    : undefined;
+
+  const getCornerInherited = (corner: CornerKey) => {
+    const explicitVal = currentBorderRadius?.[corner];
+    if (explicitVal) return { value: undefined, from: null };
+    const inherited = effectiveRadius?.[corner];
+    return { value: inherited || undefined, from: radiusInheritedFrom };
+  };
+
   return (
     <div className="wbtr:my-2 wbtr:flex wbtr:flex-col wbtr:gap-2 wbtr:border wbtr:border-editor-border wbtr:p-2">
       <p className="wbtr:text-12 wbtr:uppercase">
         {__('Border Radius', 'webentor')}
       </p>
+      {radiusInheritedFrom && (
+        <InheritedIndicator fromBreakpoint={radiusInheritedFrom} />
+      )}
 
       <div style={containerStyle}>
         {isLinked ? (
@@ -144,6 +202,8 @@ export const BorderRadiusSettings = ({
                 value={currentBorderRadius?.topLeft}
                 onChange={(value) => onChange(value, 'topLeft')}
                 twTheme={twTheme}
+                inheritedValue={getCornerInherited('topLeft').value}
+                inheritedFrom={getCornerInherited('topLeft').from}
               />
             </div>
           </>
@@ -155,6 +215,8 @@ export const BorderRadiusSettings = ({
                 value={currentBorderRadius?.topLeft}
                 onChange={(value) => onChange(value, 'topLeft')}
                 twTheme={twTheme}
+                inheritedValue={getCornerInherited('topLeft').value}
+                inheritedFrom={getCornerInherited('topLeft').from}
               />
             </div>
             <div style={{ gridColumn: '2', gridRow: '1' }}>
@@ -163,6 +225,8 @@ export const BorderRadiusSettings = ({
                 value={currentBorderRadius?.topRight}
                 onChange={(value) => onChange(value, 'topRight')}
                 twTheme={twTheme}
+                inheritedValue={getCornerInherited('topRight').value}
+                inheritedFrom={getCornerInherited('topRight').from}
               />
             </div>
             <div style={{ gridColumn: '2', gridRow: '2' }}>
@@ -171,6 +235,8 @@ export const BorderRadiusSettings = ({
                 value={currentBorderRadius?.bottomRight}
                 onChange={(value) => onChange(value, 'bottomRight')}
                 twTheme={twTheme}
+                inheritedValue={getCornerInherited('bottomRight').value}
+                inheritedFrom={getCornerInherited('bottomRight').from}
               />
             </div>
             <div style={{ gridColumn: '1', gridRow: '2' }}>
@@ -179,6 +245,8 @@ export const BorderRadiusSettings = ({
                 value={currentBorderRadius?.bottomLeft}
                 onChange={(value) => onChange(value, 'bottomLeft')}
                 twTheme={twTheme}
+                inheritedValue={getCornerInherited('bottomLeft').value}
+                inheritedFrom={getCornerInherited('bottomLeft').from}
               />
             </div>
           </>

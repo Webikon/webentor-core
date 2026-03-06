@@ -17,8 +17,12 @@ import {
   setImmutably,
 } from '@webentorCore/_utils';
 
+import { InheritedIndicator } from '../../../components/InheritedIndicator';
 import { BlockPanelProps } from '../../../types';
-import { prepareTailwindBorderClassesFromSettings } from '../../../utils';
+import {
+  getObjectInheritedFromBreakpoint,
+  prepareTailwindBorderClassesFromSettings,
+} from '../../../utils';
 import { getBorderProperties } from './properties';
 
 interface BorderSettingsProps extends BlockPanelProps {
@@ -111,6 +115,7 @@ export const BorderSettings = ({
   setAttributes,
   name,
   breakpoint,
+  breakpoints,
   twTheme,
 }: BorderSettingsProps) => {
   if (!attributes?.border) {
@@ -220,9 +225,22 @@ export const BorderSettings = ({
     justifyItems: 'center',
   };
 
+  const borderInheritedFrom = breakpoints?.length
+    ? getObjectInheritedFromBreakpoint(
+        attributes,
+        'border',
+        'border',
+        breakpoint,
+        breakpoints,
+      )
+    : null;
+
   return (
     <div className="wbtr:my-2 wbtr:flex wbtr:flex-col wbtr:gap-2 wbtr:border wbtr:border-editor-border wbtr:p-2">
       <p className="wbtr:text-12 wbtr:uppercase">{__('Border', 'webentor')}</p>
+      {borderInheritedFrom && (
+        <InheritedIndicator fromBreakpoint={borderInheritedFrom} />
+      )}
 
       <div style={containerStyle}>
         {isLinked ? (

@@ -1,17 +1,18 @@
+/**
+ * Border module registration.
+ *
+ * panelGroup: border, order: 10
+ * Handles both border and borderRadius settings within a single module.
+ * Support key: ['border', 'borderRadius']
+ */
 import { isEmpty } from '@webentorCore/_utils';
 
-import { ClassGenContext, registry } from '../../registry';
+import { registry } from '../../registry';
+import { ClassGenContext } from '../../types';
 import {
   prepareTailwindBorderClassesForSide,
 } from '../../utils';
-import { BorderPanel } from './panel';
-
-const BORDER_MAPPING: Record<string, string> = {
-  top: 'border-t',
-  right: 'border-r',
-  bottom: 'border-b',
-  left: 'border-l',
-};
+import { BorderAndRadiusSettings } from './settings';
 
 const RADIUS_MAPPING: Record<string, string> = {
   topLeft: 'rounded-tl',
@@ -73,14 +74,14 @@ const hasBorderActiveSettings = (
 
 registry.register({
   name: 'border',
-  panelTitle: 'Border Settings',
-  panelPriority: 30,
+  panelGroup: 'border',
+  order: 10,
   attributeKey: 'border',
   supportKey: ['border', 'borderRadius'],
   attributeSchema: {
     border: { type: 'object', default: {} },
   },
-  PanelComponent: BorderPanel,
+  SettingsComponent: BorderAndRadiusSettings,
   generateClasses: generateBorderClasses,
   hasActiveSettings: hasBorderActiveSettings,
 });

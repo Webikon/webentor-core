@@ -13,6 +13,7 @@ export const SpacingSettings = ({
   setAttributes,
   name,
   breakpoint,
+  breakpoints,
   twTheme,
 }: SpacingSettingsProps) => {
   if (!attributes?.spacing) {
@@ -36,6 +37,7 @@ export const SpacingSettings = ({
         setAttributes={setAttributes}
         attributeKey="spacing"
         breakpoint={breakpoint}
+        breakpoints={breakpoints}
         disabled={isSliderEnabled}
       />
 
@@ -46,6 +48,7 @@ export const SpacingSettings = ({
         setAttributes={setAttributes}
         attributeKey="spacing"
         breakpoint={breakpoint}
+        breakpoints={breakpoints}
         disabled={isSliderEnabled}
       />
     </div>

@@ -1,4 +1,5 @@
-export { BorderPanel } from './panel';
+export { BorderAndRadiusSettings } from './settings';
+export { BorderSettings } from './border/settings';
+export { BorderRadiusSettings } from './border-radius/settings';
 
-// Side-effect: registers with SettingsRegistry
 import './registration';

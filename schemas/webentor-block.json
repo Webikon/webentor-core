@@ -623,21 +623,27 @@
           "default": false
         },
         "webentor": {
-          "description": "Custom property for enabling Webentor features",
+          "description": "Custom property for enabling Webentor responsive settings features. Supports both v1 and v2 key names (v1 keys are deprecated but still accepted).",
           "type": "object",
           "properties": {
             "spacing": {
               "description": "When set to true, the block will have additional Spacing controls (for paddings and margins).",
               "type": "boolean"
             },
-            "display": {
-              "description": "When set to true, the block will have all additional Display controls (for display, width, height, etc.). You can also granularily show controls for exact properties, e.g. instead of using `true` use object like { display: true, width: true, minWidth: true } to enable display and width controls only.",
+            "layout": {
+              "description": "v2: When set to true, the block will have Display mode controls (block, flex, grid, hidden, etc.).",
               "type": ["boolean", "object"],
               "properties": {
                 "display": {
-                  "description": "Show display controls, e.g. none, block, flex, grid, etc.",
+                  "description": "Show display mode selector (flex, grid, block, hidden, etc.).",
                   "type": "boolean"
-                },
+                }
+              }
+            },
+            "sizing": {
+              "description": "v2: When set to true, the block will have Sizing controls (width, height, min/max dimensions).",
+              "type": ["boolean", "object"],
+              "properties": {
                 "width": {
                   "description": "Show width controls.",
                   "type": "boolean"
@@ -664,8 +670,35 @@
                 }
               }
             },
+            "display": {
+              "description": "DEPRECATED (v1): Use 'layout' + 'sizing' instead. When set to true, enables all Display controls. Automatically normalized to layout + sizing at runtime.",
+              "type": ["boolean", "object"],
+              "properties": {
+                "display": {
+                  "type": "boolean"
+                },
+                "width": {
+                  "type": "boolean"
+                },
+                "minWidth": {
+                  "type": "boolean"
+                },
+                "maxWidth": {
+                  "type": "boolean"
+                },
+                "height": {
+                  "type": "boolean"
+                },
+                "minHeight": {
+                  "type": "boolean"
+                },
+                "maxHeight": {
+                  "type": "boolean"
+                }
+              }
+            },
             "grid": {
-              "description": "When set to true, the block will have additional Grid controls.",
+              "description": "When set to true, the block will have additional Grid container controls.",
               "type": "boolean"
             },
             "gridItem": {
@@ -673,15 +706,31 @@
               "type": "boolean"
             },
             "flexbox": {
-              "description": "When set to true, the block will have additional Flex controls.",
+              "description": "When set to true, the block will have additional Flexbox container controls.",
+              "type": "boolean"
+            },
+            "flexItem": {
+              "description": "v2: When set to true, the block will have additional Flex Item controls.",
               "type": "boolean"
             },
             "flexboxItem": {
-              "description": "When set to true, the block will have additional Flex Item controls.",
+              "description": "DEPRECATED (v1): Use 'flexItem' instead. Automatically normalized to flexItem at runtime.",
+              "type": "boolean"
+            },
+            "border": {
+              "description": "When set to true, the block will have additional Border controls.",
+              "type": "boolean"
+            },
+            "borderRadius": {
+              "description": "When set to true, the block will have additional Border Radius controls.",
               "type": "boolean"
             },
             "blockLink": {
               "description": "When set to true, the block will have additional Block Link controls.",
+              "type": "boolean"
+            },
+            "presets": {
+              "description": "When set to true, the block will show quick layout preset buttons.",
               "type": "boolean"
             }
           }

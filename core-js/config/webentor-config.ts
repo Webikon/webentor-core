@@ -698,7 +698,10 @@ export const buildSafelist = (config: WebentorConfig) => {
     }),
 
     // Opacity for hidden block
-    ...breakpointsPrefixes.flatMap((bp) => [`${bp}opacity-30`]),
+    ...breakpointsPrefixes.flatMap((bp) => [
+      `${bp}opacity-30`,
+      `${bp}opacity-100`,
+    ]),
 
     // Orders
     ...Object.keys(config.theme.order).flatMap((i) => {
