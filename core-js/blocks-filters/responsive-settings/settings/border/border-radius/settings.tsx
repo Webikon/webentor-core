@@ -6,11 +6,11 @@ import { link, linkOff } from '@wordpress/icons';
 import { isEmpty, setImmutably } from '@webentorCore/_utils';
 
 import { InheritedIndicator } from '../../../components/InheritedIndicator';
+import { BlockPanelProps } from '../../../types';
 import {
   getEffectiveObjectValue,
   getObjectInheritedFromBreakpoint,
 } from '../../../utils';
-import { BlockPanelProps } from '../../../types';
 import { getBorderRadiusValues } from './properties';
 
 interface BorderRadiusSettingsProps extends BlockPanelProps {
@@ -44,6 +44,7 @@ const WebentorBorderRadiusControl = ({
 }) => {
   const allValues = getBorderRadiusValues(twTheme);
   const isInherited = !value && !!inheritedValue && !!inheritedFrom;
+  const selectClassName = `wbtr:w-24${isInherited ? ' wbtr-inherited-value' : ''}`;
 
   let options = allValues;
   if (isInherited) {
@@ -52,7 +53,11 @@ const WebentorBorderRadiusControl = ({
       inheritedValue;
     options = [
       {
-        label: sprintf(__('%s (from %s)', 'webentor'), inheritedLabel, inheritedFrom),
+        label: sprintf(
+          __('%s (from %s)', 'webentor'),
+          inheritedLabel,
+          inheritedFrom,
+        ),
         value: '',
       },
       ...allValues.filter((o) => o.value !== ''),
@@ -64,8 +69,9 @@ const WebentorBorderRadiusControl = ({
       label={label}
       value={value ?? ''}
       options={options}
+      __nextHasNoMarginBottom
       onChange={onChange}
-      className={`wbtr:w-24${isInherited ? ' wbtr-inherited-value' : ''}`}
+      className={selectClassName}
     />
   );
 };

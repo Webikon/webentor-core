@@ -224,6 +224,7 @@ function prepareBlockClassesFromSettings($attributes, $block = null, $parent_blo
         'align' => [],
         'backgroundColor' => [],
         'textColor' => [],
+        '_presetClasses' => [],
         'spacing' => [],
         'layout' => [],
         'sizing' => [],
@@ -238,29 +239,30 @@ function prepareBlockClassesFromSettings($attributes, $block = null, $parent_blo
     $classes = '';
     if (!empty($attributes['className'])) {
         $classname_classes = ' ' . $attributes['className'];
-        $classes_by_prop['className'] = $classname_classes;
+        $classes_by_prop['className'] = [$classname_classes];
         $classes .= $classname_classes;
     }
 
     if (!empty($attributes['align'])) {
         $align_classes = ' align' . $attributes['align'];
-        $classes_by_prop['align'] = $align_classes;
+        $classes_by_prop['align'] = [$align_classes];
         $classes .= $align_classes;
     }
     if (!empty($attributes['backgroundColor'])) {
         $background_color_classes = ' has-' . $attributes['backgroundColor'] . '-background-color bg-' . $attributes['backgroundColor']; // add WP has-*-background-color clas, but also Tailwind bg-* so bg with image (texture) can be applied
-        $classes_by_prop['backgroundColor'] = $background_color_classes;
+        $classes_by_prop['backgroundColor'] = [$background_color_classes];
         $classes .= $background_color_classes;
     }
     if (!empty($attributes['textColor'])) {
         $text_color_classes = ' has-' . $attributes['textColor'] . '-color text-' . $attributes['textColor'];
-        $classes_by_prop['textColor'] = $text_color_classes;
+        $classes_by_prop['textColor'] = [$text_color_classes];
         $classes .= $text_color_classes;
     }
 
     // Output preset custom classes (non-decomposable, e.g. w-flex-cols-3)
     if (!empty($attributes['_presetClasses']) && is_array($attributes['_presetClasses'])) {
         $preset_classes = ' ' . implode(' ', $attributes['_presetClasses']);
+        $classes_by_prop['_presetClasses'] = [$preset_classes];
         $classes .= $preset_classes;
     }
 
@@ -270,6 +272,16 @@ function prepareBlockClassesFromSettings($attributes, $block = null, $parent_blo
     $classes_by_prop = array_merge($classes_by_prop, $registry_result['classes_by_property']);
 
     return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
+}
+
+/**
+ * Mirror the editor-side slider disable logic on the frontend.
+ * Breakpoint-specific responsive classes should not render while the slider
+ * owns that breakpoint's layout.
+ */
+function is_slider_enabled_for_breakpoint($attributes, $breakpoint_name)
+{
+    return !empty($attributes['slider']['enabled']['value'][$breakpoint_name]);
 }
 
 // ── Setting handler functions ──
@@ -292,6 +304,10 @@ function prepareSpacingBlockClassesFromSettings($attributes, $block = null, $par
                 $spacing_classes = '';
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     if (!empty($breakpoint_property_value)) {
+                        if (is_slider_enabled_for_breakpoint($attributes, $breakpoint_name)) {
+                            continue;
+                        }
+
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                         $spacing_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
@@ -325,6 +341,10 @@ function prepareLayoutBlockClassesFromSettings($attributes, $block = null, $pare
         $layout_classes = '';
         foreach ($display_prop['value'] as $breakpoint_name => $breakpoint_property_value) {
             if (!empty($breakpoint_property_value)) {
+                if (is_slider_enabled_for_breakpoint($attributes, $breakpoint_name)) {
+                    continue;
+                }
+
                 $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                 $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                 $layout_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
@@ -357,6 +377,10 @@ function prepareSizingBlockClassesFromSettings($attributes, $block = null, $pare
             $sizing_classes = '';
             foreach ($prop_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                 if (!empty($breakpoint_property_value)) {
+                    if (is_slider_enabled_for_breakpoint($attributes, $breakpoint_name)) {
+                        continue;
+                    }
+
                     $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                     $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
                     $sizing_classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
@@ -429,6 +453,10 @@ function prepareGridBlockClassesFromSettings($attributes, $block = null, $parent
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     // Cascaded display check: grid classes apply when effective display is 'grid'
                     $display_value = get_effective_display_value_for_breakpoint($attributes, $breakpoint_name);
+                    if (is_slider_enabled_for_breakpoint($attributes, $breakpoint_name)) {
+                        continue;
+                    }
+
                     if (!empty($breakpoint_property_value) && $display_value === 'grid') {
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
                         $classes .= ' ' . $tw_breakpoint . $breakpoint_property_value;
@@ -456,7 +484,10 @@ function prepareGridItemBlockClassesFromSettings($attributes, $block = null, $pa
                 $grid_item_classes = '';
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     // Cascaded parent display check
-                    $parent_display_value = get_effective_parent_display_value_for_breakpoint($parent_block, $breakpoint_name) ?? 'flex';
+                    $parent_display_value = get_effective_parent_display_value_for_breakpoint($parent_block, $breakpoint_name);
+                    if (is_slider_enabled_for_breakpoint($attributes, $breakpoint_name)) {
+                        continue;
+                    }
 
                     if (!empty($breakpoint_property_value) && $parent_display_value === 'grid') {
                         $tw_breakpoint = $breakpoint_name === 'basic' ? '' : "{$breakpoint_name}:";
@@ -485,7 +516,7 @@ function prepareFlexboxBlockClassesFromSettings($attributes, $block = null, $par
                 $flexbox_classes = '';
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     if (!empty($breakpoint_property_value)) {
-                        if (!empty($attributes['slider']['enabled']['value'][$breakpoint_name])) {
+                        if (is_slider_enabled_for_breakpoint($attributes, $breakpoint_name)) {
                             continue;
                         }
 
@@ -526,12 +557,12 @@ function prepareFlexItemBlockClassesFromSettings($attributes, $block = null, $pa
                 $flex_item_classes = '';
                 foreach ($property_data['value'] as $breakpoint_name => $breakpoint_property_value) {
                     if (!empty($breakpoint_property_value)) {
-                        if (!empty($attributes['slider']['enabled']['value'][$breakpoint_name])) {
+                        if (is_slider_enabled_for_breakpoint($attributes, $breakpoint_name)) {
                             continue;
                         }
 
                         // Cascaded parent display check
-                        $parent_display_value = get_effective_parent_display_value_for_breakpoint($parent_block, $breakpoint_name) ?? 'flex';
+                        $parent_display_value = get_effective_parent_display_value_for_breakpoint($parent_block, $breakpoint_name);
 
                         if (empty($parent_display_value) || $parent_display_value !== 'flex') {
                             continue;
@@ -615,9 +646,9 @@ function prepareBorderBlockClassesFromSettings($attributes, $block = null, $pare
                     }
                 }
                 if ($property_name === 'border') {
-                    $classes_by_prop['border'] = $border_classes;
+                    $classes_by_prop['border'] = !empty($border_classes) ? [$border_classes] : [];
                 } elseif ($property_name === 'borderRadius') {
-                    $classes_by_prop['borderRadius'] = $border_radius_classes;
+                    $classes_by_prop['borderRadius'] = !empty($border_radius_classes) ? [$border_radius_classes] : [];
                 }
             }
         }

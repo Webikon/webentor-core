@@ -712,6 +712,45 @@ export const buildSafelist = (config: WebentorConfig) => {
     ...Object.keys(config.theme.aspectRatio).flatMap((i) => {
       return breakpointsPrefixes.flatMap((bp) => [`${bp}aspect-${i}`]);
     }),
+
+    // Custom flexbox grid
+    ...[
+      'w-flex-cols',
+      'w-flex-cols-2',
+      'w-flex-cols-3',
+      'w-flex-cols-4',
+      'w-flex-cols-5',
+      'w-flex-cols-6',
+      'w-flex-cols-7',
+      'w-flex-cols-8',
+      'w-flex-cols-9',
+      'w-flex-cols-10',
+      'w-flex-cols-11',
+      'w-flex-cols-12',
+      'w-gap-0',
+      'w-gap-0.5',
+      'w-gap-1',
+      'w-gap-1.5',
+      'w-gap-2',
+      'w-gap-2.5',
+      'w-gap-3',
+      'w-gap-3.5',
+      'w-gap-4',
+      'w-gap-5',
+      'w-gap-6',
+      'w-gap-7',
+      'w-gap-8',
+      'w-gap-9',
+      'w-gap-10',
+      'w-gap-11',
+      'w-gap-12',
+      'w-gap-14',
+      'w-gap-15',
+      'w-gap-16',
+      'w-gap-20',
+    ].flatMap((i) => {
+      return breakpointsPrefixes.flatMap((bp) => [`${bp}${i}`]);
+    }),
   ];
 };
 

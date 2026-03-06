@@ -8,7 +8,7 @@
 import { getEffectiveDisplayValue } from '../../migration';
 import { registry } from '../../registry';
 import { ClassGenContext } from '../../types';
-import { getFlexboxProperties } from './properties';
+import { FLEXBOX_PROPERTY_NAMES } from './properties';
 import { FlexboxSettings } from './settings';
 
 export const generateFlexboxClasses = (
@@ -46,9 +46,8 @@ const hasFlexboxActiveSettings = (
   attributes: Record<string, any>,
   breakpoint: string,
 ): boolean => {
-  const flexboxProps = getFlexboxProperties({} as any);
-  return flexboxProps.some(
-    (p) => !!attributes?.flexbox?.[p.name]?.value?.[breakpoint],
+  return FLEXBOX_PROPERTY_NAMES.some(
+    (propName) => !!attributes?.flexbox?.[propName]?.value?.[breakpoint],
   );
 };
 

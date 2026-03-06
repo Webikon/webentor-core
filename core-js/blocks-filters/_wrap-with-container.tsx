@@ -5,7 +5,7 @@ import {
 import { cloneBlock, createBlock } from '@wordpress/blocks';
 import { ToolbarButton, ToolbarGroup } from '@wordpress/components';
 import { createHigherOrderComponent } from '@wordpress/compose';
-import { useDispatch, useSelect } from '@wordpress/data';
+import { select as dataSelect, useDispatch, useSelect } from '@wordpress/data';
 import { Fragment } from '@wordpress/element';
 import { addFilter, applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
@@ -18,7 +18,7 @@ const withWrapContainerButton = createHigherOrderComponent((BlockEdit) => {
     // Allow themes to exclude specific blocks via filter
     const excludedBlocks: string[] = applyFilters(
       'webentor.core.wrapWithContainer.excludedBlocks',
-      [],
+      ['webentor/l-section'],
     );
 
     if (excludedBlocks.includes(name)) {
@@ -27,26 +27,15 @@ const withWrapContainerButton = createHigherOrderComponent((BlockEdit) => {
 
     const { replaceBlocks } = useDispatch(blockEditorStore);
 
-    const {
-      block,
-      isMultiSelected,
-      isFirstInMultiSelection,
-      allSelectedBlocks,
-      allSelectedClientIds,
-    } = useSelect(
+    const { isMultiSelected, isFirstInMultiSelection } = useSelect(
       (select) => {
         const store = select(blockEditorStore);
         const multiIds = store.getMultiSelectedBlockClientIds();
         const isMulti = multiIds.length > 0;
 
         return {
-          block: store.getBlock(clientId),
           isMultiSelected: isMulti,
           isFirstInMultiSelection: isMulti && multiIds[0] === clientId,
-          allSelectedBlocks: isMulti
-            ? multiIds.map((id) => store.getBlock(id)).filter(Boolean)
-            : [],
-          allSelectedClientIds: multiIds,
         };
       },
       [clientId],
@@ -58,7 +47,15 @@ const withWrapContainerButton = createHigherOrderComponent((BlockEdit) => {
     }
 
     const handleWrap = () => {
-      if (isMultiSelected && allSelectedBlocks.length > 0) {
+      const store = dataSelect(blockEditorStore);
+      const allSelectedClientIds = store.getMultiSelectedBlockClientIds();
+
+      // Build the selected block list on demand so useSelect only returns stable values.
+      const allSelectedBlocks = allSelectedClientIds
+        .map((selectedClientId) => store.getBlock(selectedClientId))
+        .filter(Boolean);
+
+      if (allSelectedBlocks.length > 0) {
         const clonedBlocks = allSelectedBlocks.map((b) => cloneBlock(b));
         const containerBlock = createBlock(
           'webentor/l-flexible-container',
@@ -67,8 +64,11 @@ const withWrapContainerButton = createHigherOrderComponent((BlockEdit) => {
         );
         replaceBlocks(allSelectedClientIds, [containerBlock]);
       } else {
-        if (!block) return;
-        const clonedBlock = cloneBlock(block);
+        const currentBlock = store.getBlock(clientId);
+
+        if (!currentBlock) return;
+
+        const clonedBlock = cloneBlock(currentBlock);
         const containerBlock = createBlock(
           'webentor/l-flexible-container',
           {},

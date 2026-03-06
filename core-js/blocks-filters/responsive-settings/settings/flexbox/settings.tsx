@@ -12,7 +12,6 @@ import { InheritedIndicator } from '../../components/InheritedIndicator';
 import { ResponsiveSelectGroup } from '../../components/ResponsiveSelectGroup';
 import {
   getDisplayInheritedFromBreakpoint,
-  getDisplayValue,
   getEffectiveDisplayValue,
 } from '../../migration';
 import { SettingsComponentProps } from '../../types';

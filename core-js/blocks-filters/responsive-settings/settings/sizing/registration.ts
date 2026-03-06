@@ -7,7 +7,10 @@
  */
 import { registry } from '../../registry';
 import { ClassGenContext } from '../../types';
-import { hasSizingSettingsForBreakpoint, SIZING_PROPERTY_NAMES } from './properties';
+import {
+  hasSizingSettingsForBreakpoint,
+  SIZING_PROPERTY_NAMES,
+} from './properties';
 import { SizingSettings } from './settings';
 
 const generateSizingClasses = (

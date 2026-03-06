@@ -191,6 +191,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
             <SelectControl
               label={__('Aspect Ratio', 'webentor')}
               value={attributes.aspectRatio}
+              __nextHasNoMarginBottom
               options={[
                 { label: 'Auto', value: 'auto' },
                 { label: 'Square', value: 'square' },
@@ -205,6 +206,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
             <SelectControl
               label={__('Object Fit', 'webentor')}
               value={attributes.objectFit}
+              __nextHasNoMarginBottom
               options={[
                 { label: 'None', value: 'none' },
                 { label: 'Fill', value: 'fill' },
@@ -222,6 +224,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
               <SelectControl
                 label={__('Object Position', 'webentor')}
                 value={attributes.objectPosition}
+                __nextHasNoMarginBottom
                 options={[
                   { label: 'Top', value: 'top' },
                   { label: 'Right Top', value: 'right-top' },
@@ -243,6 +246,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
             <SelectControl
               label={__('Image Size', 'webentor')}
               value={attributes.imageSize}
+              __nextHasNoMarginBottom
               options={imageSizeOptions}
               onChange={(imageSize) => setAttributes({ imageSize })}
               help={__(

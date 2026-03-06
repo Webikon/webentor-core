@@ -23,7 +23,6 @@ import { WebentorConfig } from '@webentorCore/types/_webentor-config';
 
 import { AppliedClassesViewer } from './components/AppliedClassesViewer';
 import { DebugPanel } from './components/DebugPanel';
-import { includedBlocks } from './constants';
 import {
   BlockLinkPanel,
   BorderPanel,
@@ -60,14 +59,11 @@ const initResponsiveSettings = () => {
       const allDefs = registry.getAll();
 
       for (const def of allDefs) {
-        const supportedByRegistry = registry.isSupported(settings?.supports, def);
-
-        // Legacy fallback: includedBlocks arrays (currently all empty)
-        const supportedByLegacy = Array.isArray(def.supportKey)
-          ? def.supportKey.some((k) => includedBlocks[k]?.includes(name))
-          : includedBlocks[def.supportKey]?.includes(name);
-
-        if (!supportedByRegistry && !supportedByLegacy) continue;
+        const supportedByRegistry = registry.isSupported(
+          settings?.supports,
+          def,
+        );
+        if (!supportedByRegistry) continue;
 
         // Merge attribute schemas from the module definition
         for (const [attrKey, schema] of Object.entries(def.attributeSchema)) {
@@ -122,35 +118,27 @@ const BlockEdit = (props: BlockPanelProps) => {
     <Fragment>
       <BlockControls>
         <ToolbarGroup>
-          <AppliedClassesViewer {...props} breakpoints={breakpoints} twTheme={twTheme} />
+          <AppliedClassesViewer
+            {...props}
+            breakpoints={breakpoints}
+            twTheme={twTheme}
+          />
         </ToolbarGroup>
       </BlockControls>
       <InspectorControls>
-        <SpacingPanel
-          {...props}
-          breakpoints={breakpoints}
-          twTheme={twTheme}
-        />
+        <SpacingPanel {...props} breakpoints={breakpoints} twTheme={twTheme} />
         <DisplayLayoutPanel
           {...props}
           breakpoints={breakpoints}
           twTheme={twTheme}
         />
-        <BorderPanel
-          {...props}
-          breakpoints={breakpoints}
-          twTheme={twTheme}
-        />
+        <BorderPanel {...props} breakpoints={breakpoints} twTheme={twTheme} />
         <BlockLinkPanel
           {...props}
           breakpoints={breakpoints}
           twTheme={twTheme}
         />
-        <DebugPanel
-          {...props}
-          breakpoints={breakpoints}
-          twTheme={twTheme}
-        />
+        <DebugPanel {...props} breakpoints={breakpoints} twTheme={twTheme} />
       </InspectorControls>
     </Fragment>
   );

@@ -82,6 +82,7 @@ const WebentorBorderControl = ({
                 label={property.label}
                 value={value?.[property.name]}
                 options={property.values}
+                __nextHasNoMarginBottom
                 onChange={(selectValue) =>
                   onChange({ ...value, [property.name]: selectValue })
                 }

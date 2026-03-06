@@ -62,24 +62,25 @@ export const layoutPresets: LayoutPreset[] = [
       },
     },
   },
-  {
-    id: 'flex-3-col-wrap',
-    label: __('3 Column Flex Wrap', 'webentor'),
-    icon: 'columns',
-    description: __(
-      'Flex layout with 3 columns and wrapping (uses custom CSS for gap-aware widths)',
-      'webentor',
-    ),
-    applies: {
-      layout: {
-        display: { value: { basic: 'flex' } },
-      },
-      flexbox: {
-        'flex-wrap': { value: { basic: 'flex-wrap' } },
-      },
-    },
-    customClasses: ['w-flex-cols', 'w-flex-cols-3', 'w-gap-4'],
-  },
+  // TODO: We need to handle disabling some settings when using custom classes so TW classes won't override them
+  // {
+  //   id: 'flex-3-col-wrap',
+  //   label: __('3 Column Flex Wrap', 'webentor'),
+  //   icon: 'columns',
+  //   description: __(
+  //     'Flex layout with 3 columns and wrapping (uses custom CSS for gap-aware widths)',
+  //     'webentor',
+  //   ),
+  //   applies: {
+  //     layout: {
+  //       display: { value: { basic: 'flex' } },
+  //     },
+  //     flexbox: {
+  //       'flex-wrap': { value: { basic: 'flex-wrap' } },
+  //     },
+  //   },
+  //   customClasses: ['w-flex-cols', 'w-flex-cols-3', 'w-gap-4'],
+  // },
   {
     id: 'centered-content',
     label: __('Centered Content', 'webentor'),

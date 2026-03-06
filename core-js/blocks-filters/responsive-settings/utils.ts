@@ -135,9 +135,11 @@ export const prepareTailwindBorderClassesFromSettings = (
  * Used as a fast guard before running class generation.
  */
 export const applyResponsiveSettings = (attributes: any): boolean => {
-  return registry.getAll().some((def) =>
-    Object.keys(def.attributeSchema).some((key) => !!attributes?.[key]),
-  );
+  return registry
+    .getAll()
+    .some((def) =>
+      Object.keys(def.attributeSchema).some((key) => !!attributes?.[key]),
+    );
 };
 
 /**

@@ -4,10 +4,7 @@ import { WebentorConfig } from '@webentorCore/types/_webentor-config';
 
 import { createTwThemeValues, spacingLabel } from '../shared/tw-values';
 
-const getSpacingValues = (
-  property: string,
-  twTheme: WebentorConfig['theme'],
-) =>
+const getSpacingValues = (property: string, twTheme: WebentorConfig['theme']) =>
   createTwThemeValues(twTheme, 'spacing', property, {
     labelFormatter: spacingLabel,
   });

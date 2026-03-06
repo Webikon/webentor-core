@@ -300,6 +300,7 @@ export const WebentorButton = (props) => {
             <SelectControl
               label={__('Button HTML Element', 'webentor')}
               value={attributes[attributeName]?.htmlElement}
+              __nextHasNoMarginBottom
               options={[
                 { label: __('Link (<a>)', 'webentor'), value: 'a' },
                 { label: __('Button (<button>)', 'webentor'), value: 'button' },
@@ -378,6 +379,7 @@ export const WebentorButton = (props) => {
                     <SelectControl
                       label="Icon Position"
                       value={attributes[attributeName]?.iconPosition}
+                      __nextHasNoMarginBottom
                       options={iconPositions}
                       onChange={(value) =>
                         updateObjectAttribute(

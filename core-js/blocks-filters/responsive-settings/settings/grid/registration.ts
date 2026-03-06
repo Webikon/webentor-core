@@ -8,7 +8,7 @@
 import { getEffectiveDisplayValue } from '../../migration';
 import { registry } from '../../registry';
 import { ClassGenContext } from '../../types';
-import { getGridProperties } from './properties';
+import { GRID_PROPERTY_NAMES } from './properties';
 import { GridSettings } from './settings';
 
 export const generateGridClasses = (
@@ -46,9 +46,8 @@ const hasGridActiveSettings = (
   attributes: Record<string, any>,
   breakpoint: string,
 ): boolean => {
-  const gridProps = getGridProperties({} as any);
-  return gridProps.some(
-    (p) => !!attributes?.grid?.[p.name]?.value?.[breakpoint],
+  return GRID_PROPERTY_NAMES.some(
+    (propName) => !!attributes?.grid?.[propName]?.value?.[breakpoint],
   );
 };
 

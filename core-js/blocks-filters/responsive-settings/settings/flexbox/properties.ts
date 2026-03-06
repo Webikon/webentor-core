@@ -8,7 +8,6 @@ import {
   getAlignItemsValues,
   getJustifyContentValues,
 } from '../shared/layout-values';
-import { createTwThemeValues } from '../shared/tw-values';
 
 const getFlexDirectionValues = () => [
   { label: __('None selected', 'webentor'), value: '' },
@@ -23,6 +22,17 @@ const getFlexWrapValues = () => [
   { label: __('Wrap', 'webentor'), value: 'flex-wrap' },
   { label: __('Nowrap', 'webentor'), value: 'flex-nowrap' },
   { label: __('Wrap Reverse', 'webentor'), value: 'flex-wrap-reverse' },
+];
+
+export const FLEXBOX_PROPERTY_NAMES = [
+  'gap',
+  'gap-x',
+  'gap-y',
+  'flex-direction',
+  'flex-wrap',
+  'justify-content',
+  'align-items',
+  'align-content',
 ];
 
 export const getFlexboxProperties = (twTheme: WebentorConfig['theme']) => [

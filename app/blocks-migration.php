@@ -19,6 +19,7 @@ namespace Webentor\Core;
 const SIZING_PROPERTIES = ['height', 'min-height', 'max-height', 'width', 'min-width', 'max-width'];
 const LAYOUT_PROPERTIES = ['display'];
 const MIGRATION_BATCH_SIZE = 20;
+const SCAN_BATCH_SIZE = 100;
 
 // ── Admin page registration ──────────────────────────────────────────
 
@@ -243,11 +244,12 @@ function get_post_batch(int $offset, int $limit): array
  * Process a batch of posts with the given transform callback.
  *
  * @param callable $transform fn(array $attrs): array{attrs: array, changed: bool}
+ * @param  int|null $total Optional total carried forward from the first request
  * @return array{processed: int, modified: int, blocks_changed: int, errors: array, done: bool, total: int}
  */
-function process_batch(int $offset, callable $transform): array
+function process_batch(int $offset, callable $transform, ?int $total = null): array
 {
-    $total = count_all_block_posts();
+    $total = $total ?? count_all_block_posts();
     $post_ids = get_post_batch($offset, MIGRATION_BATCH_SIZE);
 
     $modified = 0;
@@ -284,15 +286,74 @@ function process_batch(int $offset, callable $transform): array
         }
     }
 
-    $new_offset = $offset + MIGRATION_BATCH_SIZE;
+    $processed = $offset + count($post_ids);
 
     return [
-        'processed' => $new_offset,
+        'processed' => $processed,
         'modified' => $modified,
         'blocks_changed' => $blocks_changed,
         'errors' => $errors,
-        'done' => $new_offset >= $total,
+        'done' => $processed >= $total,
         'total' => $total,
+    ];
+}
+
+/**
+ * Scan one batch of posts for migration and cleanup candidates.
+ *
+ * @param  int|null $total Optional total carried forward from the first request
+ * @return array{processed: int, done: bool, total: int, v1_posts: int, v1_blocks: int, cleanup_posts: int, cleanup_blocks: int}
+ */
+function scan_batch(int $offset, ?int $total = null): array
+{
+    $total = $total ?? count_all_block_posts();
+    $post_ids = get_post_batch($offset, SCAN_BATCH_SIZE);
+
+    $v1_posts = 0;
+    $v1_blocks = 0;
+    $v1_cleanup_posts = 0;
+    $v1_cleanup_blocks = 0;
+
+    foreach ($post_ids as $post_id) {
+        $post = get_post($post_id);
+        if (!$post || empty($post->post_content)) {
+            continue;
+        }
+
+        $blocks = parse_blocks($post->post_content);
+
+        // Count v1 blocks needing migration without mutating the parsed tree.
+        $migrate_result = walk_blocks_and_transform($blocks, function ($attrs) {
+            $version = $attrs['_responsiveSettingsVersion'] ?? 0;
+            $has_v1 = $version < 2 && (!empty($attrs['display']) || !empty($attrs['flexboxItem']));
+            return ['attrs' => $attrs, 'changed' => $has_v1];
+        });
+        if ($migrate_result['changed_count'] > 0) {
+            $v1_posts++;
+            $v1_blocks += $migrate_result['changed_count'];
+        }
+
+        // Cleanup is broader: it flags any leftover legacy keys regardless of version.
+        $cleanup_result = walk_blocks_and_transform($blocks, function ($attrs) {
+            $has_old_keys = isset($attrs['display']) || isset($attrs['flexboxItem']);
+            return ['attrs' => $attrs, 'changed' => $has_old_keys];
+        });
+        if ($cleanup_result['changed_count'] > 0) {
+            $v1_cleanup_posts++;
+            $v1_cleanup_blocks += $cleanup_result['changed_count'];
+        }
+    }
+
+    $processed = $offset + count($post_ids);
+
+    return [
+        'processed' => $processed,
+        'done' => $processed >= $total,
+        'total' => $total,
+        'v1_posts' => $v1_posts,
+        'v1_blocks' => $v1_blocks,
+        'cleanup_posts' => $v1_cleanup_posts,
+        'cleanup_blocks' => $v1_cleanup_blocks,
     ];
 }
 
@@ -305,55 +366,10 @@ add_action('wp_ajax_webentor_migration_scan', function () {
         wp_send_json_error('Insufficient permissions', 403);
     }
 
-    $total = count_all_block_posts();
-    $v1_posts = 0;
-    $v1_blocks = 0;
-    $v1_cleanup_posts = 0;
-    $v1_cleanup_blocks = 0;
+    $offset = (int) ($_POST['offset'] ?? 0);
+    $total = isset($_POST['total']) ? (int) $_POST['total'] : null;
 
-    $offset = 0;
-    while (true) {
-        $post_ids = get_post_batch($offset, 100);
-        if (empty($post_ids)) break;
-
-        foreach ($post_ids as $post_id) {
-            $post = get_post($post_id);
-            if (!$post || empty($post->post_content)) continue;
-
-            $blocks = parse_blocks($post->post_content);
-
-            // Count v1 blocks needing migration
-            $migrate_result = walk_blocks_and_transform($blocks, function ($attrs) {
-                $version = $attrs['_responsiveSettingsVersion'] ?? 0;
-                $has_v1 = $version < 2 && (!empty($attrs['display']) || !empty($attrs['flexboxItem']));
-                return ['attrs' => $attrs, 'changed' => $has_v1];
-            });
-            if ($migrate_result['changed_count'] > 0) {
-                $v1_posts++;
-                $v1_blocks += $migrate_result['changed_count'];
-            }
-
-            // Count blocks with leftover v1 keys (for cleanup)
-            $cleanup_result = walk_blocks_and_transform($blocks, function ($attrs) {
-                $has_old_keys = isset($attrs['display']) || isset($attrs['flexboxItem']);
-                return ['attrs' => $attrs, 'changed' => $has_old_keys];
-            });
-            if ($cleanup_result['changed_count'] > 0) {
-                $v1_cleanup_posts++;
-                $v1_cleanup_blocks += $cleanup_result['changed_count'];
-            }
-        }
-
-        $offset += 100;
-    }
-
-    wp_send_json_success([
-        'total_posts' => $total,
-        'v1_posts' => $v1_posts,
-        'v1_blocks' => $v1_blocks,
-        'cleanup_posts' => $v1_cleanup_posts,
-        'cleanup_blocks' => $v1_cleanup_blocks,
-    ]);
+    wp_send_json_success(scan_batch($offset, $total));
 });
 
 add_action('wp_ajax_webentor_migration_run', function () {
@@ -364,7 +380,8 @@ add_action('wp_ajax_webentor_migration_run', function () {
     }
 
     $offset = (int) ($_POST['offset'] ?? 0);
-    $result = process_batch($offset, __NAMESPACE__ . '\migrate_block_attributes_v1_to_v2');
+    $total = isset($_POST['total']) ? (int) $_POST['total'] : null;
+    $result = process_batch($offset, __NAMESPACE__ . '\migrate_block_attributes_v1_to_v2', $total);
 
     wp_send_json_success($result);
 });
@@ -377,7 +394,8 @@ add_action('wp_ajax_webentor_migration_cleanup', function () {
     }
 
     $offset = (int) ($_POST['offset'] ?? 0);
-    $result = process_batch($offset, __NAMESPACE__ . '\cleanup_v1_keys');
+    $total = isset($_POST['total']) ? (int) $_POST['total'] : null;
+    $result = process_batch($offset, __NAMESPACE__ . '\cleanup_v1_keys', $total);
 
     wp_send_json_success($result);
 });
@@ -502,38 +520,69 @@ function render_migration_page(): void
         document.getElementById('webentor-scan-btn').addEventListener('click', function() {
             var btn = this;
             var spinner = document.getElementById('webentor-scan-spinner');
+            var el = document.getElementById('webentor-scan-results');
             btn.disabled = true;
             spinner.classList.add('is-active');
+            el.classList.remove('has-results');
+            el.innerHTML = '';
 
-            var data = new FormData();
-            data.append('action', 'webentor_migration_scan');
-            data.append('nonce', nonce);
+            var totals = {
+                total_posts: 0,
+                v1_posts: 0,
+                v1_blocks: 0,
+                cleanup_posts: 0,
+                cleanup_blocks: 0,
+            };
 
-            fetch(ajaxUrl, { method: 'POST', body: data })
-                .then(function(r) { return r.json(); })
-                .then(function(resp) {
-                    spinner.classList.remove('is-active');
-                    btn.disabled = false;
+            function next(offset, knownTotal) {
+                var data = new FormData();
+                data.append('action', 'webentor_migration_scan');
+                data.append('nonce', nonce);
+                data.append('offset', offset);
+                if (knownTotal !== null) {
+                    data.append('total', knownTotal);
+                }
 
-                    var el = document.getElementById('webentor-scan-results');
-                    if (resp.success) {
+                fetch(ajaxUrl, { method: 'POST', body: data })
+                    .then(function(r) { return r.json(); })
+                    .then(function(resp) {
+                        if (!resp.success) {
+                            spinner.classList.remove('is-active');
+                            btn.disabled = false;
+                            el.innerHTML = '<span style="color:#d63638">Scan failed: ' + (resp.data || 'Unknown error') + '</span>';
+                            el.classList.add('has-results');
+                            return;
+                        }
+
                         var d = resp.data;
-                        el.innerHTML =
-                            '<strong>Total posts scanned:</strong> ' + d.total_posts + '<br>' +
-                            '<strong>Posts needing migration:</strong> ' + d.v1_posts +
-                            ' (' + d.v1_blocks + ' blocks)<br>' +
-                            '<strong>Posts with v1 keys to clean up:</strong> ' + d.cleanup_posts +
-                            ' (' + d.cleanup_blocks + ' blocks)';
-                    } else {
-                        el.innerHTML = '<span style="color:#d63638">Scan failed: ' + (resp.data || 'Unknown error') + '</span>';
-                    }
-                    el.classList.add('has-results');
-                })
-                .catch(function(err) {
-                    spinner.classList.remove('is-active');
-                    btn.disabled = false;
-                    alert('Scan request failed: ' + err.message);
-                });
+                        totals.total_posts = d.total;
+                        totals.v1_posts += d.v1_posts;
+                        totals.v1_blocks += d.v1_blocks;
+                        totals.cleanup_posts += d.cleanup_posts;
+                        totals.cleanup_blocks += d.cleanup_blocks;
+
+                        if (d.done) {
+                            spinner.classList.remove('is-active');
+                            btn.disabled = false;
+                            el.innerHTML =
+                                '<strong>Total posts scanned:</strong> ' + totals.total_posts + '<br>' +
+                                '<strong>Posts needing migration:</strong> ' + totals.v1_posts +
+                                ' (' + totals.v1_blocks + ' blocks)<br>' +
+                                '<strong>Posts with v1 keys to clean up:</strong> ' + totals.cleanup_posts +
+                                ' (' + totals.cleanup_blocks + ' blocks)';
+                            el.classList.add('has-results');
+                        } else {
+                            next(d.processed, d.total);
+                        }
+                    })
+                    .catch(function(err) {
+                        spinner.classList.remove('is-active');
+                        btn.disabled = false;
+                        alert('Scan request failed: ' + err.message);
+                    });
+            }
+
+            next(0, null);
         });
 
         // Batch runner used by both migrate and cleanup
@@ -548,12 +597,16 @@ function render_migration_page(): void
             bar.style.width = '0%';
 
             var totals = { modified: 0, blocks_changed: 0, errors: [] };
+            var knownTotal = null;
 
             function next(offset) {
                 var data = new FormData();
                 data.append('action', action);
                 data.append('nonce', nonce);
                 data.append('offset', offset);
+                if (knownTotal !== null) {
+                    data.append('total', knownTotal);
+                }
 
                 fetch(ajaxUrl, { method: 'POST', body: data })
                     .then(function(r) { return r.json(); })
@@ -565,6 +618,7 @@ function render_migration_page(): void
                         }
 
                         var d = resp.data;
+                        knownTotal = d.total;
                         totals.modified += d.modified;
                         totals.blocks_changed += d.blocks_changed;
                         totals.errors = totals.errors.concat(d.errors || []);

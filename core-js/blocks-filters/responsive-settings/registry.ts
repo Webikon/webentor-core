@@ -11,11 +11,7 @@
  * in order.
  */
 
-import {
-  ClassGenContext,
-  PanelGroup,
-  SettingDefinition,
-} from './types';
+import { ClassGenContext, PanelGroup, SettingDefinition } from './types';
 
 export type { ClassGenContext, PanelGroup, SettingDefinition };
 
@@ -36,9 +32,7 @@ class SettingsRegistry {
 
   /** All registered settings sorted by panelGroup priority then order */
   getAll(): SettingDefinition[] {
-    return Array.from(this.settings.values()).sort(
-      (a, b) => a.order - b.order,
-    );
+    return Array.from(this.settings.values()).sort((a, b) => a.order - b.order);
   }
 
   /** Get a specific setting by name */

@@ -144,6 +144,7 @@ export const ResponsiveSelectGroup = ({
                 value={explicitValue}
                 help={property?.help}
                 disabled={disabled}
+                __nextHasNoMarginBottom
                 onChange={handleChange}
                 className={inheritedClassName}
               >
@@ -164,6 +165,7 @@ export const ResponsiveSelectGroup = ({
                 value={explicitValue}
                 help={property?.help}
                 disabled={disabled}
+                __nextHasNoMarginBottom
                 options={
                   isInherited
                     ? [

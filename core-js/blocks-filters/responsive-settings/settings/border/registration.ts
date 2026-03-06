@@ -9,9 +9,7 @@ import { isEmpty } from '@webentorCore/_utils';
 
 import { registry } from '../../registry';
 import { ClassGenContext } from '../../types';
-import {
-  prepareTailwindBorderClassesForSide,
-} from '../../utils';
+import { prepareTailwindBorderClassesForSide } from '../../utils';
 import { BorderAndRadiusSettings } from './settings';
 
 const RADIUS_MAPPING: Record<string, string> = {

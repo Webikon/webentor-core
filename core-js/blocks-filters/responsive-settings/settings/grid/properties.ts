@@ -10,14 +10,24 @@ import {
 } from '../shared/layout-values';
 import { createTwThemeValues } from '../shared/tw-values';
 
+export const GRID_PROPERTY_NAMES = [
+  'grid-cols',
+  'grid-rows',
+  'gap',
+  'gap-x',
+  'gap-y',
+  'justify-content',
+  'align-items',
+  'align-content',
+];
+
 export const getGridProperties = (twTheme: WebentorConfig['theme']) => [
   {
     label: __('Grid Template Columns', 'webentor'),
     name: 'grid-cols',
     values: createTwThemeValues(twTheme, 'gridTemplateColumns', 'grid-cols', {
       sort: false,
-      labelFormatter: (key) =>
-        __('Columns: %s', 'webentor').replace('%s', key),
+      labelFormatter: (key) => __('Columns: %s', 'webentor').replace('%s', key),
     }),
   },
   {

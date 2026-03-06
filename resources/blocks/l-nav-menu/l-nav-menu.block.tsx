@@ -60,6 +60,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
             <SelectControl
               label={__('Nav Menu', 'webentor')}
               value={attributes.menuId}
+              __nextHasNoMarginBottom
               options={menuOptions}
               onChange={(menuId) => setAttributes({ menuId })}
             />
@@ -69,6 +70,7 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
             <SelectControl
               label={__('Direction', 'webentor')}
               value={attributes.direction}
+              __nextHasNoMarginBottom
               options={[
                 { label: 'Row', value: 'direction-row' },
                 { label: 'Column', value: 'direction-col' },
