@@ -357,6 +357,240 @@ function scan_batch(int $offset, ?int $total = null): array
     ];
 }
 
+// ── WP-CLI command ───────────────────────────────────────────────────
+
+/**
+ * Resolve the requested CLI mode from supported flags.
+ */
+function get_cli_migration_mode(array $assoc_args): string
+{
+    $run_migrate = isset($assoc_args['migrate']);
+    $run_cleanup = isset($assoc_args['cleanup']);
+
+    if ($run_migrate && $run_cleanup) {
+        \WP_CLI::error('Use either --migrate or --cleanup, not both.');
+    }
+
+    if ($run_cleanup) {
+        return 'cleanup';
+    }
+
+    if ($run_migrate) {
+        return 'migrate';
+    }
+
+    return 'scan';
+}
+
+/**
+ * Resolve and validate the requested multisite site ID.
+ */
+function get_cli_site_id(array $assoc_args): ?int
+{
+    if (!isset($assoc_args['site-id'])) {
+        return null;
+    }
+
+    $site_id = (int) $assoc_args['site-id'];
+    if ($site_id < 1) {
+        \WP_CLI::error('--site-id must be a positive integer.');
+    }
+
+    if (!is_multisite()) {
+        \WP_CLI::error('--site-id can only be used on multisite.');
+    }
+
+    if (!get_site($site_id)) {
+        \WP_CLI::error(sprintf('Site #%d was not found.', $site_id));
+    }
+
+    return $site_id;
+}
+
+/**
+ * Run the CLI action against the requested site context on multisite.
+ */
+function run_cli_in_site_context(?int $site_id, callable $callback): void
+{
+    $switched = false;
+
+    if ($site_id !== null) {
+        \WP_CLI::log(sprintf('Targeting site #%d.', $site_id));
+
+        if (get_current_blog_id() !== $site_id) {
+            switch_to_blog($site_id);
+            $switched = true;
+        }
+    }
+
+    try {
+        $callback();
+    } finally {
+        if ($switched) {
+            restore_current_blog();
+        }
+    }
+}
+
+/**
+ * Scan all block-capable posts for the current site and print a final CLI summary.
+ */
+function run_scan_batches_for_cli(): void
+{
+    $offset = 0;
+    $known_total = null;
+    $totals = [
+        'total_posts' => 0,
+        'v1_posts' => 0,
+        'v1_blocks' => 0,
+        'cleanup_posts' => 0,
+        'cleanup_blocks' => 0,
+    ];
+
+    do {
+        $result = scan_batch($offset, $known_total);
+        $known_total = $result['total'];
+
+        $totals['total_posts'] = $result['total'];
+        $totals['v1_posts'] += $result['v1_posts'];
+        $totals['v1_blocks'] += $result['v1_blocks'];
+        $totals['cleanup_posts'] += $result['cleanup_posts'];
+        $totals['cleanup_blocks'] += $result['cleanup_blocks'];
+
+        \WP_CLI::log(
+            sprintf(
+                'Scanned %d/%d posts',
+                min($result['processed'], $result['total']),
+                $result['total']
+            )
+        );
+
+        $offset = $result['processed'];
+    } while (!$result['done']);
+
+    \WP_CLI::success(
+        sprintf(
+            'Scan complete. %d total posts, %d posts need migration (%d blocks), %d posts still have legacy keys for cleanup (%d blocks).',
+            $totals['total_posts'],
+            $totals['v1_posts'],
+            $totals['v1_blocks'],
+            $totals['cleanup_posts'],
+            $totals['cleanup_blocks']
+        )
+    );
+}
+
+/**
+ * Keep the CLI command on the same batch helpers as the admin screen so
+ * both entry points mutate content through identical logic.
+ *
+ * @param callable $transform fn(array $attrs): array{attrs: array, changed: bool}
+ */
+function run_process_batches_for_cli(callable $transform, string $label): void
+{
+    $offset = 0;
+    $known_total = null;
+    $totals = [
+        'modified' => 0,
+        'blocks_changed' => 0,
+        'errors' => 0,
+    ];
+
+    do {
+        $result = process_batch($offset, $transform, $known_total);
+        $known_total = $result['total'];
+
+        $totals['modified'] += $result['modified'];
+        $totals['blocks_changed'] += $result['blocks_changed'];
+        $totals['errors'] += count($result['errors']);
+
+        \WP_CLI::log(
+            sprintf(
+                '%s: processed %d/%d posts (%d modified in this batch)',
+                $label,
+                min($result['processed'], $result['total']),
+                $result['total'],
+                $result['modified']
+            )
+        );
+
+        foreach ($result['errors'] as $error) {
+            \WP_CLI::warning(
+                sprintf(
+                    'Post #%d (%s): %s',
+                    $error['post_id'],
+                    $error['title'],
+                    $error['error']
+                )
+            );
+        }
+
+        $offset = $result['processed'];
+    } while (!$result['done']);
+
+    $summary = sprintf(
+        '%s complete. %d posts modified, %d blocks changed, %d errors.',
+        $label,
+        $totals['modified'],
+        $totals['blocks_changed'],
+        $totals['errors']
+    );
+
+    if ($totals['errors'] > 0) {
+        \WP_CLI::warning($summary);
+        return;
+    }
+
+    \WP_CLI::success($summary);
+}
+
+if (\defined('WP_CLI') && \constant('WP_CLI')) {
+    \WP_CLI::add_command(
+        'webentor migrate-responsive-attributes',
+        function ($args, $assoc_args) {
+            $mode = get_cli_migration_mode($assoc_args);
+            $site_id = get_cli_site_id($assoc_args);
+
+            run_cli_in_site_context($site_id, function () use ($mode) {
+                if ($mode === 'scan') {
+                    run_scan_batches_for_cli();
+                    return;
+                }
+
+                if ($mode === 'migrate') {
+                    run_process_batches_for_cli(__NAMESPACE__ . '\migrate_block_attributes_v1_to_v2', 'Migration');
+                    return;
+                }
+
+                run_process_batches_for_cli(__NAMESPACE__ . '\cleanup_v1_keys', 'Cleanup');
+            });
+        },
+        [
+            'shortdesc' => 'Scan or migrate Webentor responsive block attributes.',
+            'synopsis' => [
+                [
+                    'type' => 'flag',
+                    'name' => 'migrate',
+                    'optional' => true,
+                    'description' => 'Run the v1 to v2 migration and keep legacy keys.',
+                ],
+                [
+                    'type' => 'flag',
+                    'name' => 'cleanup',
+                    'optional' => true,
+                    'description' => 'Remove legacy keys after ensuring v2 keys exist.',
+                ],
+                [
+                    'type' => 'assoc',
+                    'name' => 'site-id',
+                    'optional' => true,
+                    'description' => 'Run the command against a specific site in multisite.',
+                ],
+            ],
+        ]
+    );
+}
+
 // ── AJAX endpoints ───────────────────────────────────────────────────
 
 add_action('wp_ajax_webentor_migration_scan', function () {

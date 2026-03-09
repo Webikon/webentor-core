@@ -75,7 +75,7 @@ export const BoxModelControl = ({
   const currentLinkMode: LinkMode =
     (attributes[attributeKey]?.[linkModeKey]?.value?.[breakpoint] as
       | LinkMode
-      | undefined) || 'linked';
+      | undefined) ?? 'unlinked';
 
   const topSide = sides.find((s) => s.name.includes('top'));
   const bottomSide = sides.find((s) => s.name.includes('bottom'));
