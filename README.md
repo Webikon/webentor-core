@@ -23,6 +23,18 @@ pnpm build
 
 ## JS Package Exports
 
+This package exports raw TypeScript source so the consumer's Vite pipeline
+compiles it together with the rest of the project. Consumer projects using
+Vite 7+ must enable the TypeScript-aware config loader:
+
+```jsonc
+// package.json scripts
+"dev": "vite --configLoader runner",
+"build": "vite build --configLoader runner"
+```
+
+Available subpath imports:
+
 ```ts
 import { debounce } from '@webikon/webentor-core';
 import { Alpine } from '@webikon/webentor-core/_alpine';

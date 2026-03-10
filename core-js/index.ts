@@ -1,4 +1,3 @@
-export { Alpine } from './_alpine';
 export {
   camelize,
   debounce,
