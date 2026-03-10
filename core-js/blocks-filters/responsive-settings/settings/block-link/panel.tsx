@@ -1,8 +1,11 @@
-import { __experimentalLinkControl as LinkControl } from '@wordpress/block-editor';
+import * as BlockEditor from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 
-import { setImmutably } from '@webentorCore/_utils';
-import { BlockPanelProps } from '@webentorCore/block-filters/responsive-settings/types';
+import { setImmutably } from '../../../../_utils';
+import { BlockPanelProps } from '../../types';
+
+// WordPress ships this control, but the package typings still expose it as experimental.
+const LinkControl = (BlockEditor as any).__experimentalLinkControl;
 
 export const BlockLinkPanel = ({
   attributes,

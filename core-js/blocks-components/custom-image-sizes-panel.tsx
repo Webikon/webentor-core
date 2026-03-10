@@ -43,7 +43,9 @@ export const CustomImageSizesPanel: React.FC<Props> = (props: Props) => {
     noticeAfter,
   } = props;
 
-  const breakpoints = applyFilters('webentor.core.twBreakpoints', ['basic']);
+  const breakpoints = applyFilters('webentor.core.twBreakpoints', [
+    'basic',
+  ]) as string[];
 
   const hasSizeSettingsForBreakpoint = (attributes, breakpoint) => {
     return (

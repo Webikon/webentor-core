@@ -15,8 +15,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 import { getBlockType } from '@wordpress/blocks';
 import { applyFilters } from '@wordpress/hooks';
 
-import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
-
+import { useBlockParent } from '../../blocks-utils/_use-block-parent';
 import { registry } from './registry';
 import { ClassGenContext } from './types';
 

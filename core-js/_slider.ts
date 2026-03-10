@@ -3,18 +3,21 @@ import Swiper from 'swiper/bundle';
 
 import { debounce, throttle } from './_utils';
 
-type BreakpointConfig = Swiper & {
+type SliderParams = Record<string, any> & {
+  autoplayControl: boolean;
+  breakpoints: Record<string, BreakpointConfig>;
+  on?: Record<string, (...args: any[]) => void>;
+};
+
+type BreakpointConfig = Record<string, any> & {
   enabled: boolean;
 };
 
 class SliderComponent {
   private element: HTMLElement;
-  private params: Swiper & {
-    breakpoints: Record<string, BreakpointConfig>;
-    autoplayControl: boolean;
-  };
+  private params: SliderParams;
   private swiper: Swiper | null;
-  private container: HTMLElement;
+  private container: HTMLElement | null;
   private breakpoints: Record<string, BreakpointConfig> | null;
   private autoplayButton: HTMLElement | null;
   private timerSeconds: HTMLElement | null;
@@ -108,10 +111,14 @@ class SliderComponent {
           }
         },
         autoplayTimeLeft: (swiper, time, progress) => {
-          if (this.autoplayControlEnabled) {
+          if (
+            this.autoplayControlEnabled &&
+            this.timerCircle &&
+            this.timerSeconds
+          ) {
             this.timerCircle.style.setProperty(
               '--slider-timer-progress',
-              1 - progress,
+              String(1 - progress),
             );
             this.timerSeconds.textContent = `${Math.ceil(time / 1000)}s`;
           }
@@ -125,8 +132,12 @@ class SliderComponent {
         ...this.params.on,
       },
       navigation: {
-        nextEl: this.element.querySelector('.js-slider-button-next'),
-        prevEl: this.element.querySelector('.js-slider-button-prev'),
+        nextEl: this.element.querySelector(
+          '.js-slider-button-next',
+        ) as HTMLElement | null,
+        prevEl: this.element.querySelector(
+          '.js-slider-button-prev',
+        ) as HTMLElement | null,
       },
     });
 
@@ -174,7 +185,7 @@ class SliderComponent {
 
     if (!wrapper) return;
 
-    const slides = Array.from(wrapper.children);
+    const slides = Array.from(wrapper.children) as HTMLElement[];
 
     if (slides.length === 0) return;
 

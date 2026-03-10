@@ -1,4 +1,4 @@
-import type { WebentorConfig } from '@webentorCore/types/_webentor-config';
+import type { WebentorConfig } from '../types/_webentor-config';
 
 // Inspired by Tailwind BlockConfiguration
 // See: https://github.com/tailwindlabs/tailwindcss/blob/v3.4.17/stubs/config.full.js

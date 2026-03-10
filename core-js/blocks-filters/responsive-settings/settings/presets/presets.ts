@@ -16,8 +16,7 @@
  */
 import { applyFilters } from '@wordpress/hooks';
 
-import { WebentorConfig } from '@webentorCore/types/_webentor-config';
-
+import { WebentorConfig } from '../../../../types/_webentor-config';
 import { LayoutPreset } from '../../types';
 
 // Intentionally empty: themes/projects own the preset catalog.

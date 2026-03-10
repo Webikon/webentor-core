@@ -6,8 +6,7 @@
  */
 import { __ } from '@wordpress/i18n';
 
-import { WebentorConfig } from '@webentorCore/types/_webentor-config';
-
+import { WebentorConfig } from '../../../../types/_webentor-config';
 import { PropertyDefinition } from '../../types';
 import { getOrderValues } from '../shared/layout-values';
 import { createTwThemeValues } from '../shared/tw-values';

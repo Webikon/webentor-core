@@ -1,6 +1,12 @@
 import collapse from '@alpinejs/collapse';
 import Alpine from 'alpinejs';
 
+declare global {
+  interface Window {
+    Alpine?: typeof Alpine;
+  }
+}
+
 // Initialize Alpine if it's not already initialized
 const AlpineInstance = window.Alpine || Alpine;
 if (!window.Alpine) {

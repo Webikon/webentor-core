@@ -6,8 +6,7 @@
 import { Fragment } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
-
+import { useBlockParent } from '../../../../blocks-utils/_use-block-parent';
 import { DisabledSliderInfo } from '../../components/DisabledSliderInfo';
 import { InheritedIndicator } from '../../components/InheritedIndicator';
 import { ResponsiveSelectGroup } from '../../components/ResponsiveSelectGroup';

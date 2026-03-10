@@ -19,8 +19,7 @@ import { ToolbarGroup } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 import { addFilter, applyFilters } from '@wordpress/hooks';
 
-import { WebentorConfig } from '@webentorCore/types/_webentor-config';
-
+import { WebentorConfig } from '../../types/_webentor-config';
 import { AppliedClassesViewer } from './components/AppliedClassesViewer';
 import { DebugPanel } from './components/DebugPanel';
 import {
@@ -30,7 +29,6 @@ import {
   SpacingPanel,
 } from './panels';
 import { registry } from './registry';
-import { BlockPanelProps } from './types';
 import { generateClassNames, inlineStyleGenerator } from './utils';
 
 // Side-effect imports: each module self-registers with the SettingsRegistry.
@@ -105,14 +103,14 @@ const initResponsiveSettings = () => {
  *
  * Responsive settings migration is handled globally in PHP.
  */
-const BlockEdit = (props: BlockPanelProps) => {
-  const breakpoints: string[] = applyFilters('webentor.core.twBreakpoints', [
+const BlockEdit = (props: any) => {
+  const breakpoints = applyFilters('webentor.core.twBreakpoints', [
     'basic',
-  ]);
-  const twTheme: WebentorConfig['theme'] = applyFilters(
+  ]) as string[];
+  const twTheme = applyFilters(
     'webentor.core.twTheme',
     {},
-  );
+  ) as WebentorConfig['theme'];
 
   return (
     <Fragment>

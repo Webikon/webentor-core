@@ -2,8 +2,7 @@ import { SelectControl } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 
-import { setImmutably } from '@webentorCore/_utils';
-
+import { setImmutably } from '../../../_utils';
 import { PropertyDefinition } from '../registry';
 import { SelectOptionGroup } from '../types';
 import { getEffectiveValue, getInheritedFromBreakpoint } from '../utils';

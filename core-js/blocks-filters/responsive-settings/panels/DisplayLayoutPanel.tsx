@@ -12,11 +12,9 @@ import { PanelBody } from '@wordpress/components';
 import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 
-import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
-
+import { useBlockParent } from '../../../blocks-utils/_use-block-parent';
 import { BreakpointResetButton } from '../components/BreakpointResetButton';
 import { ResponsiveTabPanel } from '../components/ResponsiveTabPanel';
-import { getDisplayValue, getParentDisplayValue } from '../migration';
 import { registry } from '../registry';
 import { PresetSettings } from '../settings/presets/settings';
 import { BlockPanelProps, ClassGenContext } from '../types';

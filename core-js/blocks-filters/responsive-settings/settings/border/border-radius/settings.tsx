@@ -3,8 +3,7 @@ import { Button, SelectControl } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
 import { link, linkOff } from '@wordpress/icons';
 
-import { isEmpty, setImmutably } from '@webentorCore/_utils';
-
+import { isEmpty, setImmutably } from '../../../../../_utils';
 import { InheritedIndicator } from '../../../components/InheritedIndicator';
 import { BlockPanelProps } from '../../../types';
 import {

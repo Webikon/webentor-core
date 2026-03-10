@@ -13,6 +13,13 @@ const BLOCKS = [
   'core/post-title',
 ];
 
+type TypographyOption = {
+  __experimentalHint?: string;
+  key: string;
+  name: string;
+  value: string;
+};
+
 /**
  * BlockEdit
  *
@@ -27,7 +34,10 @@ const BLOCKS = [
 function BlockEdit(props) {
   const { customTypography } = props.attributes;
 
-  const options = applyFilters('webentor.core.customTypographyKeys', []);
+  const options = applyFilters(
+    'webentor.core.customTypographyKeys',
+    [],
+  ) as TypographyOption[];
 
   return (
     <InspectorControls group="styles">

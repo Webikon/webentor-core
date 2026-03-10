@@ -9,8 +9,7 @@ import {
   sidesVertical,
 } from '@wordpress/icons';
 
-import { setImmutably } from '@webentorCore/_utils';
-
+import { setImmutably } from '../../../_utils';
 import { SelectOption } from '../types';
 import { getEffectiveValue, getInheritedFromBreakpoint } from '../utils';
 import { LinkedValuesControl, LinkMode } from './LinkedValuesControl';

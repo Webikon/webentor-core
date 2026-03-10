@@ -1,7 +1,22 @@
 import { CustomSelectControl } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
 
-export const WebentorTypographyPickerSelect = (props) => {
+type TypographyOption = {
+  key: string;
+  name: string;
+  value: string;
+};
+
+type WebentorTypographyPickerSelectProps = {
+  __next40pxDefaultSize?: boolean;
+  onChange: (value: string) => void;
+  options: TypographyOption[];
+  value?: string;
+};
+
+export const WebentorTypographyPickerSelect = (
+  props: WebentorTypographyPickerSelectProps,
+) => {
   const { __next40pxDefaultSize, value, onChange, options } = props;
 
   const selectedOption = value

@@ -87,7 +87,20 @@ import { __ } from '@wordpress/i18n';
   }
  */
 
-export const WebentorButton = (props) => {
+type WebentorButtonProps = {
+  attributeName: string;
+  attributes: Record<string, any>;
+  buttonClassName?: string;
+  className?: string;
+  hideLink?: boolean;
+  hideSize?: boolean;
+  hideVariant?: boolean;
+  innerClassName?: string;
+  placement?: string;
+  setAttributes: (attributes: Record<string, any>) => void;
+};
+
+export const WebentorButton = (props: WebentorButtonProps) => {
   const {
     placement,
     className,
@@ -199,7 +212,7 @@ export const WebentorButton = (props) => {
     </button>,
     props,
     buttonClassName,
-  );
+  ) as React.ReactNode;
 
   return (
     <span className={`${className ?? ''} wbtr:relative wbtr:inline-block`}>

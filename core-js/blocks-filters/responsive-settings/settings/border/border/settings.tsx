@@ -15,8 +15,7 @@ import {
   getColorSlugByColor,
   isEmpty,
   setImmutably,
-} from '@webentorCore/_utils';
-
+} from '../../../../../_utils';
 import { InheritedIndicator } from '../../../components/InheritedIndicator';
 import { BlockPanelProps } from '../../../types';
 import {

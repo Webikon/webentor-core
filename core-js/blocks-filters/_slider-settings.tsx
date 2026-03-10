@@ -23,7 +23,7 @@ const initSliderSettings = () => {
 
       const breakpoints = applyFilters('webentor.core.twBreakpoints', [
         'basic',
-      ]);
+      ]) as string[];
 
       const { attributes, setAttributes } = props;
 

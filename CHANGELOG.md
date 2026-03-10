@@ -1,6 +1,6 @@
 # Webentor Core Changelog
 
-## 1.0.0
+## 0.10.0
 
 - Refactor responsive settings and improve UX
   - **BREAKING**: Run keys migrator from `Settings -> Webentor Migrator`
@@ -15,6 +15,7 @@
 - Add applied classes viewer to see which responsive classes are applied
 - Add Quick layout presets, customizable with filter `webentor.core.responsiveSettings.layoutPresets`
 - Fix PHP path in `init.php`
+- Add package module exports, you can now use `@webikon/webentor-core` instead of `@webentorCore` when importing in the theme
 
 
 ## 0.9.14

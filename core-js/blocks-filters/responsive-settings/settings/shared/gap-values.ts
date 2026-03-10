@@ -1,5 +1,4 @@
-import { WebentorConfig } from '@webentorCore/types/_webentor-config';
-
+import { WebentorConfig } from '../../../../types/_webentor-config';
 import { SelectOption } from '../../types';
 import { createTwThemeValues, spacingLabel } from './tw-values';
 

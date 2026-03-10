@@ -8,8 +8,7 @@
 import { Button } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
-import { setImmutably } from '@webentorCore/_utils';
-
+import { setImmutably } from '../../../../_utils';
 import { BlockPanelProps, LayoutPreset } from '../../types';
 import { getLayoutPresets } from './presets';
 

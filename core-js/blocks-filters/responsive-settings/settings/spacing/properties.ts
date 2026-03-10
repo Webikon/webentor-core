@@ -1,7 +1,6 @@
 import { __ } from '@wordpress/i18n';
 
-import { WebentorConfig } from '@webentorCore/types/_webentor-config';
-
+import { WebentorConfig } from '../../../../types/_webentor-config';
 import { createTwThemeValues, spacingLabel } from '../shared/tw-values';
 
 const getSpacingValues = (property: string, twTheme: WebentorConfig['theme']) =>

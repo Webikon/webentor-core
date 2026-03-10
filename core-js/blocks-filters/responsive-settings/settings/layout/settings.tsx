@@ -6,8 +6,7 @@
 import { getBlockSupport } from '@wordpress/blocks';
 import { Fragment } from '@wordpress/element';
 
-import { camelize } from '@webentorCore/_utils';
-
+import { camelize } from '../../../../_utils';
 import { DisabledSliderInfo } from '../../components/DisabledSliderInfo';
 import { ResponsiveSelectGroup } from '../../components/ResponsiveSelectGroup';
 import { PropertyDefinition, SettingsComponentProps } from '../../types';

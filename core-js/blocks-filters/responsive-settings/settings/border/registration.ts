@@ -5,8 +5,7 @@
  * Handles both border and borderRadius settings within a single module.
  * Support key: ['border', 'borderRadius']
  */
-import { isEmpty } from '@webentorCore/_utils';
-
+import { isEmpty } from '../../../../_utils';
 import { registry } from '../../registry';
 import { ClassGenContext } from '../../types';
 import { prepareTailwindBorderClassesForSide } from '../../utils';

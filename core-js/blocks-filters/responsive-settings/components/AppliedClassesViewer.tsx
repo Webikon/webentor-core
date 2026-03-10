@@ -13,8 +13,7 @@ import { useMemo, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { postList } from '@wordpress/icons';
 
-import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
-
+import { useBlockParent } from '../../../blocks-utils/_use-block-parent';
 import { registry } from '../registry';
 import { BlockPanelProps, ClassGenContext, PanelGroup } from '../types';
 

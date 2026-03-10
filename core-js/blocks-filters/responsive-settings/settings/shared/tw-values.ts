@@ -1,7 +1,6 @@
 import { __ } from '@wordpress/i18n';
 
-import { WebentorConfig } from '@webentorCore/types/_webentor-config';
-
+import { WebentorConfig } from '../../../../types/_webentor-config';
 import { SelectOption, SelectOptionGroup } from '../../types';
 import { getPixelFromRemValue } from '../../utils';
 

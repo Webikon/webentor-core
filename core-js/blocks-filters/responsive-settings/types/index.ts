@@ -1,4 +1,4 @@
-import { WebentorConfig } from '@webentorCore/types/_webentor-config';
+import { WebentorConfig } from '../../../types/_webentor-config';
 
 // ─── Panel groups ────────────────────────────────────────────────────
 // Each setting module declares which panel group it renders in.
@@ -52,6 +52,25 @@ export interface ResponsiveBorderValue {
   };
 }
 
+export interface BorderRadiusValue {
+  topLeft: string;
+  topRight: string;
+  bottomRight: string;
+  bottomLeft: string;
+  linked?: boolean;
+}
+
+export interface ResponsiveBorderRadiusValue {
+  value: {
+    [breakpoint: string]: BorderRadiusValue;
+  };
+}
+
+export interface BorderAttribute {
+  border?: ResponsiveBorderValue;
+  borderRadius?: ResponsiveBorderRadiusValue;
+}
+
 // ─── Grouped select options ──────────────────────────────────────────
 
 export interface SelectOptionGroup {
@@ -84,7 +103,7 @@ export interface BlockAttributes {
   grid?: ResponsiveAttribute;
   gridItem?: ResponsiveAttribute;
   flexbox?: ResponsiveAttribute;
-  border?: ResponsiveBorderValue;
+  border?: BorderAttribute;
   slider?: {
     enabled?: ResponsiveValue;
   };

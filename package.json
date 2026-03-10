@@ -33,6 +33,115 @@
     "node": ">=20.0.0"
   },
   "type": "module",
+  "exports": {
+    ".": {
+      "types": "./core-js/index.ts",
+      "default": "./core-js/index.ts"
+    },
+    "./_alpine": {
+      "types": "./core-js/_alpine.ts",
+      "default": "./core-js/_alpine.ts"
+    },
+    "./_slider": {
+      "types": "./core-js/_slider.ts",
+      "default": "./core-js/_slider.ts"
+    },
+    "./_utils": {
+      "types": "./core-js/_utils.ts",
+      "default": "./core-js/_utils.ts"
+    },
+    "./blocks-components": {
+      "types": "./core-js/blocks-components/index.ts",
+      "default": "./core-js/blocks-components/index.ts"
+    },
+    "./blocks-filters": {
+      "types": "./core-js/blocks-filters/index.ts",
+      "default": "./core-js/blocks-filters/index.ts"
+    },
+    "./blocks-filters/_filter-core-typography": {
+      "types": "./core-js/blocks-filters/_filter-core-typography.tsx",
+      "default": "./core-js/blocks-filters/_filter-core-typography.tsx"
+    },
+    "./blocks-filters/_slider-settings": {
+      "types": "./core-js/blocks-filters/_slider-settings.tsx",
+      "default": "./core-js/blocks-filters/_slider-settings.tsx"
+    },
+    "./blocks-filters/responsive-settings": {
+      "types": "./core-js/blocks-filters/responsive-settings/index.tsx",
+      "default": "./core-js/blocks-filters/responsive-settings/index.tsx"
+    },
+    "./blocks-utils": {
+      "types": "./core-js/blocks-utils/index.ts",
+      "default": "./core-js/blocks-utils/index.ts"
+    },
+    "./config": {
+      "types": "./core-js/config/index.ts",
+      "default": "./core-js/config/index.ts"
+    },
+    "./config/webentor-config": {
+      "types": "./core-js/config/webentor-config.ts",
+      "default": "./core-js/config/webentor-config.ts"
+    },
+    "./types": {
+      "types": "./core-js/types/index.ts",
+      "default": "./core-js/types/index.ts"
+    },
+    "./types/_webentor-config": {
+      "types": "./core-js/types/_webentor-config.ts",
+      "default": "./core-js/types/_webentor-config.ts"
+    },
+    "./types/_block-components": {
+      "types": "./core-js/types/_block-components.ts",
+      "default": "./core-js/types/_block-components.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "_alpine": [
+        "core-js/_alpine.ts"
+      ],
+      "_slider": [
+        "core-js/_slider.ts"
+      ],
+      "_utils": [
+        "core-js/_utils.ts"
+      ],
+      "blocks-components": [
+        "core-js/blocks-components/index.ts"
+      ],
+      "blocks-filters": [
+        "core-js/blocks-filters/index.ts"
+      ],
+      "blocks-filters/_filter-core-typography": [
+        "core-js/blocks-filters/_filter-core-typography.tsx"
+      ],
+      "blocks-filters/_slider-settings": [
+        "core-js/blocks-filters/_slider-settings.tsx"
+      ],
+      "blocks-filters/responsive-settings": [
+        "core-js/blocks-filters/responsive-settings/index.tsx"
+      ],
+      "blocks-utils": [
+        "core-js/blocks-utils/index.ts"
+      ],
+      "config": [
+        "core-js/config/index.ts"
+      ],
+      "config/webentor-config": [
+        "core-js/config/webentor-config.ts"
+      ],
+      "types": [
+        "core-js/types/index.ts"
+      ],
+      "types/_webentor-config": [
+        "core-js/types/_webentor-config.ts"
+      ],
+      "types/_block-components": [
+        "core-js/types/_block-components.ts"
+      ]
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
