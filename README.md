@@ -41,7 +41,7 @@ import { Alpine } from '@webikon/webentor-core/_alpine';
 import { SliderComponent } from '@webikon/webentor-core/_slider';
 import { WebentorButton } from '@webikon/webentor-core/blocks-components';
 import { initResponsiveSettings } from '@webikon/webentor-core/blocks-filters';
-import config, { buildSafelist } from '@webikon/webentor-core/config';
+import { buildSafelist, webentorDefaultConfig } from '@webikon/webentor-core/config';
 import type { WebentorConfig } from '@webikon/webentor-core/types';
 ```
 
