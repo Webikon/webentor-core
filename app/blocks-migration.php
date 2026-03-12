@@ -268,9 +268,11 @@ function process_batch(int $offset, callable $transform, ?int $total = null): ar
         if ($result['changed_count'] > 0) {
             $new_content = serialize_blocks($result['blocks']);
 
+            // wp_update_post() runs wp_unslash() on all fields — pre-slash
+            // so serialized block escape sequences (e.g. \u003c) survive.
             $update_result = wp_update_post([
                 'ID' => $post->ID,
-                'post_content' => $new_content,
+                'post_content' => wp_slash($new_content),
             ], true);
 
             if (is_wp_error($update_result)) {
