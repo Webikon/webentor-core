@@ -11,6 +11,7 @@
   - Better values grouping
   - Better cascade breakpoints conditioning
   - Spacing linking
+- Add `webentor/block_wrapper_class_properties` filter to exclude generated class groups such as `backgroundColor` and `textColor` from filtered `classes_by_property` and wrapper output, while keeping the raw generated map available for `block_custom_classes`
 - Add Wrap with Flexible container
 - Add applied classes viewer to see which responsive classes are applied
 - Add Quick layout presets, customizable with filter `webentor.core.responsiveSettings.layoutPresets`

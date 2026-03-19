@@ -157,7 +157,7 @@
     "prettier-fix:js": "prettier --write '{core-js,resources}/**/*.{js,ts,tsx}'",
     "prettier-fix:css": "prettier --write 'resources/**/*.css'",
     "prettier-fix:blade": "prettier --write 'resources/**/*.blade.php'",
-    "prepare": "husky || true"
+    "prepare": "sh -c 'git_root=$(git rev-parse --show-toplevel 2>/dev/null || printf \"\"); [ -n \"$git_root\" ] && [ \"$git_root\" = \"$PWD\" ] && husky || true'"
   },
   "devDependencies": {
     "@10up/block-components": "^1.21.4",

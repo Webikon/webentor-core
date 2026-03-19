@@ -216,6 +216,7 @@ function render_block_blade($block, $parent_block = null)
     $block_classes_result = prepareBlockClassesFromSettings($block->attributes, $block, $parent_block);
     $classes = $block_classes_result['classes'];
     $classes_by_property = $block_classes_result['classes_by_property'];
+    $all_classes_by_property = $block_classes_result['all_classes_by_property'];
     $bg_classes = prepareBgBlockClassesFromSettings($block->attributes);
 
     $additional_data = [];
@@ -227,9 +228,9 @@ function render_block_blade($block, $parent_block = null)
 
     // Let's have ability to modify classes and additional data for specific blocks
     $classes_by_property = apply_filters('webentor/block_classes_by_property', $classes_by_property, $block);
-    $classes = apply_filters('webentor/block_classes', $classes, $block, $classes_by_property);
+    $classes = apply_filters('webentor/block_classes', $classes, $block, $classes_by_property, $all_classes_by_property);
     $bg_classes = apply_filters('webentor/block_bg_classes', $bg_classes, $block);
-    $custom_classes = apply_filters('webentor/block_custom_classes', [], $block, $classes_by_property);
+    $custom_classes = apply_filters('webentor/block_custom_classes', [], $block, $classes_by_property, $all_classes_by_property);
     $additional_data = apply_filters('webentor/block_additional_data', $additional_data, $block);
 
     // Backward compatibility for old view.php config, where we defined path also for whole /resources folder
@@ -310,13 +311,14 @@ function render_inner_block_blade($block, $parent_block = null)
     $block_classes_result = prepareBlockClassesFromSettings($block->attributes, $block, $parent_block);
     $classes = $block_classes_result['classes'];
     $classes_by_property = $block_classes_result['classes_by_property'];
+    $all_classes_by_property = $block_classes_result['all_classes_by_property'];
     $bg_classes = prepareBgBlockClassesFromSettings($block->attributes);
 
     // Let's have ability to modify classes and additional data for specific blocks
     $classes_by_property = apply_filters('webentor/block_classes_by_property', $classes_by_property, $block);
-    $classes = apply_filters('webentor/block_classes', $classes, $block, $classes_by_property);
+    $classes = apply_filters('webentor/block_classes', $classes, $block, $classes_by_property, $all_classes_by_property);
     $bg_classes = apply_filters('webentor/block_bg_classes', $bg_classes, $block);
-    $custom_classes = apply_filters('webentor/block_custom_classes', [], $block, $classes_by_property);
+    $custom_classes = apply_filters('webentor/block_custom_classes', [], $block, $classes_by_property, $all_classes_by_property);
     $additional_data = apply_filters('webentor/block_additional_data', [], $block);
 
     // Backward compatibility for old view.php config, where we defined path also for whole /resources folder

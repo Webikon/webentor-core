@@ -252,4 +252,4 @@ The `breakpoints` prop is threaded from `SettingsComponentProps` → `Responsive
 - **Don't read parent display directly** — use `getParentDisplayValue()`
 - **Don't create a new PanelBody in a SettingsComponent** — it renders inline within an existing panel
 - **Don't forget both JS and PHP** — class generation runs on both sides
-- **Don't manually bump version numbers** — follow the Changesets workflow (see root AGENTS.md)
+- **Don't change version numbers here unless the task is an explicit release change** — follow the root `AGENTS.md` release policy for manual versioning and changelog updates

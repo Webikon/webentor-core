@@ -35,9 +35,10 @@ add_filter('webentor/block_classes', function ($classes, $block, $classes_by_pro
  * @param string $custom_classes
  * @param \WP_Block $block
  * @param array $classes_by_property
+ * @param array $all_classes_by_property
  * @return string
  */
-add_filter('webentor/block_custom_classes', function ($custom_classes, $block, $classes_by_property) {
+add_filter('webentor/block_custom_classes', function ($custom_classes, $block, $classes_by_property, $all_classes_by_property) {
     if ($block->name === 'webentor/l-section') {
         $custom_classes = [
             \Webentor\Core\get_classes_by_property($classes_by_property, ['layout', 'display']),
@@ -54,4 +55,4 @@ add_filter('webentor/block_custom_classes', function ($custom_classes, $block, $
     }
 
     return $custom_classes;
-}, 10, 3);
+}, 10, 4);

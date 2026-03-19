@@ -208,6 +208,98 @@ function prepareBgBlockClassesFromSettings($attributes, $block = null, $parent_b
 }
 
 /**
+ * Build wrapper classes from selected property paths.
+ * The filtered map drives wrapper output, while the raw generated map is kept
+ * separately for downstream hooks that explicitly opt into it.
+ *
+ * @param array $classes_by_prop
+ * @param array $property_paths
+ * @return string
+ */
+function buildBlockClassesFromPropertyPaths($classes_by_prop, $property_paths)
+{
+    $classes = [];
+
+    foreach ($property_paths as $property_path) {
+        if (!is_string($property_path) && !is_array($property_path)) {
+            continue;
+        }
+
+        $property_classes = get_classes_by_property($classes_by_prop, $property_path);
+        if ($property_classes !== '') {
+            $classes[] = $property_classes;
+        }
+    }
+
+    return implode(' ', $classes);
+}
+
+/**
+ * Copy only the selected property paths into a new classes-by-property map.
+ *
+ * @param array $classes_by_prop
+ * @param array $property_paths
+ * @return array
+ */
+function filterBlockClassesByPropertyPaths($classes_by_prop, $property_paths)
+{
+    $filtered_classes_by_prop = [];
+
+    foreach ($property_paths as $property_path) {
+        if (!is_string($property_path) && !is_array($property_path)) {
+            continue;
+        }
+
+        $path_keys = is_array($property_path) ? $property_path : [$property_path];
+        if ($path_keys === []) {
+            continue;
+        }
+
+        $current_value = $classes_by_prop;
+        foreach ($path_keys as $key) {
+            if (!isset($current_value[$key])) {
+                continue 2;
+            }
+
+            $current_value = $current_value[$key];
+        }
+
+        setBlockClassesByPropertyPath($filtered_classes_by_prop, $path_keys, $current_value);
+    }
+
+    return $filtered_classes_by_prop;
+}
+
+/**
+ * Set a nested property path inside the classes-by-property map.
+ *
+ * @param array        $classes_by_prop
+ * @param array|string $property_path
+ * @param mixed        $value
+ * @return void
+ */
+function setBlockClassesByPropertyPath(&$classes_by_prop, $property_path, $value)
+{
+    $path_keys = is_array($property_path) ? $property_path : [$property_path];
+    $current = &$classes_by_prop;
+
+    foreach ($path_keys as $index => $key) {
+        $is_last = $index === array_key_last($path_keys);
+
+        if ($is_last) {
+            $current[$key] = $value;
+            continue;
+        }
+
+        if (!isset($current[$key]) || !is_array($current[$key])) {
+            $current[$key] = [];
+        }
+
+        $current = &$current[$key];
+    }
+}
+
+/**
  *  Prepare block (and Tailwind) classes from block attributes.
  *  Orchestrates all registered setting handlers via SettingsRegistry,
  *  plus className/align/backgroundColor/textColor which are always present.
@@ -215,11 +307,11 @@ function prepareBgBlockClassesFromSettings($attributes, $block = null, $parent_b
  * @param  array     $attributes
  * @param  \WP_Block $block
  * @param  \WP_Block $parent_block
- * @return array ['classes' => string, 'classes_by_property' => array]
+ * @return array ['classes' => string, 'classes_by_property' => array, 'all_classes_by_property' => array]
  */
 function prepareBlockClassesFromSettings($attributes, $block = null, $parent_block = null)
 {
-    $classes_by_prop = [
+    $all_classes_by_prop = [
         'className' => [],
         'align' => [],
         'backgroundColor' => [],
@@ -235,43 +327,72 @@ function prepareBlockClassesFromSettings($attributes, $block = null, $parent_blo
         'border' => [],
         'borderRadius' => [],
     ];
-
-    $classes = '';
     if (!empty($attributes['className'])) {
         $classname_classes = ' ' . $attributes['className'];
-        $classes_by_prop['className'] = [$classname_classes];
-        $classes .= $classname_classes;
+        $all_classes_by_prop['className'] = [$classname_classes];
     }
 
     if (!empty($attributes['align'])) {
         $align_classes = ' align' . $attributes['align'];
-        $classes_by_prop['align'] = [$align_classes];
-        $classes .= $align_classes;
+        $all_classes_by_prop['align'] = [$align_classes];
     }
     if (!empty($attributes['backgroundColor'])) {
         $background_color_classes = ' has-' . $attributes['backgroundColor'] . '-background-color bg-' . $attributes['backgroundColor']; // add WP has-*-background-color clas, but also Tailwind bg-* so bg with image (texture) can be applied
-        $classes_by_prop['backgroundColor'] = [$background_color_classes];
-        $classes .= $background_color_classes;
+        $all_classes_by_prop['backgroundColor'] = [$background_color_classes];
     }
     if (!empty($attributes['textColor'])) {
         $text_color_classes = ' has-' . $attributes['textColor'] . '-color text-' . $attributes['textColor'];
-        $classes_by_prop['textColor'] = [$text_color_classes];
-        $classes .= $text_color_classes;
+        $all_classes_by_prop['textColor'] = [$text_color_classes];
     }
 
     // Output preset custom classes (non-decomposable, e.g. w-flex-cols-3)
     if (!empty($attributes['_presetClasses']) && is_array($attributes['_presetClasses'])) {
         $preset_classes = ' ' . implode(' ', $attributes['_presetClasses']);
-        $classes_by_prop['_presetClasses'] = [$preset_classes];
-        $classes .= $preset_classes;
+        $all_classes_by_prop['_presetClasses'] = [$preset_classes];
     }
 
     // Delegate to the registry for all setting-type handlers
     $registry_result = SettingsRegistry::generateClasses($attributes, $block, $parent_block);
-    $classes .= $registry_result['classes'];
-    $classes_by_prop = array_merge($classes_by_prop, $registry_result['classes_by_property']);
+    $all_classes_by_prop = array_merge($all_classes_by_prop, $registry_result['classes_by_property']);
 
-    return ['classes' => $classes, 'classes_by_property' => $classes_by_prop];
+    $default_wrapper_class_properties = [
+        'className',
+        'align',
+        'backgroundColor',
+        'textColor',
+        '_presetClasses',
+        'spacing',
+        'layout',
+        'sizing',
+        'grid',
+        'gridItem',
+        'flexbox',
+        'flexItem',
+        'border',
+        'borderRadius',
+    ];
+
+    $wrapper_class_properties = \apply_filters(
+        'webentor/block_wrapper_class_properties',
+        $default_wrapper_class_properties,
+        $attributes,
+        $block,
+        $parent_block,
+        $all_classes_by_prop
+    );
+
+    if (!is_array($wrapper_class_properties)) {
+        $wrapper_class_properties = $default_wrapper_class_properties;
+    }
+
+    $classes_by_prop = filterBlockClassesByPropertyPaths($all_classes_by_prop, $wrapper_class_properties);
+    $classes = buildBlockClassesFromPropertyPaths($classes_by_prop, $wrapper_class_properties);
+
+    return [
+        'classes' => $classes,
+        'classes_by_property' => $classes_by_prop,
+        'all_classes_by_property' => $all_classes_by_prop,
+    ];
 }
 
 /**
