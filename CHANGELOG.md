@@ -17,6 +17,7 @@
 - Add Quick layout presets, customizable with filter `webentor.core.responsiveSettings.layoutPresets`
 - Fix PHP path in `init.php`
 - Add package module exports, you can now use `@webikon/webentor-core` instead of `@webentorCore` when importing in the theme
+- Add `webentor.core.l-section.output` filter to customize the section editor preview markup
 
 
 ## 0.9.14

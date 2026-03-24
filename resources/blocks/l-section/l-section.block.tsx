@@ -262,40 +262,49 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
         </PanelBody>
       </InspectorControls>
 
-      <div {...blockProps} className={`w-section ${blockProps.className}`}>
-        <div
-          {...innerBlocksProps}
-          className={`${innerBlocksProps.className} container wbtr:relative wbtr:z-[2] wbtr:flex wbtr:flex-col`}
-        >
-          {children}
+      {
+        applyFilters(
+          'webentor.core.l-section.output',
+          <div {...blockProps} className={`w-section ${blockProps.className}`}>
+            <div
+              {...innerBlocksProps}
+              className={`${innerBlocksProps.className} container wbtr:relative wbtr:z-[2] wbtr:flex wbtr:flex-col`}
+            >
+              {children}
 
-          {/* Only show appender if no inner blocks or if the block is selected */}
-          {(!hasInnerBlocks || isSelected) && (
-            <div className="wbtr:my-2 wbtr:flex wbtr:items-center wbtr:justify-center">
-              <WebentorBlockAppender
-                rootClientId={props.clientId}
-                text={__('Add Section Content', 'webentor')}
-              />
+              {/* Only show appender if no inner blocks or if the block is selected */}
+              {(!hasInnerBlocks || isSelected) && (
+                <div className="wbtr:my-2 wbtr:flex wbtr:items-center wbtr:justify-center">
+                  <WebentorBlockAppender
+                    rootClientId={props.clientId}
+                    text={__('Add Section Content', 'webentor')}
+                  />
+                </div>
+              )}
             </div>
-          )}
-        </div>
 
-        {attributes?.img?.id && (
-          <>
-            <div className="wbtr:absolute wbtr:inset-0 wbtr:z-[1] wbtr:bg-black wbtr:opacity-20"></div>
-            <img
-              src={attributes.img.url}
-              alt="banner-img"
-              className="wbtr:absolute wbtr:top-0 wbtr:left-0 wbtr:hidden wbtr:!h-full wbtr:!w-full wbtr:object-cover wbtr:md:block"
-            />
-            <img
-              src={attributes.mobileImg?.url || attributes.img.url}
-              alt="banner-img"
-              className="wbtr:absolute wbtr:top-0 wbtr:left-0 wbtr:block wbtr:!h-full wbtr:!w-full wbtr:object-cover wbtr:md:hidden"
-            />
-          </>
-        )}
-      </div>
+            {attributes?.img?.id && (
+              <>
+                <div className="wbtr:absolute wbtr:inset-0 wbtr:z-[1] wbtr:bg-black wbtr:opacity-20"></div>
+                <img
+                  src={attributes.img.url}
+                  alt="banner-img"
+                  className="wbtr:absolute wbtr:top-0 wbtr:left-0 wbtr:hidden wbtr:!h-full wbtr:!w-full wbtr:object-cover wbtr:md:block"
+                />
+                <img
+                  src={attributes.mobileImg?.url || attributes.img.url}
+                  alt="banner-img"
+                  className="wbtr:absolute wbtr:top-0 wbtr:left-0 wbtr:block wbtr:!h-full wbtr:!w-full wbtr:object-cover wbtr:md:hidden"
+                />
+              </>
+            )}
+          </div>,
+          props,
+          blockProps,
+          innerBlocksProps,
+          children,
+        ) as React.ReactNode
+      }
     </>
   );
 };
