@@ -1,6 +1,6 @@
 /**
  * DebugPanel — Collapsible inspector panel showing raw responsive
- * setting attributes. Gated behind window.WEBENTOR_DEBUG_RESPONSIVE_SETTINGS.
+ * setting attributes. Gated behind window.WEBENTOR_WP_DEBUG.
  */
 import { PanelBody } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
@@ -9,7 +9,7 @@ import { BlockPanelProps } from '../types';
 
 declare global {
   interface Window {
-    WEBENTOR_DEBUG_RESPONSIVE_SETTINGS?: boolean;
+    WEBENTOR_WP_DEBUG?: boolean;
   }
 }
 
@@ -31,7 +31,9 @@ const ATTRIBUTE_KEYS = [
 ] as const;
 
 export const DebugPanel = ({ attributes }: BlockPanelProps) => {
-  // if (!window.WEBENTOR_DEBUG_RESPONSIVE_SETTINGS) return null;
+  if (!window.WEBENTOR_WP_DEBUG) {
+    return null;
+  }
 
   const debugData: Record<string, any> = {};
   for (const key of ATTRIBUTE_KEYS) {

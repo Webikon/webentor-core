@@ -59,6 +59,12 @@ add_action('enqueue_block_editor_assets', function (): void {
         ]
     );
 
+    wp_add_inline_script(
+        'webentor-core-editor-js',
+        sprintf('window.WEBENTOR_WP_DEBUG = %s;', wp_json_encode(defined('WP_DEBUG') && WP_DEBUG && defined('WP_DEBUG_DISPLAY') && WP_DEBUG_DISPLAY)),
+        'before'
+    );
+
     Vite\enqueue_asset(
         WEBENTOR_CORE_VITE_MANIFEST_DIR,
         'resources/styles/editor.css',
