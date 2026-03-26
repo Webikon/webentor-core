@@ -1,7 +1,7 @@
 {
   "name": "@webikon/webentor-core",
   "homepage": "https://webikon.sk",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "Core functionality and useful utilities for Webentor Stack",
   "license": "MIT",
   "author": "Webikon s.r.o.",

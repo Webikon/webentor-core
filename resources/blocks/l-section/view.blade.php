@@ -81,12 +81,12 @@
       <img
         src="{!! \Webentor\Core\get_resized_image_url($img_id, [1920, $height_basic], $crop_basic) !!}"
         alt="{!! \Webentor\Core\get_image_alt($img_id) !!}"
-        class="w-section-img wbtr:absolute wbtr:inset-0 wbtr:h-full wbtr:w-full wbtr:object-cover"
+        class="w-section-img wbtr:absolute wbtr:inset-0 wbtr:h-full wbtr:w-full wbtr:object-cover wbtr:z-[-1]"
       >
     </picture>
   @endif
 
-  <div class="w-section-inner wbtr:flex wbtr:flex-col wbtr:relative wbtr:z-[2] {{ $custom_classes }}">
+  <div class="w-section-inner wbtr:flex wbtr:flex-col wbtr:relative {{ $custom_classes }}">
     {!! $innerBlocksContent ?? '' !!}
   </div>
 </section>

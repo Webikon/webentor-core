@@ -1,5 +1,9 @@
 # Webentor Core Changelog
 
+## 0.10.1
+
+- Fix `l-section` inner z-index
+
 ## 0.10.0
 
 - Refactor responsive settings and improve UX
