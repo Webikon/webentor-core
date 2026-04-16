@@ -142,26 +142,32 @@ export const applyResponsiveSettings = (attributes: any): boolean => {
 };
 
 /**
- * Generates Tailwind class names from block attributes using the SettingsRegistry.
- * Each registered setting's generateClasses() is called per breakpoint.
+ * Pure class generator. Walks the SettingsRegistry and runs each supported
+ * module's generateClasses() per breakpoint, grouping the results by
+ * SettingDefinition.attributeKey (e.g. 'layout', 'flexbox', 'grid', 'spacing').
  *
- * This function is called as a classNameGenerator hook from registerBlockExtension.
- * useBlockParent/useBlockProps are called at top level to comply with Rules of Hooks.
+ * Mirrors the PHP classes_by_property map. Hook-free — caller passes
+ * blockName and parentBlockAttributes explicitly so this can be used from
+ * any component without duplicating useBlockProps / useBlockParent calls.
+ *
+ * Consumers that need to split classes between different DOM elements
+ * (e.g. l-section puts flexbox/grid/layout.display on an inner container)
+ * can call this helper and pick the entries they want per element.
  */
-export const generateClassNames = (attributes: any): string => {
+export const computeClassesByAttribute = (
+  attributes: Record<string, any>,
+  blockName: string,
+  parentBlockAttributes?: Record<string, any>,
+): Record<string, string[]> => {
+  const result: Record<string, string[]> = {};
+
   if (!applyResponsiveSettings(attributes)) {
-    return '';
+    return result;
   }
 
-  const blockProps = useBlockProps();
-  const blockName = blockProps['data-type'];
   const blockSettings = getBlockType(blockName);
   const supports = blockSettings?.supports;
 
-  // useBlockParent hoisted to top level (hook-safe)
-  const parentBlock = useBlockParent();
-
-  // Resolve ordered breakpoints for cascade logic
   const orderedBreakpoints: string[] = applyFilters(
     'webentor.core.twBreakpoints',
     ['basic'],
@@ -170,11 +176,10 @@ export const generateClassNames = (attributes: any): string => {
   const context: ClassGenContext = {
     blockName,
     supports,
-    parentBlockAttributes: parentBlock?.attributes,
+    parentBlockAttributes,
     breakpoints: orderedBreakpoints,
   };
 
-  const classes: string[] = [];
   const allSettings = registry.getAll();
 
   // Collect all breakpoints present in any attribute
@@ -182,7 +187,6 @@ export const generateClassNames = (attributes: any): string => {
   for (const def of allSettings) {
     if (!registry.isSupported(supports, def)) continue;
 
-    // Check all attribute keys declared by this module
     for (const attrKey of Object.keys(def.attributeSchema)) {
       const attrGroup = attributes[attrKey];
       if (!attrGroup || typeof attrGroup !== 'object') continue;
@@ -198,15 +202,90 @@ export const generateClassNames = (attributes: any): string => {
     }
   }
 
-  // Generate classes per breakpoint per registered setting
+  // Generate classes per breakpoint per registered setting, grouped by attributeKey
   for (const bp of breakpoints) {
     for (const def of allSettings) {
       if (!registry.isSupported(supports, def)) continue;
-      classes.push(...def.generateClasses(attributes, bp, context));
+      const produced = def.generateClasses(attributes, bp, context);
+      if (produced.length === 0) continue;
+      const key = def.attributeKey;
+      if (!result[key]) result[key] = [];
+      result[key].push(...produced);
     }
   }
 
-  return classes.join(' ') ?? '';
+  return result;
+};
+
+/**
+ * Generates Tailwind class names from block attributes using the SettingsRegistry.
+ * Each registered setting's generateClasses() is called per breakpoint.
+ *
+ * This function is called as a classNameGenerator hook from registerBlockExtension.
+ * useBlockParent/useBlockProps are called at top level to comply with Rules of Hooks.
+ *
+ * Delegates the per-module work to computeClassesByAttribute and flattens the
+ * result, preserving the original output shape (a single space-joined string).
+ */
+export const generateClassNames = (attributes: any): string => {
+  if (!applyResponsiveSettings(attributes)) {
+    return '';
+  }
+
+  const blockProps = useBlockProps();
+  const blockName = blockProps['data-type'];
+
+  // useBlockParent hoisted to top level (hook-safe)
+  const parentBlock = useBlockParent();
+
+  const classesByAttribute = computeClassesByAttribute(
+    attributes,
+    blockName,
+    parentBlock?.attributes,
+  );
+
+  return Object.values(classesByAttribute).flat().join(' ');
+};
+
+/**
+ * Collect Tailwind class tokens from responsive setting attributes.
+ *
+ * Reads value entries from the given attribute keys (e.g. 'layout', 'flexbox',
+ * 'grid') and returns the set of class tokens that would be generated.
+ * Works directly from the block's attributes — no registry or cross-bundle
+ * state needed.
+ *
+ * Useful for blocks that need to split classes between elements (e.g. l-section
+ * moves layout/flexbox/grid classes from the wrapper to an inner container).
+ */
+export const collectClassTokensFromAttributes = (
+  attributes: Record<string, any>,
+  attributeKeys: string[],
+): Set<string> => {
+  const tokens = new Set<string>();
+
+  for (const attrKey of attributeKeys) {
+    const attrGroup = attributes[attrKey];
+    if (!attrGroup || typeof attrGroup !== 'object') continue;
+
+    for (const prop of Object.values(attrGroup)) {
+      const propData = prop as any;
+      if (!propData?.value) continue;
+
+      for (const [bp, value] of Object.entries(propData.value)) {
+        if (!value || typeof value !== 'string') continue;
+        const prefix = bp === 'basic' ? '' : `${bp}:`;
+        tokens.add(`${prefix}${value}`);
+
+        // Layout 'hidden' maps to 'opacity-30' in editor
+        if (value === 'hidden') {
+          tokens.add(`${prefix}opacity-30`);
+        }
+      }
+    }
+  }
+
+  return tokens;
 };
 
 export const inlineStyleGenerator = (): Record<string, any> => {

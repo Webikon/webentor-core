@@ -20,6 +20,7 @@ import {
   CustomImageSizesPanel,
   WebentorBlockAppender,
 } from '@webentorCore/blocks-components';
+import { collectClassTokensFromAttributes } from '@webentorCore/blocks-filters/responsive-settings/utils';
 import { useBlockParent } from '@webentorCore/blocks-utils/_use-block-parent';
 
 import block from './block.json';
@@ -49,6 +50,27 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
 
   const blockProps = useBlockProps();
   const parentBlockProps = useBlockParent();
+
+  /**
+   * Split responsive classes between wrapper and inner container, mirroring
+   * the PHP split in data.php:
+   *   webentor/block_classes        → wrapper (spacing, sizing, border, colors, …)
+   *   webentor/block_custom_classes → container (layout.display, flexbox, grid)
+   *
+   * registerBlockExtension puts ALL responsive classes on blockProps.className
+   * (the wrapper). We collect the container-bound tokens directly from the
+   * attribute values and move them to the inner div.
+   */
+  const containerClassTokens = collectClassTokensFromAttributes(attributes, [
+    'layout',
+    'flexbox',
+    'grid',
+  ]);
+  const wrapperClassName = (blockProps.className ?? '')
+    .split(/\s+/)
+    .filter((c: string) => c && !containerClassTokens.has(c))
+    .join(' ');
+  const containerResponsiveClasses = [...containerClassTokens].join(' ');
 
   /**
    * Filter allowed blocks used in webentor/l-section inner block
@@ -265,10 +287,10 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
       {
         applyFilters(
           'webentor.core.l-section.output',
-          <div {...blockProps} className={`w-section ${blockProps.className}`}>
+          <div {...blockProps} className={`w-section ${wrapperClassName}`}>
             <div
               {...innerBlocksProps}
-              className={`${innerBlocksProps.className} container wbtr:relative wbtr:z-[2] wbtr:flex wbtr:flex-col`}
+              className={`${innerBlocksProps.className} container wbtr:relative wbtr:z-[2] wbtr:flex wbtr:flex-col ${containerResponsiveClasses}`}
             >
               {children}
 

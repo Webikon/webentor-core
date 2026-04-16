@@ -1,5 +1,9 @@
 # Webentor Core Changelog
 
+## DEV
+
+- Fix `l-section` responsive settings not splitting classes between wrapper and inner container in editor (layout/flexbox/grid classes now correctly apply to the inner container, matching frontend behavior)
+
 ## 0.10.1
 
 - Fix `l-section` inner z-index
