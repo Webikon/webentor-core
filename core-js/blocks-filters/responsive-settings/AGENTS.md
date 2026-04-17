@@ -107,7 +107,9 @@ Key methods:
    - Each panel queries registry and renders SettingsComponents
 
 3. **Class generation** (`generateClassNames` in `utils.ts`):
-   - Called by `registerBlockExtension` classNameGenerator hook
+   - Called via a dedicated `editor.BlockListBlock` HOC (not via `registerBlockExtension`'s
+     `classNameGenerator`, which is no-oped to prevent classes leaking into saved markup
+     and React hooks being called outside component context)
    - Collects breakpoints from all attribute values
    - Calls each module's `generateClasses(attributes, breakpoint, context)` per breakpoint
    - Concatenates results
