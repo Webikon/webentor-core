@@ -16,6 +16,7 @@
 import { registerBlockExtension } from '@10up/block-components';
 import { BlockControls, InspectorControls } from '@wordpress/block-editor';
 import { ToolbarGroup } from '@wordpress/components';
+import { createHigherOrderComponent } from '@wordpress/compose';
 import { Fragment } from '@wordpress/element';
 import { addFilter, applyFilters } from '@wordpress/hooks';
 
@@ -45,6 +46,43 @@ import './settings/sizing';
 import './settings/spacing';
 
 const initResponsiveSettings = () => {
+  /**
+   * WP Core block spacing support injection.
+   * Injects `supports.webentor.spacing` into configured WP Core blocks so the
+   * responsive spacing panel appears automatically. Runs at priority 5,
+   * before the attribute-merging filter at priority 10.
+   *
+   * The block list is filterable via `webentor.core.wpCoreBlocksWithSpacing`.
+   */
+  addFilter(
+    'blocks.registerBlockType',
+    'webentor/core/injectWpCoreBlockSpacingSupport',
+    (settings, name) => {
+      const wpCoreBlocks = applyFilters(
+        'webentor.core.wpCoreBlocksWithSpacing',
+        ['core/paragraph', 'core/heading'],
+      ) as string[];
+
+      if (!wpCoreBlocks.includes(name)) return settings;
+
+      settings.supports = {
+        ...settings.supports,
+        webentor: {
+          ...settings.supports?.webentor,
+          spacing: true,
+        },
+        spacing: {
+          ...settings.supports?.spacing,
+          padding: false,
+          margin: false,
+        },
+      };
+
+      return settings;
+    },
+    5,
+  );
+
   /**
    * Attribute registration filter.
    * Iterates over all registered setting modules and merges their
@@ -89,10 +127,46 @@ const initResponsiveSettings = () => {
     extensionName: 'webentor.core.addResponsiveSettings',
     attributes: {},
     inlineStyleGenerator,
-    classNameGenerator: generateClassNames,
+    // No-op: prevents @10up/block-components from injecting responsive classes
+    // into saved markup via blocks.getSaveContent.extraProps, which breaks
+    // static core blocks (core/paragraph, core/heading) and triggers React
+    // hooks warnings (generateClassNames uses hooks but the save filter
+    // calls it outside React component context).
+    classNameGenerator: () => '',
     order: 'after',
     Edit: BlockEdit,
   });
+
+  /**
+   * Editor-only responsive classes via editor.BlockListBlock.
+   * Replaces the @10up classNameGenerator approach so that:
+   * 1. Hooks (useBlockProps, useBlockParent) are called in component context
+   * 2. Classes are only applied in the editor, not injected into saved HTML
+   */
+  const addResponsiveClassesHOC = createHigherOrderComponent(
+    (BlockListBlock) => (props) => {
+      const { attributes, className = '' } = props;
+      const responsiveClasses = generateClassNames(attributes);
+
+      if (!responsiveClasses) {
+        return <BlockListBlock {...props} />;
+      }
+
+      return (
+        <BlockListBlock
+          {...props}
+          className={`${className} ${responsiveClasses}`.trim()}
+        />
+      );
+    },
+    'addResponsiveClasses',
+  );
+
+  addFilter(
+    'editor.BlockListBlock',
+    'webentor/core/addResponsiveClasses',
+    addResponsiveClassesHOC,
+  );
 };
 
 /**

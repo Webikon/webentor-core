@@ -221,22 +221,22 @@ export const computeClassesByAttribute = (
  * Generates Tailwind class names from block attributes using the SettingsRegistry.
  * Each registered setting's generateClasses() is called per breakpoint.
  *
- * This function is called as a classNameGenerator hook from registerBlockExtension.
- * useBlockParent/useBlockProps are called at top level to comply with Rules of Hooks.
+ * Called from the editor.BlockListBlock HOC (React component context).
+ * Hooks are called unconditionally before any early returns (Rules of Hooks).
  *
  * Delegates the per-module work to computeClassesByAttribute and flattens the
  * result, preserving the original output shape (a single space-joined string).
  */
 export const generateClassNames = (attributes: any): string => {
+  // Hooks must be called unconditionally before any early return (Rules of Hooks)
+  const blockProps = useBlockProps();
+  const parentBlock = useBlockParent();
+
   if (!applyResponsiveSettings(attributes)) {
     return '';
   }
 
-  const blockProps = useBlockProps();
   const blockName = blockProps['data-type'];
-
-  // useBlockParent hoisted to top level (hook-safe)
-  const parentBlock = useBlockParent();
 
   const classesByAttribute = computeClassesByAttribute(
     attributes,

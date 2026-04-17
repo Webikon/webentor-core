@@ -2,6 +2,11 @@
 
 ## DEV
 
+- Add responsive spacing settings for WP Core blocks (`core/paragraph`, `core/heading`) — spacing panel appears automatically, classes rendered on frontend via `WP_HTML_Tag_Processor`
+  - Filterable block list: JS `webentor.core.wpCoreBlocksWithSpacing`, PHP `webentor/wp_core_blocks_with_spacing`
+  - Native WP spacing controls disabled on affected blocks to avoid duplication
+- Fix React hooks warning ("Do not call Hooks inside useEffect") caused by `generateClassNames` being called outside React component context via `blocks.getSaveContent.extraProps`
+- Fix WP Core blocks breaking after save/refresh — `classNameGenerator` no longer injects responsive classes into saved markup, preventing block validation failures on static blocks
 - Fix `l-section` responsive settings not splitting classes between wrapper and inner container in editor (layout/flexbox/grid classes now correctly apply to the inner container, matching frontend behavior)
 - Add `WebentorCoreServiceProvider` — Acorn auto-discovered service provider for webentor-core
   - Blade directives (`@sliderContent`, `@enqueueScripts`, `@xdebugBreak`) moved from theme to core

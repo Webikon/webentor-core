@@ -805,3 +805,93 @@ add_filter('render_block_core/post-title', function ($block_content, $block) {
 
     return $block_content;
 }, 10, 2);
+
+// ── WP Core block responsive spacing support ──
+
+/**
+ * Get the list of WP Core blocks that receive webentor spacing support.
+ * Filterable via 'webentor/wp_core_blocks_with_spacing'.
+ *
+ * @return string[]
+ */
+function get_wp_core_blocks_with_spacing(): array
+{
+    return apply_filters('webentor/wp_core_blocks_with_spacing', [
+        'core/paragraph',
+        'core/heading',
+    ]);
+}
+
+/**
+ * Inject webentor spacing support into WP Core block metadata.
+ * Runs at priority 5, before the existing priority-10 callback that reads
+ * webentor supports for attribute defaults.
+ */
+add_filter('block_type_metadata_settings', function ($settings, $metadata) {
+    $wp_core_blocks = get_wp_core_blocks_with_spacing();
+
+    if (!in_array($metadata['name'], $wp_core_blocks, true)) {
+        return $settings;
+    }
+
+    if (!isset($settings['supports']['webentor'])) {
+        $settings['supports']['webentor'] = [];
+    }
+    $settings['supports']['webentor']['spacing'] = true;
+
+    return $settings;
+}, 5, 2);
+
+/**
+ * Apply responsive spacing classes to a WP Core block's rendered HTML.
+ *
+ * @param  string    $block_content The block's rendered HTML.
+ * @param  array     $block         The parsed block array.
+ * @param  \WP_Block $instance      The WP_Block instance.
+ * @return string
+ */
+function apply_spacing_to_wp_core_block(string $block_content, array $block, \WP_Block $instance): string
+{
+    if (empty($instance->attributes['spacing'])) {
+        return $block_content;
+    }
+
+    $result = SettingsRegistry::generateClasses(
+        $instance->attributes,
+        $instance,
+        null
+    );
+
+    $classes = trim($result['classes']);
+
+    if (empty($classes)) {
+        return $block_content;
+    }
+
+    $processor = new \WP_HTML_Tag_Processor($block_content);
+
+    if ($processor->next_tag()) {
+        foreach (explode(' ', $classes) as $class) {
+            $trimmed = trim($class);
+            if ($trimmed !== '') {
+                $processor->add_class($trimmed);
+            }
+        }
+
+        return $processor->get_updated_html();
+    }
+
+    return $block_content;
+}
+
+/**
+ * Register render filters for WP Core blocks with spacing support.
+ * Priority 20: after WP Core blocks are registered at priority 10.
+ */
+add_action('init', function () {
+    $wp_core_blocks = get_wp_core_blocks_with_spacing();
+
+    foreach ($wp_core_blocks as $block_name) {
+        add_filter("render_block_{$block_name}", __NAMESPACE__ . '\apply_spacing_to_wp_core_block', 10, 3);
+    }
+}, 20);
