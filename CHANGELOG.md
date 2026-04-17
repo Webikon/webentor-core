@@ -3,6 +3,10 @@
 ## DEV
 
 - Fix `l-section` responsive settings not splitting classes between wrapper and inner container in editor (layout/flexbox/grid classes now correctly apply to the inner container, matching frontend behavior)
+- Add `WebentorCoreServiceProvider` — Acorn auto-discovered service provider for webentor-core
+  - Blade directives (`@sliderContent`, `@enqueueScripts`, `@xdebugBreak`) moved from theme to core
+  - View Components (`Button`, `Slider`) moved from theme to core — themes can override by extending `Webentor\Core\View\Components\Button` etc.
+  - Core block `data.php` files now loaded by the service provider instead of `ThemeServiceProvider`
 
 ## 0.10.1
 

@@ -16,6 +16,19 @@
       "homepage": "https://webikon.sk"
     }
   ],
+  "autoload": {
+    "psr-4": {
+      "Webentor\\Core\\Providers\\": "app/Providers/",
+      "Webentor\\Core\\View\\": "app/View/"
+    }
+  },
+  "extra": {
+    "acorn": {
+      "providers": [
+        "Webentor\\Core\\Providers\\WebentorCoreServiceProvider"
+      ]
+    }
+  },
   "require": {
     "kucrut/vite-for-wp": "^0.11.6"
   },
