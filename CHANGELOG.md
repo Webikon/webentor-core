@@ -1,6 +1,6 @@
 # Webentor Core Changelog
 
-## DEV
+## 0.11.0
 
 - Add responsive spacing settings for WP Core blocks (`core/paragraph`, `core/heading`) — spacing panel appears automatically, classes rendered on frontend via `WP_HTML_Tag_Processor`
   - Filterable block list: JS `webentor.core.wpCoreBlocksWithSpacing`, PHP `webentor/wp_core_blocks_with_spacing`
