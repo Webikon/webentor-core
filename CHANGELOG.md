@@ -1,5 +1,10 @@
 # Webentor Core Changelog
 
+## 0.12.0
+
+- **BREAKING**: Remove `init.php` entry point. Bootstrap logic (constant defines, optional vendor autoload, core app file requires) moved into `WebentorCoreServiceProvider`. Acorn auto-discovery handles loading — consumer themes must no longer manually `require_once WEBENTOR_CORE_PHP_PATH . '/init.php'` from `functions.php`.
+  - Migration: delete the `require_once WEBENTOR_CORE_PHP_PATH . '/init.php'` line from your theme's `functions.php`. Keep the `WEBENTOR_CORE_PHP_PATH` define — it's still consumed by `config/view.php` to register core view paths. Then run `composer update webikon/webentor-core && wp acorn optimize:clear`.
+
 ## 0.11.0
 
 - Add responsive spacing settings for WP Core blocks (`core/paragraph`, `core/heading`) — spacing panel appears automatically, classes rendered on frontend via `WP_HTML_Tag_Processor`

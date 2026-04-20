@@ -12,8 +12,50 @@ use Webentor\Core\View\Directives\XDebugBladeDirective;
 
 class WebentorCoreServiceProvider extends ServiceProvider
 {
+    public function register(): void
+    {
+        // WEBENTOR_CORE_PHP_PATH is normally defined by the consumer theme's
+        // functions.php (it's also consumed by config/view.php, which runs
+        // before providers register). Fallback to the package directory so
+        // the provider still works in contexts where the consumer omitted it.
+        if (!defined('WEBENTOR_CORE_PHP_PATH')) {
+            define('WEBENTOR_CORE_PHP_PATH', dirname(__DIR__, 2));
+        }
+
+        if (!defined('WEBENTOR_CORE_PUBLIC_PATH')) {
+            define('WEBENTOR_CORE_PUBLIC_PATH', WEBENTOR_CORE_PHP_PATH . '/public/build');
+        }
+        if (!defined('WEBENTOR_CORE_MANIFEST_PATH')) {
+            define('WEBENTOR_CORE_MANIFEST_PATH', WEBENTOR_CORE_PUBLIC_PATH . '/manifest.json');
+        }
+        if (!defined('WEBENTOR_CORE_RESOURCES_PATH')) {
+            define('WEBENTOR_CORE_RESOURCES_PATH', WEBENTOR_CORE_PHP_PATH . '/resources');
+        }
+        if (!defined('WEBENTOR_CORE_VITE_MANIFEST_DIR')) {
+            define('WEBENTOR_CORE_VITE_MANIFEST_DIR', WEBENTOR_CORE_PHP_PATH . '/public/build');
+        }
+        if (!defined('WEBENTOR_CORE_RESOURCES_DIR')) {
+            define('WEBENTOR_CORE_RESOURCES_DIR', WEBENTOR_CORE_PHP_PATH . '/resources');
+        }
+
+        if (file_exists($composer = WEBENTOR_CORE_PHP_PATH . '/vendor/autoload.php')) {
+            require_once $composer;
+        }
+    }
+
     public function boot(): void
     {
+        // Load core app bootstrap files (hook registrations, helpers, CLI).
+        require_once WEBENTOR_CORE_PHP_PATH . '/app/acf.php';
+        require_once WEBENTOR_CORE_PHP_PATH . '/app/blocks-init.php';
+        require_once WEBENTOR_CORE_PHP_PATH . '/app/blocks-settings.php';
+        require_once WEBENTOR_CORE_PHP_PATH . '/app/blocks-migration.php';
+        require_once WEBENTOR_CORE_PHP_PATH . '/app/CloudinaryClient.php';
+        require_once WEBENTOR_CORE_PHP_PATH . '/app/i18n.php';
+        require_once WEBENTOR_CORE_PHP_PATH . '/app/images.php';
+        require_once WEBENTOR_CORE_PHP_PATH . '/app/setup-core.php';
+        require_once WEBENTOR_CORE_PHP_PATH . '/app/utils.php';
+
         // Register Blade directives
         Blade::directive('sliderContent', new SliderContentBladeDirective());
         Blade::directive('enqueueScripts', new EnqueueScriptsBladeDirective());
