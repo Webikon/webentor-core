@@ -64,6 +64,23 @@ add_action('enqueue_block_editor_assets', function (): void {
         sprintf('window.WEBENTOR_WP_DEBUG = %s;', wp_json_encode(defined('WP_DEBUG') && WP_DEBUG && defined('WP_DEBUG_DISPLAY') && WP_DEBUG_DISPLAY)),
         'before'
     );
+}, 5);
+
+/**
+ * Enqueue core Gutenberg editor styles.
+ *
+ * These are global editor-canvas styles (Tailwind utilities scoped to
+ * `.editor-styles-wrapper`). Since WP 6.9/7.0 the block editor runs in an
+ * iframe; styles added via `enqueue_block_editor_assets` only reach the outer
+ * admin document and trip the "added to the iframe incorrectly" warning. Using
+ * `enqueue_block_assets` lets WordPress route them into the iframe correctly.
+ * The `is_admin()` guard keeps them out of the public frontend (this hook also
+ * fires there).
+ */
+add_action('enqueue_block_assets', function (): void {
+    if (!is_admin()) {
+        return;
+    }
 
     Vite\enqueue_asset(
         WEBENTOR_CORE_VITE_MANIFEST_DIR,

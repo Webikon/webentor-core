@@ -1,5 +1,6 @@
 {
   "$schema": "../../../schemas/webentor-block.json",
+  "apiVersion": 3,
   "name": "webentor/l-nav-menu",
   "title": "Navigation Menu",
   "description": "Navigation menu block",

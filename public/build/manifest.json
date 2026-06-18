@@ -55,7 +55,7 @@
     ]
   },
   "resources/core-components/slider/slider.script.ts": {
-    "file": "assets/sliderJs-CyGnrv0Q.js",
+    "file": "assets/sliderJs-JeuRJIiW.js",
     "name": "sliderJs",
     "src": "resources/core-components/slider/slider.script.ts",
     "isEntry": true,
@@ -64,7 +64,7 @@
     ]
   },
   "resources/core-components/slider/slider.style.css": {
-    "file": "assets/sliderStyles-Wdf994sh.css",
+    "file": "assets/sliderStyles-CIFq4bHy.css",
     "src": "resources/core-components/slider/slider.style.css",
     "isEntry": true,
     "name": "sliderStyles",
@@ -73,7 +73,7 @@
     ]
   },
   "resources/scripts/editor.ts": {
-    "file": "assets/coreEditorJs-BJHc-PKW.js",
+    "file": "assets/coreEditorJs-OIn6QSOh.js",
     "name": "coreEditorJs",
     "src": "resources/scripts/editor.ts",
     "isEntry": true,

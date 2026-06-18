@@ -13,8 +13,8 @@ import {
   PanelRow,
   SelectControl,
   ToggleControl,
+  ToolbarButton,
   ToolbarGroup,
-  ToolbarItem,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { applyFilters } from '@wordpress/hooks';
@@ -273,10 +273,25 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
 
       <BlockControls>
         <ToolbarGroup>
-          <ToolbarItem as="div">{GalleryMediaUpload()}</ToolbarItem>
-          <ToolbarItem as={Button} onClick={handleGalleryRemove}>
+          <MediaUploadCheck>
+            <MediaUpload
+              onSelect={handleGallerySelect}
+              allowedTypes={['image']}
+              value={images?.map(({ id }) => id)}
+              gallery
+              multiple
+              render={({ open }) => (
+                <ToolbarButton onClick={open}>
+                  {images?.length > 0
+                    ? __('Edit Gallery Images', 'webentor')
+                    : __('Select Gallery Images', 'webentor')}
+                </ToolbarButton>
+              )}
+            />
+          </MediaUploadCheck>
+          <ToolbarButton onClick={handleGalleryRemove}>
             {__('Remove Gallery', 'webentor')}
-          </ToolbarItem>
+          </ToolbarButton>
         </ToolbarGroup>
       </BlockControls>
 

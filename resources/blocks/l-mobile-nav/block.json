@@ -1,5 +1,6 @@
 {
   "$schema": "../../../schemas/webentor-block.json",
+  "apiVersion": 3,
   "name": "webentor/l-mobile-nav",
   "title": "Mobile Navigation Wrapper",
   "description": "Navigation menu block",

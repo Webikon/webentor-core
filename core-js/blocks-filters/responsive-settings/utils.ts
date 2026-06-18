@@ -253,10 +253,18 @@ export const generateClassNames = (attributes: any): string => {
  * Reads value entries from the given attribute keys (e.g. 'layout', 'flexbox',
  * 'grid') and returns the set of class tokens that would be generated.
  * Works directly from the block's attributes — no registry or cross-bundle
- * state needed.
+ * state needed. This matters for blocks compiled into a separate bundle from
+ * the consumer (e.g. webentor-core's own blocks like l-section), where the
+ * SettingsRegistry is not populated and the registry-driven generators
+ * (computeClassesByAttribute / generateClassNames) would return nothing.
  *
  * Useful for blocks that need to split classes between elements (e.g. l-section
  * moves layout/flexbox/grid classes from the wrapper to an inner container).
+ *
+ * A `hidden` display value is mapped to `opacity-30` (visual dim) instead of a
+ * real `hidden` class, mirroring generateLayoutClasses: in the editor the block
+ * must stay visible/selectable, never `display:none`. Real frontend hiding is
+ * produced server-side (PHP), not here.
  */
 export const collectClassTokensFromAttributes = (
   attributes: Record<string, any>,
@@ -275,11 +283,14 @@ export const collectClassTokensFromAttributes = (
       for (const [bp, value] of Object.entries(propData.value)) {
         if (!value || typeof value !== 'string') continue;
         const prefix = bp === 'basic' ? '' : `${bp}:`;
-        tokens.add(`${prefix}${value}`);
 
-        // Layout 'hidden' maps to 'opacity-30' in editor
+        // Layout 'hidden' maps to 'opacity-30' (visual dim) — never emit a real
+        // `${bp}:hidden` (display:none) here, which would hide the block in the
+        // editor. Mirrors generateLayoutClasses.
         if (value === 'hidden') {
           tokens.add(`${prefix}opacity-30`);
+        } else {
+          tokens.add(`${prefix}${value}`);
         }
       }
     }

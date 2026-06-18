@@ -1,7 +1,7 @@
 {
   "name": "@webikon/webentor-core",
   "homepage": "https://webikon.sk",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "Core functionality and useful utilities for Webentor Stack",
   "license": "MIT",
   "author": "Webikon s.r.o.",
@@ -160,7 +160,7 @@
     "prepare": "sh -c 'git_root=$(git rev-parse --show-toplevel 2>/dev/null || printf \"\"); [ -n \"$git_root\" ] && [ \"$git_root\" = \"$PWD\" ] && husky || true'"
   },
   "devDependencies": {
-    "@10up/block-components": "^1.21.4",
+    "@10up/block-components": "^1.22.2",
     "@eslint/js": "^9.39.1",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
     "@kucrut/vite-for-wp": "^0.12.0",
@@ -171,13 +171,13 @@
     "@types/wordpress__block-editor": "^14.21.2",
     "@vitejs/plugin-react": "^5.1.1",
     "@webikon/webentor-configs": "^1.0.1",
-    "@wordpress/block-editor": "^15.9.0",
-    "@wordpress/block-library": "^9.36.0",
-    "@wordpress/blocks": "^15.9.0",
-    "@wordpress/components": "^30.9.0",
-    "@wordpress/dependency-extraction-webpack-plugin": "^6.36.0",
-    "@wordpress/i18n": "^6.9.0",
-    "@wordpress/icons": "^11.3.0",
+    "@wordpress/block-editor": "^15.21.0",
+    "@wordpress/block-library": "^9.48.0",
+    "@wordpress/blocks": "^15.21.0",
+    "@wordpress/components": "^35.0.0",
+    "@wordpress/dependency-extraction-webpack-plugin": "^6.48.0",
+    "@wordpress/i18n": "^6.21.0",
+    "@wordpress/icons": "^14.0.0",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
@@ -202,9 +202,9 @@
     "vite-plugin-external": "^6.2.2"
   },
   "dependencies": {
-    "@alpinejs/collapse": "^3.15.2",
-    "alpinejs": "^3.15.2",
-    "swiper": "^12.0.3"
+    "@alpinejs/collapse": "^3.15.12",
+    "alpinejs": "^3.15.12",
+    "swiper": "^12.2.0"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": "npm run lint:js --",

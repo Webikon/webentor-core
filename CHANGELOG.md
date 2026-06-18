@@ -1,5 +1,14 @@
 # Webentor Core Changelog
 
+## 0.13.0
+
+- WordPress 7.0 / PHP 8.4 compatibility: resolve block-editor deprecation notices surfaced by the iframed editor and the newer `@wordpress/*` runtime.
+  - Add `apiVersion: 3` to `l-nav-menu`, `l-mobile-nav`, and `l-site-logo` blocks (they use `useBlockProps`, which requires API v2+; fixes the "API version 1 / iframe editor" warnings).
+  - Enqueue core editor styles on `enqueue_block_assets` (guarded by `is_admin()`) instead of `enqueue_block_editor_assets`, so WordPress routes them into the editor iframe correctly (fixes "added to the iframe incorrectly"). Styles still stay off the public frontend.
+  - Refactor the `e-gallery` block toolbar to use `ToolbarButton` (via `MediaUpload`'s render prop) instead of custom components wrapped in `ToolbarItem` (deprecated since 5.6).
+- Update dependencies to latest stable: `@wordpress/*` (block-editor/blocks 15.21, components 35, block-library 9.48, i18n 6.21, icons 14, dependency-extraction 6.48), `@10up/block-components` 1.22.2 (resolves the `getMedia` deprecation), `swiper` 12.2, `alpinejs`/`@alpinejs/collapse` 3.15.12.
+- **Consumer migration**: the editor-asset enqueue change applies to consumer theme code too (`app/setup.php`). Run the codemod from your project root: `pnpm dlx @webikon/webentor-codemods run theme-editor-enqueue-iframe` (dry-run), then `--apply`. See `@webikon/webentor-codemods`.
+
 ## 0.12.0
 
 - **BREAKING**: Remove `init.php` entry point. Bootstrap logic (constant defines, optional vendor autoload, core app file requires) moved into `WebentorCoreServiceProvider`. Acorn auto-discovery handles loading — consumer themes must no longer manually `require_once WEBENTOR_CORE_PHP_PATH . '/init.php'` from `functions.php`.
