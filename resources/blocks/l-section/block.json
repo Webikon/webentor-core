@@ -24,6 +24,14 @@
       "type": "object",
       "default": null
     },
+    "overlay": {
+      "type": "object",
+      "default": null
+    },
+    "bgSettings": {
+      "type": "object",
+      "default": {}
+    },
     "spacing": {
       "type": "object",
       "default": {

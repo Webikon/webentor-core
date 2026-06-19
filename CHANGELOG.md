@@ -1,5 +1,15 @@
 # Webentor Core Changelog
 
+## 0.14.0
+
+- Make `l-section` background settings extensible, mirroring the button extension pattern.
+  - **New overlay feature (first-class)**: enable an overlay with opacity + color from the block's "Background Image Settings" panel. Renders a `.w-section-overlay` element with a `w-section--has-overlay` class on the `<section>`. Color/opacity are piped through the `--w-section-overlay-color` / `--w-section-overlay-opacity` CSS custom properties, so consumers can override the variables or the whole `.w-section-overlay` rule in CSS. Fixes a latent issue where the editor drew a fixed `bg-black opacity-20` overlay that never rendered on the frontend — the preview now reflects the actual setting.
+  - **New editor (JS) filters** for injecting custom controls into the background panel: `webentor.core.l-section.bgSettingsBefore` and `webentor.core.l-section.bgSettingsAfter` (signature `(node, props)`; return a React node). Controls store data on the free-form `bgSettings` block attribute via `setAttributes`.
+  - **New frontend (PHP) filters**: `webentor/l-section/section_classes` (append classes to the `<section>`, e.g. for variants), `webentor/l-section/overlay` (override the overlay markup), and `webentor/l-section/inner_start` (inject markup at the start of the section). Each receives `($value, $attributes, $block)`.
+  - See the docs guide "Extend Section Background" (`docs/src/guides/extend-l-section.md`) for a consumer variant-dropdown example.
+- Fix `l-section` "Hidden" responsive display: because the section splits classes between the `<section>` wrapper and the inner container, a `display:none` value previously landed on the inner container and only hid the content — the background image, overlay, and spacing still rendered. Hide tokens (`hidden` / `{bp}:hidden`) now apply to the `<section>` wrapper so the whole section is hidden; other display values (flex/grid/block) stay on the inner container. The editor preview dims the whole section when hidden.
+- Consolidate all `l-section` z-index into the block's `style.css` (keyed by `.w-section-img`, `.w-section-overlay`, `.w-section--has-overlay .w-section-inner`) instead of scattered `wbtr:z-[*]` utilities in the editor component and Blade view.
+
 ## 0.13.0
 
 - WordPress 7.0 / PHP 8.4 compatibility: resolve block-editor deprecation notices surfaced by the iframed editor and the newer `@wordpress/*` runtime.

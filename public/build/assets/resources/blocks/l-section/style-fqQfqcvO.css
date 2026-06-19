@@ -1,0 +1,1 @@
+.w-section-img{z-index:-1}.w-section-overlay{position:absolute;inset:0;z-index:1;pointer-events:none;background-color:var(--w-section-overlay-color, #000);opacity:var(--w-section-overlay-opacity, .2)}.w-section--has-overlay .w-section-inner{z-index:2}

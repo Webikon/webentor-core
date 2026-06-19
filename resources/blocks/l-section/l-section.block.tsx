@@ -11,7 +11,13 @@ import {
   registerBlockType,
   TemplateArray,
 } from '@wordpress/blocks';
-import { Button, PanelBody, PanelRow } from '@wordpress/components';
+import {
+  Button,
+  PanelBody,
+  PanelRow,
+  RangeControl,
+  ToggleControl,
+} from '@wordpress/components';
 import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 
@@ -43,7 +49,16 @@ type AttributesType = {
       [key: string]: string;
     };
   };
+  overlay?: {
+    enabled?: boolean;
+    opacity?: number;
+    color?: string;
+  };
+  bgSettings?: Record<string, unknown>;
 };
+
+const OVERLAY_DEFAULT_OPACITY = 20;
+const OVERLAY_DEFAULT_COLOR = '#000000';
 
 const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
   const { attributes, setAttributes, isSelected } = props;
@@ -69,17 +84,44 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
    * `hidden` display to `opacity-30` (visual dim) rather than a real
    * `display:none`, so the block stays visible/selectable in the editor.
    * Frontend hiding is handled separately in PHP (data.php).
+   *
+   * The `hidden` dim indicator (opacity-30/opacity-100) is kept on the WRAPPER,
+   * not moved to the inner container, so the whole section preview dims —
+   * mirroring the PHP fix where `display:none` hides the whole <section>.
    */
   const containerClassTokens = collectClassTokensFromAttributes(attributes, [
     'layout',
     'flexbox',
     'grid',
   ]);
+  // Keep hide-indicator tokens on the wrapper (remove from the container set).
+  for (const token of [...containerClassTokens]) {
+    if (/(^|:)opacity-(30|100)$/.test(token)) {
+      containerClassTokens.delete(token);
+    }
+  }
   const wrapperClassName = (blockProps.className ?? '')
     .split(/\s+/)
     .filter((c: string) => c && !containerClassTokens.has(c))
     .join(' ');
   const containerResponsiveClasses = [...containerClassTokens].join(' ');
+
+  /**
+   * Extension hooks for the Background Image Settings panel. Consumers inject
+   * extra controls (e.g. a variants dropdown) before and/or after the built-in
+   * settings, mirroring `webentor.core.button.extensionComponent`. Controls
+   * read/write the free-form `bgSettings` attribute via `setAttributes`.
+   */
+  const BgSettingsBefore = applyFilters(
+    'webentor.core.l-section.bgSettingsBefore',
+    <></>,
+    props,
+  ) as React.ReactNode;
+  const BgSettingsAfter = applyFilters(
+    'webentor.core.l-section.bgSettingsAfter',
+    <></>,
+    props,
+  ) as React.ReactNode;
 
   /**
    * Filter allowed blocks used in webentor/l-section inner block
@@ -164,10 +206,24 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
     );
   };
 
+  const handleOverlayChange = (
+    key: 'enabled' | 'opacity' | 'color',
+    value: boolean | number | string,
+  ) => {
+    setAttributes(setImmutably(attributes, ['overlay', key], value));
+  };
+
+  const overlayEnabled = !!attributes?.overlay?.enabled;
+  const overlayOpacity =
+    attributes?.overlay?.opacity ?? OVERLAY_DEFAULT_OPACITY;
+  const overlayColor = attributes?.overlay?.color ?? OVERLAY_DEFAULT_COLOR;
+
   return (
     <>
       <InspectorControls>
         <PanelBody title="Background Image Settings" initialOpen={false}>
+          {BgSettingsBefore}
+
           <PanelRow>
             <div className="wbtr:flex wbtr:flex-col">
               <p className="wbtr:mb-2 wbtr:uppercase">
@@ -290,16 +346,67 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
               )}
             />
           </PanelRow>
+
+          <PanelRow>
+            <div className="wbtr:flex wbtr:w-full wbtr:flex-col">
+              <p className="wbtr:mb-2 wbtr:uppercase">
+                {__('Overlay', 'webentor')}
+              </p>
+              <ToggleControl
+                __nextHasNoMarginBottom
+                label={__('Enable overlay', 'webentor')}
+                checked={overlayEnabled}
+                onChange={(value) => handleOverlayChange('enabled', value)}
+              />
+
+              {overlayEnabled && (
+                <>
+                  <RangeControl
+                    __nextHasNoMarginBottom
+                    label={__('Overlay opacity (%)', 'webentor')}
+                    value={overlayOpacity}
+                    min={0}
+                    max={100}
+                    onChange={(value) =>
+                      handleOverlayChange(
+                        'opacity',
+                        value ?? OVERLAY_DEFAULT_OPACITY,
+                      )
+                    }
+                  />
+
+                  <div className="wbtr:mt-2 wbtr:flex wbtr:items-center wbtr:gap-2">
+                    <label htmlFor="w-section-overlay-color">
+                      {__('Overlay color', 'webentor')}
+                    </label>
+                    <input
+                      id="w-section-overlay-color"
+                      type="color"
+                      value={overlayColor}
+                      onChange={(event) =>
+                        handleOverlayChange('color', event.target.value)
+                      }
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+          </PanelRow>
+
+          {BgSettingsAfter}
         </PanelBody>
       </InspectorControls>
 
       {
         applyFilters(
           'webentor.core.l-section.output',
-          <div {...blockProps} className={`w-section ${wrapperClassName}`}>
+          <div
+            {...blockProps}
+            className={`w-section ${overlayEnabled ? 'w-section--has-overlay' : ''} ${wrapperClassName}`}
+          >
             <div
               {...innerBlocksProps}
-              className={`${innerBlocksProps.className} container wbtr:relative wbtr:z-[2] wbtr:flex wbtr:flex-col ${containerResponsiveClasses}`}
+              className={`${innerBlocksProps.className} w-section-inner container wbtr:relative wbtr:flex wbtr:flex-col ${containerResponsiveClasses}`}
             >
               {children}
 
@@ -316,7 +423,15 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
 
             {attributes?.img?.id && (
               <>
-                <div className="wbtr:absolute wbtr:inset-0 wbtr:z-[1] wbtr:bg-black wbtr:opacity-20"></div>
+                {overlayEnabled && (
+                  <div
+                    className="w-section-overlay wbtr:absolute wbtr:inset-0"
+                    style={{
+                      backgroundColor: overlayColor,
+                      opacity: overlayOpacity / 100,
+                    }}
+                  ></div>
+                )}
                 <img
                   src={attributes.img.url}
                   alt="banner-img"

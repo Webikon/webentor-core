@@ -13,6 +13,11 @@
   $img_id = $attributes['img']['id'] ?? null;
   $img_id_mobile = $attributes['mobileImg']['id'] ?? $img_id;
 
+  $overlay = $attributes['overlay'] ?? null;
+  $has_overlay = !empty($overlay['enabled']);
+  $overlay_opacity = isset($overlay['opacity']) ? (int) $overlay['opacity'] : 20;
+  $overlay_color = $overlay['color'] ?? '#000000';
+
   $default_img_height =
       $attributes['imgSize']['height']['basic'] ?? apply_filters('webentor/l-section/default_img_height', 300);
 
@@ -45,8 +50,23 @@
 
 <section
   {!! $anchor !!}
-  class="w-section {{ !empty($img_id) ? 'w-section--has-bg-img wbtr:overflow-hidden' : '' }} wbtr:relative wbtr:flex {{ $block_classes }}"
+  class="w-section {{ !empty($img_id) ? 'w-section--has-bg-img wbtr:overflow-hidden' : '' }} {{ $has_overlay ? 'w-section--has-overlay' : '' }} wbtr:relative wbtr:flex {{ $block_classes }} {{ apply_filters('webentor/l-section/section_classes', '', $attributes, $block) }}"
 >
+  {!! apply_filters('webentor/l-section/inner_start', '', $attributes, $block) !!}
+
+  @if ($has_overlay)
+    {!! apply_filters(
+        'webentor/l-section/overlay',
+        '<div class="w-section-overlay" style="--w-section-overlay-color:' .
+            esc_attr($overlay_color) .
+            ';--w-section-overlay-opacity:' .
+            esc_attr($overlay_opacity / 100) .
+            '"></div>',
+        $attributes,
+        $block,
+    ) !!}
+  @endif
+
   @if (!empty($img_id))
     <picture>
       <source
@@ -81,7 +101,7 @@
       <img
         src="{!! \Webentor\Core\get_resized_image_url($img_id, [1920, $height_basic], $crop_basic) !!}"
         alt="{!! \Webentor\Core\get_image_alt($img_id) !!}"
-        class="w-section-img wbtr:absolute wbtr:inset-0 wbtr:h-full wbtr:w-full wbtr:object-cover wbtr:z-[-1]"
+        class="w-section-img wbtr:absolute wbtr:inset-0 wbtr:h-full wbtr:w-full wbtr:object-cover"
       >
     </picture>
   @endif

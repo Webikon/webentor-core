@@ -1,0 +1,31 @@
+/**
+ * Section stacking layers.
+ *
+ * All z-index for the section lives here (one place) keyed by the semantic
+ * classes, so the editor preview and the frontend share the same stacking
+ * order: background image (-1) < overlay (1) < inner content (2).
+ */
+.w-section-img {
+  z-index: -1;
+}
+
+/**
+ * Overlay.
+ *
+ * Rendered when the block's "Overlay" setting is enabled. Color and opacity are
+ * driven by CSS custom properties set inline from the block attributes, so a
+ * consumer theme can override either the variables or the whole rule in CSS.
+ */
+.w-section-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-color: var(--w-section-overlay-color, #000);
+  opacity: var(--w-section-overlay-opacity, 0.2);
+}
+
+/* Lift content above the overlay only when an overlay is present. */
+.w-section--has-overlay .w-section-inner {
+  z-index: 2;
+}
