@@ -233,6 +233,7 @@ export const WebentorButton = (props: WebentorButtonProps) => {
             <hr className="wbtr:mt-2 wbtr:mb-3" />
 
             <ToggleControl
+              className="wbtr:mb-3!"
               label={__('Show button', 'webentor')}
               checked={
                 attributes[attributeName] &&
@@ -344,6 +345,7 @@ export const WebentorButton = (props: WebentorButtonProps) => {
                   />
 
                   <ToggleControl
+                    className="wbtr:mb-3!"
                     label={__('Open in new tab', 'webentor')}
                     checked={
                       attributes[attributeName] &&

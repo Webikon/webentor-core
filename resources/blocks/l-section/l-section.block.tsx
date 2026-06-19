@@ -57,9 +57,18 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
    *   webentor/block_classes        → wrapper (spacing, sizing, border, colors, …)
    *   webentor/block_custom_classes → container (layout.display, flexbox, grid)
    *
-   * registerBlockExtension puts ALL responsive classes on blockProps.className
-   * (the wrapper). We collect the container-bound tokens directly from the
-   * attribute values and move them to the inner div.
+   * The editor.BlockListBlock HOC puts ALL responsive classes on the block
+   * wrapper (blockProps.className). We collect the container-bound tokens
+   * directly from the attribute values and move them to the inner div.
+   *
+   * This MUST use the registry-free collectClassTokensFromAttributes (not the
+   * registry-driven computeClassesByAttribute): l-section is compiled into the
+   * webentor-core bundle, where the responsive-settings registry is NOT
+   * populated (initResponsiveSettings runs in the consumer/theme bundle), so a
+   * registry-driven generator would return nothing here. The helper maps a
+   * `hidden` display to `opacity-30` (visual dim) rather than a real
+   * `display:none`, so the block stays visible/selectable in the editor.
+   * Frontend hiding is handled separately in PHP (data.php).
    */
   const containerClassTokens = collectClassTokensFromAttributes(attributes, [
     'layout',

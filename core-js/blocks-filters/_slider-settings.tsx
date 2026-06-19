@@ -1,6 +1,7 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import {
   PanelBody,
+  PanelRow,
   TabPanel,
   TextControl,
   ToggleControl,
@@ -32,25 +33,29 @@ const initSliderSettings = () => {
           <InspectorControls>
             <PanelBody title={__('Slider Settings', 'webentor')} initialOpen>
               {/* Not responsive settings */}
-              <ToggleControl
-                label={__('Loop Slides', 'webentor')}
-                checked={attributes?.slider?.loop ?? true}
-                onChange={(checked) =>
-                  setAttributes(
-                    setImmutably(attributes, ['slider', 'loop'], checked),
-                  )
-                }
-              />
+              <PanelRow>
+                <ToggleControl
+                  label={__('Loop Slides', 'webentor')}
+                  checked={attributes?.slider?.loop ?? true}
+                  onChange={(checked) =>
+                    setAttributes(
+                      setImmutably(attributes, ['slider', 'loop'], checked),
+                    )
+                  }
+                />
+              </PanelRow>
 
-              <ToggleControl
-                label={__('Autoplay', 'webentor')}
-                checked={attributes?.slider?.autoplay ?? false}
-                onChange={(checked) =>
-                  setAttributes(
-                    setImmutably(attributes, ['slider', 'autoplay'], checked),
-                  )
-                }
-              />
+              <PanelRow>
+                <ToggleControl
+                  label={__('Autoplay', 'webentor')}
+                  checked={attributes?.slider?.autoplay ?? false}
+                  onChange={(checked) =>
+                    setAttributes(
+                      setImmutably(attributes, ['slider', 'autoplay'], checked),
+                    )
+                  }
+                />
+              </PanelRow>
 
               {attributes?.slider?.autoplay && (
                 <TextControl
@@ -70,96 +75,112 @@ const initSliderSettings = () => {
               )}
 
               {attributes?.slider?.autoplay && (
+                <PanelRow>
+                  <ToggleControl
+                    label={__('Autoplay Control', 'webentor')}
+                    checked={attributes?.slider?.autoplayControl ?? false}
+                    help={__(
+                      'Autoplay Control will show timer and play/pause button.',
+                      'webentor',
+                    )}
+                    onChange={(checked) =>
+                      setAttributes(
+                        setImmutably(
+                          attributes,
+                          ['slider', 'autoplayControl'],
+                          checked,
+                        ),
+                      )
+                    }
+                  />
+                </PanelRow>
+              )}
+
+              <PanelRow>
                 <ToggleControl
-                  label={__('Autoplay Control', 'webentor')}
-                  checked={attributes?.slider?.autoplayControl ?? false}
-                  help={__(
-                    'Autoplay Control will show timer and play/pause button.',
-                    'webentor',
-                  )}
+                  label={__('Show Arrows', 'webentor')}
+                  checked={attributes?.slider?.showArrows ?? false}
                   onChange={(checked) =>
                     setAttributes(
                       setImmutably(
                         attributes,
-                        ['slider', 'autoplayControl'],
+                        ['slider', 'showArrows'],
                         checked,
                       ),
                     )
                   }
                 />
-              )}
-
-              <ToggleControl
-                label={__('Show Arrows', 'webentor')}
-                checked={attributes?.slider?.showArrows ?? false}
-                onChange={(checked) =>
-                  setAttributes(
-                    setImmutably(attributes, ['slider', 'showArrows'], checked),
-                  )
-                }
-              />
+              </PanelRow>
 
               {attributes?.slider?.showArrows && (
+                <PanelRow>
+                  <ToggleControl
+                    label={__('Arrows Inside Container', 'webentor')}
+                    checked={attributes?.slider?.arrowsInsideContainer ?? false}
+                    onChange={(checked) =>
+                      setAttributes(
+                        setImmutably(
+                          attributes,
+                          ['slider', 'arrowsInsideContainer'],
+                          checked,
+                        ),
+                      )
+                    }
+                  />
+                </PanelRow>
+              )}
+
+              <PanelRow>
                 <ToggleControl
-                  label={__('Arrows Inside Container', 'webentor')}
-                  checked={attributes?.slider?.arrowsInsideContainer ?? false}
+                  label={__('Show Pagination', 'webentor')}
+                  checked={attributes?.slider?.showPagination ?? false}
                   onChange={(checked) =>
                     setAttributes(
                       setImmutably(
                         attributes,
-                        ['slider', 'arrowsInsideContainer'],
+                        ['slider', 'showPagination'],
                         checked,
                       ),
                     )
                   }
                 />
-              )}
-
-              <ToggleControl
-                label={__('Show Pagination', 'webentor')}
-                checked={attributes?.slider?.showPagination ?? false}
-                onChange={(checked) =>
-                  setAttributes(
-                    setImmutably(
-                      attributes,
-                      ['slider', 'showPagination'],
-                      checked,
-                    ),
-                  )
-                }
-              />
+              </PanelRow>
 
               {attributes?.slider?.showPagination && (
+                <PanelRow>
+                  <ToggleControl
+                    label={__('Pagination Inside Container', 'webentor')}
+                    checked={
+                      attributes?.slider?.paginationInsideContainer ?? false
+                    }
+                    onChange={(checked) =>
+                      setAttributes(
+                        setImmutably(
+                          attributes,
+                          ['slider', 'paginationInsideContainer'],
+                          checked,
+                        ),
+                      )
+                    }
+                  />
+                </PanelRow>
+              )}
+
+              <PanelRow>
                 <ToggleControl
-                  label={__('Pagination Inside Container', 'webentor')}
-                  checked={
-                    attributes?.slider?.paginationInsideContainer ?? false
-                  }
+                  label={__('Dark Mode', 'webentor')}
+                  help={__(
+                    'Use Dark Mode when slider background is dark and you need inner elements and text to be in inverted color, e.g. light.',
+                    'webentor',
+                  )}
+                  checked={attributes?.slider?.darkMode ?? false}
                   onChange={(checked) =>
                     setAttributes(
-                      setImmutably(
-                        attributes,
-                        ['slider', 'paginationInsideContainer'],
-                        checked,
-                      ),
+                      setImmutably(attributes, ['slider', 'darkMode'], checked),
                     )
                   }
                 />
-              )}
-
-              <ToggleControl
-                label={__('Dark Mode', 'webentor')}
-                help={__(
-                  'Use Dark Mode when slider background is dark and you need inner elements and text to be in inverted color, e.g. light.',
-                  'webentor',
-                )}
-                checked={attributes?.slider?.darkMode ?? false}
-                onChange={(checked) =>
-                  setAttributes(
-                    setImmutably(attributes, ['slider', 'darkMode'], checked),
-                  )
-                }
-              />
+              </PanelRow>
 
               <TextControl
                 label={__('Slider ID', 'webentor')}
@@ -193,38 +214,43 @@ const initSliderSettings = () => {
                     // className="mt-4"
                     style={{ marginTop: '16px' }}
                   >
-                    <ToggleControl
-                      label={__('Enable Slider', 'webentor')}
-                      checked={
-                        attributes?.slider?.enabled?.value?.[tab.name] ?? true
-                      }
-                      onChange={(checked) =>
-                        setAttributes(
-                          setImmutably(
-                            attributes,
-                            ['slider', 'enabled', 'value', tab.name],
-                            checked,
-                          ),
-                        )
-                      }
-                    />
+                    <PanelRow>
+                      <ToggleControl
+                        label={__('Enable Slider', 'webentor')}
+                        checked={
+                          attributes?.slider?.enabled?.value?.[tab.name] ?? true
+                        }
+                        onChange={(checked) =>
+                          setAttributes(
+                            setImmutably(
+                              attributes,
+                              ['slider', 'enabled', 'value', tab.name],
+                              checked,
+                            ),
+                          )
+                        }
+                      />
+                    </PanelRow>
 
-                    <ToggleControl
-                      label={__('Centered slides', 'webentor')}
-                      checked={
-                        attributes?.slider?.centeredSlides?.value?.[tab.name] ??
-                        false
-                      }
-                      onChange={(checked) =>
-                        setAttributes(
-                          setImmutably(
-                            attributes,
-                            ['slider', 'centeredSlides', 'value', tab.name],
-                            checked,
-                          ),
-                        )
-                      }
-                    />
+                    <PanelRow>
+                      <ToggleControl
+                        label={__('Centered slides', 'webentor')}
+                        checked={
+                          attributes?.slider?.centeredSlides?.value?.[
+                            tab.name
+                          ] ?? false
+                        }
+                        onChange={(checked) =>
+                          setAttributes(
+                            setImmutably(
+                              attributes,
+                              ['slider', 'centeredSlides', 'value', tab.name],
+                              checked,
+                            ),
+                          )
+                        }
+                      />
+                    </PanelRow>
 
                     <TextControl
                       label={__('Slides per view', 'webentor')}
