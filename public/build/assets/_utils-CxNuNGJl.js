@@ -1,0 +1,2 @@
+function e(e,t,n){t=Array.isArray(t)?[...t]:[t],e=Array.isArray(e)?[...e]:{...e};let r=t.pop(),i=e;for(let e of t){let t=i[e];i=i[e]=Array.isArray(t)?[...t]:{...t}}return i[r]=n,e}var t=(e,t=50)=>{let n=null;return(...r)=>{window.clearTimeout(n),n=window.setTimeout(()=>{e(...r)},t)}};function n(e,t=20){let n=Date.now();return function(...r){n+t-Date.now()<0&&(e(...r),n=Date.now())}}var r=(e,t)=>e.find(e=>e.color===t)?.slug,i=(e,t)=>e.find(e=>e.slug===t)?.color;export{n as a,e as i,i as n,r,t};
+//# sourceMappingURL=_utils-CxNuNGJl.js.map

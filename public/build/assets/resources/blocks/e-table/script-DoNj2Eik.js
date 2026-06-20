@@ -1,0 +1,2 @@
+import{a as e}from"../../../_utils-CxNuNGJl.js";var t=e=>{let t=e.offsetWidth;return e.scrollWidth>t},n=e=>{e.closest(`.table-scroll-shadow`)?.classList.add(`has-scroll`)},r=e=>{e.closest(`.table-scroll-shadow`)?.classList.remove(`has-scroll`)};document.addEventListener(`DOMContentLoaded`,()=>{document.querySelectorAll(`.wp-block-table`).forEach(e=>{t(e)?n(e):r(e)})}),window.addEventListener(`resize`,e(()=>{document.querySelectorAll(`.wp-block-table`).forEach(e=>{t(e)?n(e):r(e)})},100));
+//# sourceMappingURL=script-DoNj2Eik.js.map

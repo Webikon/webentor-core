@@ -1,111 +1,115 @@
 {
-  "__utils-CzK6Vfiv.js": {
-    "file": "assets/_utils-CzK6Vfiv.js",
+  "__utils-CxNuNGJl.js": {
+    "file": "assets/_utils-CxNuNGJl.js",
     "name": "_utils"
   },
+  "editor.deps.json": {
+    "file": "assets/editor.deps-BY0wt7iZ.json",
+    "src": "editor.deps.json"
+  },
   "resources/blocks/e-accordion/script.ts": {
-    "file": "assets/resources/blocks/e-accordion/script-l0sNRNKZ.js",
+    "file": "assets/resources/blocks/e-accordion/script-BvRk9kiK.js",
     "name": "resources/blocks/e-accordion/script",
     "src": "resources/blocks/e-accordion/script.ts",
     "isEntry": true
   },
   "resources/blocks/e-accordion/style.css": {
-    "file": "assets/resources/blocks/e-accordion/style-By4NoyzC.css",
-    "src": "resources/blocks/e-accordion/style.css",
-    "isEntry": true,
+    "file": "assets/resources/blocks/e-accordion/style-DjbT6xUG.css",
     "name": "resources/blocks/e-accordion/style",
     "names": [
       "resources/blocks/e-accordion/style.css"
-    ]
+    ],
+    "src": "resources/blocks/e-accordion/style.css",
+    "isEntry": true
   },
   "resources/blocks/e-icon-picker/style.css": {
-    "file": "assets/resources/blocks/e-icon-picker/style-BSib2kGz.css",
-    "src": "resources/blocks/e-icon-picker/style.css",
-    "isEntry": true,
+    "file": "assets/resources/blocks/e-icon-picker/style-BMdJr12J.css",
     "name": "resources/blocks/e-icon-picker/style",
     "names": [
       "resources/blocks/e-icon-picker/style.css"
-    ]
+    ],
+    "src": "resources/blocks/e-icon-picker/style.css",
+    "isEntry": true
   },
   "resources/blocks/e-table/script.ts": {
-    "file": "assets/resources/blocks/e-table/script-C_Z50hjm.js",
+    "file": "assets/resources/blocks/e-table/script-DoNj2Eik.js",
     "name": "resources/blocks/e-table/script",
     "src": "resources/blocks/e-table/script.ts",
     "isEntry": true,
     "imports": [
-      "__utils-CzK6Vfiv.js"
+      "__utils-CxNuNGJl.js"
     ]
   },
   "resources/blocks/l-mobile-nav/style.css": {
-    "file": "assets/resources/blocks/l-mobile-nav/style-QMBn75AN.css",
-    "src": "resources/blocks/l-mobile-nav/style.css",
-    "isEntry": true,
+    "file": "assets/resources/blocks/l-mobile-nav/style-CcmnVnWp.css",
     "name": "resources/blocks/l-mobile-nav/style",
     "names": [
       "resources/blocks/l-mobile-nav/style.css"
-    ]
+    ],
+    "src": "resources/blocks/l-mobile-nav/style.css",
+    "isEntry": true
   },
   "resources/blocks/l-nav-menu/style.css": {
-    "file": "assets/resources/blocks/l-nav-menu/style-B7Cly27h.css",
-    "src": "resources/blocks/l-nav-menu/style.css",
-    "isEntry": true,
+    "file": "assets/resources/blocks/l-nav-menu/style-DFru8yhM.css",
     "name": "resources/blocks/l-nav-menu/style",
     "names": [
       "resources/blocks/l-nav-menu/style.css"
-    ]
+    ],
+    "src": "resources/blocks/l-nav-menu/style.css",
+    "isEntry": true
   },
   "resources/blocks/l-section/style.css": {
-    "file": "assets/resources/blocks/l-section/style-fqQfqcvO.css",
-    "src": "resources/blocks/l-section/style.css",
-    "isEntry": true,
+    "file": "assets/resources/blocks/l-section/style-ve0mngOI.css",
     "name": "resources/blocks/l-section/style",
     "names": [
       "resources/blocks/l-section/style.css"
-    ]
+    ],
+    "src": "resources/blocks/l-section/style.css",
+    "isEntry": true
   },
   "resources/core-components/slider/slider.script.ts": {
-    "file": "assets/sliderJs-JeuRJIiW.js",
+    "file": "assets/sliderJs-DLm2vmOQ.js",
     "name": "sliderJs",
     "src": "resources/core-components/slider/slider.script.ts",
     "isEntry": true,
     "imports": [
-      "__utils-CzK6Vfiv.js"
+      "__utils-CxNuNGJl.js"
     ]
   },
   "resources/core-components/slider/slider.style.css": {
-    "file": "assets/sliderStyles-BMRFl19c.css",
-    "src": "resources/core-components/slider/slider.style.css",
-    "isEntry": true,
+    "file": "assets/sliderStyles-BSRtSZjK.css",
     "name": "sliderStyles",
     "names": [
       "sliderStyles.css"
-    ]
+    ],
+    "src": "resources/core-components/slider/slider.style.css",
+    "isEntry": true
   },
   "resources/scripts/editor.ts": {
-    "file": "assets/coreEditorJs-CteJN3TK.js",
+    "file": "assets/coreEditorJs--2qt5cZR.js",
     "name": "coreEditorJs",
     "src": "resources/scripts/editor.ts",
     "isEntry": true,
     "imports": [
-      "__utils-CzK6Vfiv.js"
+      "__utils-CxNuNGJl.js"
     ]
   },
   "resources/styles/app.css": {
-    "file": "assets/coreAppStyles-B4I5_Aup.css",
-    "src": "resources/styles/app.css",
-    "isEntry": true,
+    "file": "assets/coreAppStyles-afJAdduv.css",
     "name": "coreAppStyles",
     "names": [
       "coreAppStyles.css"
-    ]
+    ],
+    "src": "resources/styles/app.css",
+    "isEntry": true
   },
   "resources/styles/editor.css": {
-    "file": "assets/coreEditorStyles-YJpt6URm.css",
-    "src": "resources/styles/editor.css",
-    "isEntry": true,
+    "file": "assets/coreEditorStyles-rGBH8e4z.css",
     "name": "coreEditorStyles",
     "names": [
       "coreEditorStyles.css"
-    ]
+    ],
+    "src": "resources/styles/editor.css",
+    "isEntry": true
   }
 }
