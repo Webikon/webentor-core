@@ -40,6 +40,12 @@ function register_frontend_blocks_assets($block_json_files = null, $manifest = n
                         "resources/blocks/{$block_slug}/script.ts",
                         [
                             'handle' => "{$block_slug}/js/frontend",
+                            // Block view scripts commonly use `__()` from @wordpress/i18n (directly
+                            // or via core helpers like _slider), which the build externalizes to the
+                            // `wp.i18n` global. Declare wp-i18n so WordPress loads it before the
+                            // block script on the frontend — otherwise `wp` is undefined at module
+                            // eval. Mirrors the core slider component (see setup-core.php).
+                            'dependencies' => ['wp-i18n'],
                         ]
                     );
                 }
