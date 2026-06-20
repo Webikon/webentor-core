@@ -1,5 +1,9 @@
 # Webentor Core Changelog
 
+## 0.14.1
+
+- Republish of 0.14.0 with the Vite 7 toolchain. 0.14.0 inadvertently shipped an in-progress Vite 8 / Rolldown migration (devDependency bumps + Rolldown-built assets). There is no runtime or API change for consumers — devDependencies are not installed by consumers and the bundle output is equivalent — but 0.14.1 restores a consistent Vite 7 build. Prefer 0.14.1 over 0.14.0.
+
 ## 0.14.0
 
 - Make `l-section` background settings extensible, mirroring the button extension pattern.
