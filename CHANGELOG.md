@@ -1,5 +1,13 @@
 # Webentor Core Changelog
 
+## 0.15.0
+
+- **Vite 8 / Rolldown build toolchain.** Migrate the package build from Vite 7 to Vite 8 (Rolldown). Editor, app, and slider bundles are rebuilt under Rolldown; the manifest contract is unchanged, so consumers consume assets exactly as before.
+- **Shared WordPress externals interop.** The `@wordpress/*` → `wp.*` / React externalization now comes from `@webikon/webentor-configs/vite` (`wordpressExternals(command)`, requires `@webikon/webentor-configs` `^1.1.0`). It's **hybrid per command**: roots `wordpressPlugin()` + interop shims for `build`, kucrut `wp_scripts()` for the dev server (`serve`).
+- **Editor interop fixes for Rolldown.** Rolldown otherwise broke the block editor two ways — it preserved a CJS `require()` of the `@wordpress/*` externals, and mis-bound the ESM `import * as React`. Fixed with a `generateBundle` require-shim for `@wordpress` and by aliasing `react`/`react-dom`/`jsx-runtime` to the `window.*` CJS shims. The editor works fully on Vite 8.
+- Dev-tooling bumps: `vite` 8, `@roots/vite-plugin` 2.2.0, `@vitejs/plugin-react` 6 (devDependencies; no runtime/API change for consumers).
+- **Consumer migration**: the dependency bumps, the `resources/scripts/app.ts` static-asset `import.meta.glob` change, and the `vite.config.js` externals rewrite apply to consumer theme code. Run `pnpm dlx @webikon/webentor-codemods run 0.15.0` (dry-run), then `--apply`; the `vite.config.js` change is a documented manual step. See `@webikon/webentor-codemods`.
+
 ## 0.14.1
 
 - Republish of 0.14.0 with the Vite 7 toolchain. 0.14.0 inadvertently shipped an in-progress Vite 8 / Rolldown migration (devDependency bumps + Rolldown-built assets). There is no runtime or API change for consumers — devDependencies are not installed by consumers and the bundle output is equivalent — but 0.14.1 restores a consistent Vite 7 build. Prefer 0.14.1 over 0.14.0.
