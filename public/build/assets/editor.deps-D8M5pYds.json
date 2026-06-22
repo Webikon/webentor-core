@@ -1,12 +1,12 @@
 [
-  "wp-i18n",
   "wp-block-editor",
   "wp-blocks",
   "wp-components",
-  "wp-hooks",
-  "wp-data",
   "wp-compose",
+  "wp-data",
   "wp-element",
+  "wp-hooks",
+  "wp-i18n",
   "wp-html-entities",
   "wp-primitives"
 ]
