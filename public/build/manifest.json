@@ -4,7 +4,7 @@
     "name": "_utils"
   },
   "editor.deps.json": {
-    "file": "assets/editor.deps-BY0wt7iZ.json",
+    "file": "assets/editor.deps-CdyF-NdD.json",
     "src": "editor.deps.json"
   },
   "resources/blocks/e-accordion/script.ts": {
@@ -86,7 +86,7 @@
     "isEntry": true
   },
   "resources/scripts/editor.ts": {
-    "file": "assets/coreEditorJs--2qt5cZR.js",
+    "file": "assets/coreEditorJs-hgmUqbSJ.js",
     "name": "coreEditorJs",
     "src": "resources/scripts/editor.ts",
     "isEntry": true,
