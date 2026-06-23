@@ -1,5 +1,9 @@
 # Webentor Core Changelog
 
+## 0.15.1
+
+- **Fix focal-point cropping in responsive `<source srcset>`.** `get_resized_image_object()` re-derived its `src` via `bis_get_attachment_image_src()` without the `$crop` flag, so Better Image Sizes never read the attachment's `focal_point` meta for the srcset — the `<picture>` `<source>` entries (1x/2x) loaded the center-fit file while only the fallback `<img>` honored the focal point. It now passes `$crop` through, matching `get_resized_image_url()`, so focal-point crops apply at every breakpoint. Also stops generating the redundant crop-less duplicate file. No API change for consumers.
+
 ## 0.15.0
 
 - **Vite 8 / Rolldown build toolchain.** Migrate the package build from Vite 7 to Vite 8 (Rolldown). Editor, app, and slider bundles are rebuilt under Rolldown; the manifest contract is unchanged, so consumers consume assets exactly as before.

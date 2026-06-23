@@ -271,7 +271,7 @@ function get_resized_image_object(int $attachment_id, array|string $size, bool $
             'html' => $image
         ];
     } else {
-        $resized_img = bis_get_attachment_image_src($attachment_id, $size);
+        $resized_img = bis_get_attachment_image_src($attachment_id, $size, $crop);
         $image = [
             'src' => $resized_img['src'] ?? "",
             'alt' => get_image_alt($attachment_id),
