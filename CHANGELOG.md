@@ -1,5 +1,9 @@
 # Webentor Core Changelog
 
+## 0.15.2
+
+- **Preserve text alignment on core blocks under WordPress 7.0.** WP 7.0 moved Paragraph's "Align text" control into `supports.typography.textAlign`, which the `disableTypography` filter was wiping by nulling the whole typography object. The filter now keeps `textAlign` and strips only the rest, so Paragraph/Heading keep alignment while native typography stays hidden. No consumer migration needed.
+
 ## 0.15.1
 
 - **Fix focal-point cropping in responsive `<source srcset>`.** `get_resized_image_object()` re-derived its `src` via `bis_get_attachment_image_src()` without the `$crop` flag, so Better Image Sizes never read the attachment's `focal_point` meta for the srcset — the `<picture>` `<source>` entries (1x/2x) loaded the center-fit file while only the fallback `<img>` honored the focal point. It now passes `$crop` through, matching `get_resized_image_url()`, so focal-point crops apply at every breakpoint. Also stops generating the redundant crop-less duplicate file. No API change for consumers.

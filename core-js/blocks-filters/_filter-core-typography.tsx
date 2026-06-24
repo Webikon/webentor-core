@@ -96,7 +96,10 @@ function initCustomTypographyFilter() {
   });
 
   /**
-   * Globally disable typography settings for blocks
+   * Disable native typography controls, but keep `textAlign`.
+   *
+   * WP 7.0 moved the "Align text" control into `supports.typography.textAlign`,
+   * so nulling the whole object would strip alignment too.
    *
    * @param {object} settings block settings
    * @param {string} name block name
@@ -107,7 +110,8 @@ function initCustomTypographyFilter() {
     'webentor/core/disableTypography',
     function (settings) {
       if (settings?.supports?.typography) {
-        settings.supports.typography = null;
+        const { textAlign } = settings.supports.typography;
+        settings.supports.typography = textAlign ? { textAlign } : null;
       }
 
       return settings;
