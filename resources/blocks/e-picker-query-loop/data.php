@@ -28,6 +28,7 @@ Facades\View::composer('e-picker-query-loop.view', function (View $view) {
     $query_args = [
         'post_type' => $query_attributes['postType'] ?? '',
         'post__in' => $post_ids ?: [0],
+        'orderby' => 'post__in', // Preserve the manual pick order stored in the block
         'post__not_in' => [get_the_ID()], // Ignore current post
         'posts_per_page' => count($post_ids),
     ];

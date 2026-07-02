@@ -1,5 +1,9 @@
 # Webentor Core Changelog
 
+## 0.15.3
+
+- **Fix `e-picker-query-loop` ignoring the manual pick order.** The Posts Picker Query Loop block stores the editor's hand-picked order in its `posts` attribute and builds a `WP_Query` with `post__in`, but never set `orderby`, so `WP_Query` fell back to its default `orderby => date, order => DESC` and re-sorted the results by publish date — discarding the chosen order on the frontend. It now sets `'orderby' => 'post__in'`, so picked posts render in exactly the order the editor arranged them. No consumer migration needed; the `webentor/query_loop_args` filter can still override `orderby` per query.
+
 ## 0.15.2
 
 - **Preserve text alignment on core blocks under WordPress 7.0.** WP 7.0 moved Paragraph's "Align text" control into `supports.typography.textAlign`, which the `disableTypography` filter was wiping by nulling the whole typography object. The filter now keeps `textAlign` and strips only the rest, so Paragraph/Heading keep alignment while native typography stays hidden. No consumer migration needed.
