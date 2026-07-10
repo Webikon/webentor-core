@@ -12,6 +12,7 @@ import {
 import {
   __experimentalNumberControl as NumberControl,
   PanelBody,
+  PanelRow,
   SelectControl,
   TextControl,
   __experimentalToolsPanel as ToolsPanel,
@@ -143,21 +144,23 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
     <>
       <InspectorControls>
         <PanelBody title="Loop Settings" initialOpen={true}>
-          <NumberControl
-            label={__('Posts Per Page', 'webentor')}
-            min={1}
-            max={20}
-            step="1"
-            value={query.perPage}
-            onChange={(value) => {
-              if (isNaN(value) || value < 1 || value > 100) {
-                return;
-              }
-              setQuery({
-                perPage: value,
-              });
-            }}
-          />
+          <PanelRow>
+            <NumberControl
+              label={__('Posts Per Page', 'webentor')}
+              min={1}
+              max={20}
+              step="1"
+              value={query.perPage}
+              onChange={(value) => {
+                if (isNaN(value) || value < 1 || value > 100) {
+                  return;
+                }
+                setQuery({
+                  perPage: value,
+                });
+              }}
+            />
+          </PanelRow>
 
           <SelectControl
             __nextHasNoMarginBottom
@@ -171,18 +174,20 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
             )}
           />
 
-          <TextControl
-            label={__('Query ID', 'webentor')}
-            value={query.queryId}
-            onChange={(value) => {
-              setQuery({
-                queryId: value,
-              });
-            }}
-            help={__(
-              'This can be used to filter query params via `webentor/query_loop_args` hook.',
-            )}
-          />
+          <PanelRow>
+            <TextControl
+              label={__('Query ID', 'webentor')}
+              value={query.queryId}
+              onChange={(value) => {
+                setQuery({
+                  queryId: value,
+                });
+              }}
+              help={__(
+                'This can be used to filter query params via `webentor/query_loop_args` hook.',
+              )}
+            />
+          </PanelRow>
         </PanelBody>
 
         <ToolsPanel

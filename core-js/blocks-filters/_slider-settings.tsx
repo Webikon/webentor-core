@@ -58,20 +58,22 @@ const initSliderSettings = () => {
               </PanelRow>
 
               {attributes?.slider?.autoplay && (
-                <TextControl
-                  label={__('Autoplay Speed', 'webentor')}
-                  value={attributes?.slider?.autoplaySpeed ?? '3000'}
-                  onChange={(value) =>
-                    setAttributes(
-                      setImmutably(
-                        attributes,
-                        ['slider', 'autoplaySpeed'],
-                        value,
-                      ),
-                    )
-                  }
-                  type="number"
-                />
+                <PanelRow>
+                  <TextControl
+                    label={__('Autoplay Speed', 'webentor')}
+                    value={attributes?.slider?.autoplaySpeed ?? '3000'}
+                    onChange={(value) =>
+                      setAttributes(
+                        setImmutably(
+                          attributes,
+                          ['slider', 'autoplaySpeed'],
+                          value,
+                        ),
+                      )
+                    }
+                    type="number"
+                  />
+                </PanelRow>
               )}
 
               {attributes?.slider?.autoplay && (
@@ -182,18 +184,20 @@ const initSliderSettings = () => {
                 />
               </PanelRow>
 
-              <TextControl
-                label={__('Slider ID', 'webentor')}
-                value={attributes?.slider?.id ?? ''}
-                onChange={(value) =>
-                  setAttributes(
-                    setImmutably(attributes, ['slider', 'id'], value),
-                  )
-                }
-                help={__(
-                  'This ID can be used to filter slider params via `webentor/slider/view/swiper_params` hook.',
-                )}
-              />
+              <PanelRow>
+                <TextControl
+                  label={__('Slider ID', 'webentor')}
+                  value={attributes?.slider?.id ?? ''}
+                  onChange={(value) =>
+                    setAttributes(
+                      setImmutably(attributes, ['slider', 'id'], value),
+                    )
+                  }
+                  help={__(
+                    'This ID can be used to filter slider params via `webentor/slider/view/swiper_params` hook.',
+                  )}
+                />
+              </PanelRow>
 
               <hr />
 
@@ -252,41 +256,46 @@ const initSliderSettings = () => {
                       />
                     </PanelRow>
 
-                    <TextControl
-                      label={__('Slides per view', 'webentor')}
-                      value={
-                        attributes?.slider?.slidesPerView?.value?.[tab.name] ??
-                        ''
-                      }
-                      onChange={(value) =>
-                        setAttributes(
-                          setImmutably(
-                            attributes,
-                            ['slider', 'slidesPerView', 'value', tab.name],
-                            value,
-                          ),
-                        )
-                      }
-                      type="number"
-                    />
+                    <PanelRow>
+                      <TextControl
+                        label={__('Slides per view', 'webentor')}
+                        value={
+                          attributes?.slider?.slidesPerView?.value?.[
+                            tab.name
+                          ] ?? ''
+                        }
+                        onChange={(value) =>
+                          setAttributes(
+                            setImmutably(
+                              attributes,
+                              ['slider', 'slidesPerView', 'value', tab.name],
+                              value,
+                            ),
+                          )
+                        }
+                        type="number"
+                      />
+                    </PanelRow>
 
-                    <TextControl
-                      label={__('Space Between Slides', 'webentor')}
-                      value={
-                        attributes?.slider?.spaceBetween?.value?.[tab.name] ??
-                        ''
-                      }
-                      onChange={(value) =>
-                        setAttributes(
-                          setImmutably(
-                            attributes,
-                            ['slider', 'spaceBetween', 'value', tab.name],
-                            value,
-                          ),
-                        )
-                      }
-                      type="number"
-                    />
+                    <PanelRow>
+                      <TextControl
+                        label={__('Space Between Slides', 'webentor')}
+                        value={
+                          attributes?.slider?.spaceBetween?.value?.[tab.name] ??
+                          ''
+                        }
+                        onChange={(value) =>
+                          setAttributes(
+                            setImmutably(
+                              attributes,
+                              ['slider', 'spaceBetween', 'value', tab.name],
+                              value,
+                            ),
+                          )
+                        }
+                        type="number"
+                      />
+                    </PanelRow>
                   </div>
                 )}
               </TabPanel>

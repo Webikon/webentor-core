@@ -13,6 +13,7 @@ import {
 import {
   Notice,
   PanelBody,
+  PanelRow,
   SelectControl,
   TextControl,
 } from '@wordpress/components';
@@ -142,18 +143,20 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
             )}
           </div>
 
-          <TextControl
-            label={__('Query ID', 'webentor')}
-            value={queryId}
-            onChange={(value) => {
-              setQuery({
-                queryId: value,
-              });
-            }}
-            help={__(
-              'This can be used to filter query params via `webentor/query_loop_args` hook.',
-            )}
-          />
+          <PanelRow>
+            <TextControl
+              label={__('Query ID', 'webentor')}
+              value={queryId}
+              onChange={(value) => {
+                setQuery({
+                  queryId: value,
+                });
+              }}
+              help={__(
+                'This can be used to filter query params via `webentor/query_loop_args` hook.',
+              )}
+            />
+          </PanelRow>
         </PanelBody>
       </InspectorControls>
 

@@ -1,5 +1,11 @@
 # Webentor Core Changelog
 
+## 0.15.4
+
+- **Restore inspector-control spacing under WordPress 7.0.** `@wordpress/components` 32.0.0 (bundled by WP 7.0) flipped `__nextHasNoMarginBottom` to default-true, silently removing the implicit 8px bottom margin from controls that relied on it. The affected bare controls — `e-slider` settings (Autoplay Speed, Slider ID, Slides per view, Space Between Slides), `e-query-loop` (Posts Per Page, Query ID, taxonomy `FormTokenField`), and `e-picker-query-loop` (Query ID) — are now wrapped in `PanelRow`, the house spacing idiom, so inspector panels render with consistent gaps again on WP 7.0. Editor-only; no frontend or API change.
+- **Align `@wordpress/*` devDependencies with the WP 7.0 runtime.** These imports are externalized to `window.wp.*`, so the WP-bundled Gutenberg versions are what actually runs — declared ranges now match them instead of npm latest: `components` `^32.2.1`, `icons` `^11.7.1`, `block-editor` `^15.13.2`, `blocks` `^15.13.1`, `block-library` `^9.40.2`, `i18n` `^6.13.1`. Also declares the previously undeclared externalized imports (`compose` `^7.40.1`, `data` `^10.40.1`, `element` `^6.40.1`, `hooks` `^4.40.1`, `html-entities` `^4.40.1`) so their types resolve, and removes the unused webpack-era `@wordpress/dependency-extraction-webpack-plugin`. Types/lint-only; runtime is unchanged by design.
+- **Consumer migration**: the core update itself is a transparent patch within the existing `^0.15` range (`pnpm up @webikon/webentor-core && composer update webikon/webentor-core`); the `@wordpress/*` dependency alignment applies to consumer theme manifests via `pnpm dlx @webikon/webentor-codemods run starter-2.1.2` (dry-run), then `--apply`. See `@webikon/webentor-codemods`.
+
 ## 0.15.3
 
 - **Fix `e-picker-query-loop` ignoring the manual pick order.** The Posts Picker Query Loop block stores the editor's hand-picked order in its `posts` attribute and builds a `WP_Query` with `post__in`, but never set `orderby`, so `WP_Query` fell back to its default `orderby => date, order => DESC` and re-sorted the results by publish date — discarding the chosen order on the frontend. It now sets `'orderby' => 'post__in'`, so picked posts render in exactly the order the editor arranged them. No consumer migration needed; the `webentor/query_loop_args` filter can still override `orderby` per query.

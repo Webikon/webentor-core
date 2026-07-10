@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FormTokenField } from '@wordpress/components';
+import { FormTokenField, PanelRow } from '@wordpress/components';
 import { useDebounce } from '@wordpress/compose';
 import { useSelect } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -170,15 +170,17 @@ function TaxonomyItem({ taxonomy, termIds, onChange }) {
   };
   return (
     <div className="block-library-query-inspector__taxonomy-control">
-      <FormTokenField
-        label={taxonomy.name}
-        value={value}
-        onInputChange={debouncedSearch}
-        suggestions={suggestions}
-        displayTransform={decodeEntities}
-        onChange={onTermsChange}
-        __experimentalShowHowTo={false}
-      />
+      <PanelRow>
+        <FormTokenField
+          label={taxonomy.name}
+          value={value}
+          onInputChange={debouncedSearch}
+          suggestions={suggestions}
+          displayTransform={decodeEntities}
+          onChange={onTermsChange}
+          __experimentalShowHowTo={false}
+        />
+      </PanelRow>
     </div>
   );
 }
