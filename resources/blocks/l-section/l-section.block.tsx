@@ -44,6 +44,10 @@ type AttributesType = {
   template?: TemplateArray;
   img?: { id: number; url: string; alt: string };
   mobileImg?: { id: number; url: string; alt: string };
+  video?: { id: number; url: string; mime: string };
+  disableVideoOnMobile?: boolean;
+  lazyloadVideo?: boolean;
+  lazyloadImage?: boolean;
   imgSize?: {
     height: {
       [key: string]: string;
@@ -178,6 +182,16 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
 
   const removeMobileImage = () => {
     setAttributes({ mobileImg: null });
+  };
+
+  const onSelectVideo = (media) => {
+    setAttributes({
+      video: { id: media.id, url: media.url, mime: media.mime },
+    });
+  };
+
+  const removeVideo = () => {
+    setAttributes({ video: null });
   };
 
   const handleEnabledChange = (enabled: boolean, breakpoint: string) => {
@@ -324,6 +338,96 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
           </PanelRow>
 
           <PanelRow>
+            <div className="wbtr:flex wbtr:w-full wbtr:flex-col">
+              <p className="wbtr:mb-2 wbtr:uppercase">
+                {__('Background Video', 'webentor')}
+              </p>
+              <div className="wbtr:mb-2">
+                {__(
+                  'Plays muted, looped and autoplays. The image above is used as fallback (and while the video lazyloads).',
+                  'webentor',
+                )}
+              </div>
+              <MediaUploadCheck>
+                <MediaUpload
+                  onSelect={onSelectVideo}
+                  allowedTypes={['video']}
+                  value={attributes?.video?.id}
+                  render={({ open }) => (
+                    <Button
+                      onClick={open}
+                      variant="secondary"
+                      className="wbtr:w-fit!"
+                    >
+                      {attributes?.video?.id
+                        ? __('Replace Video', 'webentor')
+                        : __('Select Video', 'webentor')}
+                    </Button>
+                  )}
+                />
+              </MediaUploadCheck>
+
+              {attributes?.video?.id && (
+                <Button
+                  onClick={removeVideo}
+                  className="wbtr:h-fit! wbtr:w-fit!"
+                  variant="link"
+                  isDestructive
+                >
+                  {__('Remove Video', 'webentor')}
+                </Button>
+              )}
+
+              {attributes?.video?.id && (
+                <div className="wbtr:mt-3">
+                  <ToggleControl
+                    __nextHasNoMarginBottom
+                    label={__('Disable video on mobile', 'webentor')}
+                    help={__(
+                      'On screens up to 480px the video is neither shown nor loaded; the image is used instead.',
+                      'webentor',
+                    )}
+                    checked={attributes?.disableVideoOnMobile ?? true}
+                    onChange={(value) =>
+                      setAttributes({ disableVideoOnMobile: value })
+                    }
+                  />
+                  <ToggleControl
+                    __nextHasNoMarginBottom
+                    label={__('Lazyload video', 'webentor')}
+                    help={__(
+                      'Load the video only when the section scrolls into view.',
+                      'webentor',
+                    )}
+                    checked={attributes?.lazyloadVideo ?? true}
+                    onChange={(value) =>
+                      setAttributes({ lazyloadVideo: value })
+                    }
+                  />
+                </div>
+              )}
+            </div>
+          </PanelRow>
+
+          <PanelRow>
+            <div className="wbtr:flex wbtr:w-full wbtr:flex-col">
+              <p className="wbtr:mb-2 wbtr:uppercase">
+                {__('Background Image', 'webentor')}
+              </p>
+              <ToggleControl
+                __nextHasNoMarginBottom
+                label={__('Lazyload background image', 'webentor')}
+                help={__(
+                  'Off by default — section backgrounds are usually above the fold (LCP).',
+                  'webentor',
+                )}
+                checked={attributes?.lazyloadImage ?? false}
+                onChange={(value) => setAttributes({ lazyloadImage: value })}
+              />
+            </div>
+          </PanelRow>
+
+          <PanelRow>
             <CustomImageSizesPanel
               attributes={attributes}
               imgSizeAttribute="imgSize"
@@ -443,6 +547,17 @@ const BlockEdit: React.FC<BlockEditProps<AttributesType>> = (props) => {
                   className="wbtr:absolute wbtr:top-0 wbtr:left-0 wbtr:block wbtr:!h-full wbtr:!w-full wbtr:object-cover wbtr:md:hidden"
                 />
               </>
+            )}
+
+            {attributes?.video?.url && (
+              <video
+                src={attributes.video.url}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="wbtr:absolute wbtr:top-0 wbtr:left-0 wbtr:!h-full wbtr:!w-full wbtr:object-cover"
+              />
             )}
           </div>,
           props,

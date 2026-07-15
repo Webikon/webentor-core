@@ -20,6 +20,22 @@
       "type": "object",
       "default": null
     },
+    "video": {
+      "type": "object",
+      "default": null
+    },
+    "disableVideoOnMobile": {
+      "type": "boolean",
+      "default": true
+    },
+    "lazyloadVideo": {
+      "type": "boolean",
+      "default": true
+    },
+    "lazyloadImage": {
+      "type": "boolean",
+      "default": false
+    },
     "imgSize": {
       "type": "object",
       "default": null

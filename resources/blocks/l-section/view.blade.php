@@ -13,6 +13,16 @@
   $img_id = $attributes['img']['id'] ?? null;
   $img_id_mobile = $attributes['mobileImg']['id'] ?? $img_id;
 
+  $video_id = $attributes['video']['id'] ?? null;
+  $video_url = $video_id ? wp_get_attachment_url($video_id) : null;
+  $video_mime = $video_id ? get_post_mime_type($video_id) : null;
+
+  // Section background image is eager by default (usually the LCP element).
+  $lazyload_image = !empty($attributes['lazyloadImage']);
+  // Video toggles default to true (perf-friendly) when the attribute is absent.
+  $lazyload_video = !isset($attributes['lazyloadVideo']) || $attributes['lazyloadVideo'];
+  $disable_video_mobile = !isset($attributes['disableVideoOnMobile']) || $attributes['disableVideoOnMobile'];
+
   $overlay = $attributes['overlay'] ?? null;
   $has_overlay = !empty($overlay['enabled']);
   $overlay_opacity = isset($overlay['opacity']) ? (int) $overlay['opacity'] : 20;
@@ -50,7 +60,7 @@
 
 <section
   {!! $anchor !!}
-  class="w-section {{ !empty($img_id) ? 'w-section--has-bg-img wbtr:overflow-hidden' : '' }} {{ $has_overlay ? 'w-section--has-overlay' : '' }} wbtr:relative wbtr:flex {{ $block_classes }} {{ apply_filters('webentor/l-section/section_classes', '', $attributes, $block) }}"
+  class="w-section {{ !empty($img_id) || !empty($video_url) ? 'w-section--has-bg-img wbtr:overflow-hidden' : '' }} {{ $has_overlay ? 'w-section--has-overlay' : '' }} wbtr:relative wbtr:flex {{ $block_classes }} {{ apply_filters('webentor/l-section/section_classes', '', $attributes, $block) }}"
 >
   {!! apply_filters('webentor/l-section/inner_start', '', $attributes, $block) !!}
 
@@ -101,9 +111,29 @@
       <img
         src="{!! \Webentor\Core\get_resized_image_url($img_id, [1920, $height_basic], $crop_basic) !!}"
         alt="{!! \Webentor\Core\get_image_alt($img_id) !!}"
+        loading="{{ $lazyload_image ? 'lazy' : 'eager' }}"
         class="w-section-img wbtr:absolute wbtr:inset-0 wbtr:h-full wbtr:w-full wbtr:object-cover"
       >
     </picture>
+  @endif
+
+  @if (!empty($video_url))
+    <video
+      class="w-section-video w-section-img wbtr:absolute wbtr:inset-0 wbtr:h-full wbtr:w-full wbtr:object-cover {{ $disable_video_mobile ? 'wbtr:hidden wbtr:sm:block' : '' }}"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="none"
+      data-webentor-video
+      @if ($lazyload_video) data-lazyload="1" @endif
+      @if ($disable_video_mobile) data-disable-mobile="1" @endif
+    >
+      <source
+        data-src="{{ esc_url($video_url) }}"
+        type="{{ esc_attr($video_mime) }}"
+      >
+    </video>
   @endif
 
   <div class="w-section-inner wbtr:flex wbtr:flex-col wbtr:relative {{ $custom_classes }}">

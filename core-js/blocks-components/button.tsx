@@ -21,9 +21,10 @@ import { __ } from '@wordpress/i18n';
  * @param {string}   props.attributeName    Attribute name for button object, e.g. "button".
  * @param {string}   props.placement        Popover placement
  * @param {boolean}  props.hideVariant      Whether variants select should be displayed.
- * @param {boolean}  props.hideAction       Whether action select should be displayed.
+ * @param {boolean}  props.hideSize         Whether size select should be displayed.
  * @param {boolean}  props.hideLink         Whether url and open in new tab toggle should be displayed.
- * @param {boolean}  props.hidePopup        Whether popup select should be displayed.
+ * @param {boolean}  props.hideHtmlElement  Whether the HTML element (<a>/<button>) select should be displayed.
+ * @param {boolean}  props.hideIcon         Whether the icon toggle + picker should be displayed.
  * @param {string}   props.className        Classes.
  * @param {string}   props.innerClassName   Inner classes.
  * @param {string}   props.buttonClassName  Button classes.
@@ -92,6 +93,8 @@ type WebentorButtonProps = {
   attributes: Record<string, any>;
   buttonClassName?: string;
   className?: string;
+  hideHtmlElement?: boolean;
+  hideIcon?: boolean;
   hideLink?: boolean;
   hideSize?: boolean;
   hideVariant?: boolean;
@@ -108,6 +111,8 @@ export const WebentorButton = (props: WebentorButtonProps) => {
     hideVariant,
     hideSize,
     hideLink,
+    hideHtmlElement,
+    hideIcon,
     attributeName,
     attributes,
     setAttributes,
@@ -311,18 +316,23 @@ export const WebentorButton = (props: WebentorButtonProps) => {
 
             {ExtensionComponent}
 
-            <SelectControl
-              label={__('Button HTML Element', 'webentor')}
-              value={attributes[attributeName]?.htmlElement}
-              __nextHasNoMarginBottom
-              options={[
-                { label: __('Link (<a>)', 'webentor'), value: 'a' },
-                { label: __('Button (<button>)', 'webentor'), value: 'button' },
-              ]}
-              onChange={(value) =>
-                updateObjectAttribute(attributeName, 'htmlElement', value)
-              }
-            />
+            {!hideHtmlElement && (
+              <SelectControl
+                label={__('Button HTML Element', 'webentor')}
+                value={attributes[attributeName]?.htmlElement}
+                __nextHasNoMarginBottom
+                options={[
+                  { label: __('Link (<a>)', 'webentor'), value: 'a' },
+                  {
+                    label: __('Button (<button>)', 'webentor'),
+                    value: 'button',
+                  },
+                ]}
+                onChange={(value) =>
+                  updateObjectAttribute(attributeName, 'htmlElement', value)
+                }
+              />
+            )}
 
             {!hideLink &&
               attributes[attributeName]?.htmlElement != 'button' && (
@@ -360,54 +370,56 @@ export const WebentorButton = (props: WebentorButtonProps) => {
                 </>
               )}
 
-            <div className="wbtr:border wbtr:border-editor-border wbtr:p-2">
-              <div className="wbtr:my-2">
-                <ToggleControl
-                  label="Show Button Icon"
-                  checked={attributes[attributeName]?.showIcon}
-                  onChange={(value) =>
-                    updateObjectAttribute(attributeName, 'showIcon', value)
-                  }
-                />
-              </div>
-
-              {attributes[attributeName]?.showIcon && (
-                <div>
-                  <div className="wbtr:mb-2 wbtr:flex wbtr:items-center wbtr:gap-4">
-                    <IconPickerToolbarButton
-                      label="Icon"
-                      value={attributes[attributeName]?.icon}
-                      onChange={handleIconSelection}
-                    />
-                    {attributes[attributeName]?.icon?.name ? (
-                      <div className="wbtr:size-10">
-                        <Icon10up
-                          name={attributes[attributeName]?.icon.name}
-                          iconSet={attributes[attributeName]?.icon.iconSet}
-                        />
-                      </div>
-                    ) : (
-                      'No icon selected'
-                    )}
-                  </div>
-                  <div className="wbtr:mb-2">
-                    <SelectControl
-                      label="Icon Position"
-                      value={attributes[attributeName]?.iconPosition}
-                      __nextHasNoMarginBottom
-                      options={iconPositions}
-                      onChange={(value) =>
-                        updateObjectAttribute(
-                          attributeName,
-                          'iconPosition',
-                          value,
-                        )
-                      }
-                    />
-                  </div>
+            {!hideIcon && (
+              <div className="wbtr:border wbtr:border-editor-border wbtr:p-2">
+                <div className="wbtr:my-2">
+                  <ToggleControl
+                    label="Show Button Icon"
+                    checked={attributes[attributeName]?.showIcon}
+                    onChange={(value) =>
+                      updateObjectAttribute(attributeName, 'showIcon', value)
+                    }
+                  />
                 </div>
-              )}
-            </div>
+
+                {attributes[attributeName]?.showIcon && (
+                  <div>
+                    <div className="wbtr:mb-2 wbtr:flex wbtr:items-center wbtr:gap-4">
+                      <IconPickerToolbarButton
+                        label="Icon"
+                        value={attributes[attributeName]?.icon}
+                        onChange={handleIconSelection}
+                      />
+                      {attributes[attributeName]?.icon?.name ? (
+                        <div className="wbtr:size-10">
+                          <Icon10up
+                            name={attributes[attributeName]?.icon.name}
+                            iconSet={attributes[attributeName]?.icon.iconSet}
+                          />
+                        </div>
+                      ) : (
+                        'No icon selected'
+                      )}
+                    </div>
+                    <div className="wbtr:mb-2">
+                      <SelectControl
+                        label="Icon Position"
+                        value={attributes[attributeName]?.iconPosition}
+                        __nextHasNoMarginBottom
+                        options={iconPositions}
+                        onChange={(value) =>
+                          updateObjectAttribute(
+                            attributeName,
+                            'iconPosition',
+                            value,
+                          )
+                        }
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </Popover>
       )}

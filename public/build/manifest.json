@@ -4,7 +4,7 @@
     "name": "_utils"
   },
   "editor.deps.json": {
-    "file": "assets/editor.deps-BlXjIMbQ.json",
+    "file": "assets/editor.deps-D8M5pYds.json",
     "src": "editor.deps.json"
   },
   "resources/blocks/e-accordion/script.ts": {
@@ -58,6 +58,15 @@
     "src": "resources/blocks/l-nav-menu/style.css",
     "isEntry": true
   },
+  "resources/blocks/l-section/script.ts": {
+    "file": "assets/resources/blocks/l-section/script-Dko-DSu-.js",
+    "name": "resources/blocks/l-section/script",
+    "src": "resources/blocks/l-section/script.ts",
+    "isEntry": true,
+    "imports": [
+      "__utils-CxNuNGJl.js"
+    ]
+  },
   "resources/blocks/l-section/style.css": {
     "file": "assets/resources/blocks/l-section/style-ve0mngOI.css",
     "name": "resources/blocks/l-section/style",
@@ -86,7 +95,7 @@
     "isEntry": true
   },
   "resources/scripts/editor.ts": {
-    "file": "assets/coreEditorJs-C0kGg9L7.js",
+    "file": "assets/coreEditorJs-Wzsvt_RN.js",
     "name": "coreEditorJs",
     "src": "resources/scripts/editor.ts",
     "isEntry": true,
@@ -95,7 +104,7 @@
     ]
   },
   "resources/styles/app.css": {
-    "file": "assets/coreAppStyles-afJAdduv.css",
+    "file": "assets/coreAppStyles-oIFrvEYJ.css",
     "name": "coreAppStyles",
     "names": [
       "coreAppStyles.css"
@@ -104,7 +113,7 @@
     "isEntry": true
   },
   "resources/styles/editor.css": {
-    "file": "assets/coreEditorStyles-rGBH8e4z.css",
+    "file": "assets/coreEditorStyles-BFC1fv49.css",
     "name": "coreEditorStyles",
     "names": [
       "coreEditorStyles.css"
