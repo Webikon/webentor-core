@@ -17,6 +17,18 @@
   $video_url = $video_id ? wp_get_attachment_url($video_id) : null;
   $video_mime = $video_id ? get_post_mime_type($video_id) : null;
 
+  // <video> has no `alt`; its accessible name comes from aria-label/title. Prefer the
+  // attachment's alt text, fall back to its title. Empty label => decorative, so the
+  // element is hidden from the a11y tree instead of being announced as an unnamed video.
+  $video_label = $video_id
+      ? (string) apply_filters(
+          'webentor/l-section/video_label',
+          \Webentor\Core\get_image_alt($video_id) ?: get_the_title($video_id),
+          $video_id,
+          $attributes,
+      )
+      : '';
+
   // Section background image is eager by default (usually the LCP element).
   $lazyload_image = !empty($attributes['lazyloadImage']);
   // Video toggles default to true (perf-friendly) when the attribute is absent.
@@ -126,6 +138,12 @@
       playsinline
       preload="none"
       data-webentor-video
+      @if ($video_label)
+        title="{{ $video_label }}"
+        aria-label="{{ $video_label }}"
+      @else
+        aria-hidden="true"
+      @endif
       @if ($lazyload_video) data-lazyload="1" @endif
       @if ($disable_video_mobile) data-disable-mobile="1" @endif
     >

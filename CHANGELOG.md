@@ -1,5 +1,9 @@
 # Webentor Core Changelog
 
+## 0.15.6
+
+- **Give the `l-section` background video an accessible name.** The `<video>` added in 0.15.5 rendered with no `title` or `aria-label` (`<video>` has no `alt`). It now labels itself from the attachment's alt text, falling back to the attachment title, and emits both; with neither set it is treated as decorative and gets `aria-hidden="true"`. New `webentor/l-section/video_label` filter overrides the label. Frontend template only.
+
 ## 0.15.5
 
 - **`l-section` background video.** The Section block's "Background Image Settings" panel now accepts a background `<video>` alongside the existing image, which remains the fallback shown while the video loads and on mobile when disabled. Three toggles control delivery: *Disable video on mobile* (≤480px — the video is neither shown nor fetched; the image is used instead), *Lazyload video* (loads only when the section scrolls into the viewport, via a vanilla `IntersectionObserver` — core does not depend on `@alpinejs/intersect`), and *Lazyload background image* (`loading="lazy"` on the section image; off by default since section backgrounds are usually the LCP element). The video renders muted/looped/autoplay/`playsinline` on the existing `.w-section-img` background layer, above the `<picture>` and below the overlay/content; its source is held in `data-src` (`preload="none"`) so nothing is fetched until the block script decides to load it. The load decision re-runs on a throttled `resize`, so a viewport that starts on mobile still loads the video after crossing up to desktop. New attributes: `video`, `disableVideoOnMobile`, `lazyloadVideo`, `lazyloadImage`. Additive — existing sections are unaffected.
