@@ -50,6 +50,7 @@ class WebentorCoreServiceProvider extends ServiceProvider
         require_once WEBENTOR_CORE_PHP_PATH . '/app/blocks-init.php';
         require_once WEBENTOR_CORE_PHP_PATH . '/app/blocks-settings.php';
         require_once WEBENTOR_CORE_PHP_PATH . '/app/blocks-migration.php';
+        require_once WEBENTOR_CORE_PHP_PATH . '/app/blocks-pattern-overrides.php';
         require_once WEBENTOR_CORE_PHP_PATH . '/app/CloudinaryClient.php';
         require_once WEBENTOR_CORE_PHP_PATH . '/app/i18n.php';
         require_once WEBENTOR_CORE_PHP_PATH . '/app/images.php';

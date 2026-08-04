@@ -1,5 +1,10 @@
 # Webentor Core Changelog
 
+## 0.15.7
+
+- **Pattern Overrides support for Webentor blocks (WordPress 7.0).** WP 7.0 opened Pattern Overrides to custom blocks via a single server-side opt-in, so `e-button` (`button`), `e-accordion` and `e-tab-container` (`title`), `e-image` (`imgId`, `link`), `e-svg` (`imgId`), `e-icon-picker` (`icon`) and `e-gallery` (`images`) now expose their content attributes to Block Bindings — a synced pattern can be reused across pages with per-instance content while the design keeps propagating from the original. The list is filterable via the new `webentor/block_bindings_supported_attributes` filter, and because Pattern Overrides and Block Bindings share it, these attributes also become connectable to post meta. Container blocks are overridden through their inner blocks rather than the container itself; see the new Pattern Overrides guide in the docs. One caveat: WordPress keys bindings by top-level attribute name only, so `e-button`'s single `button` object is overridden as a whole — once an instance overrides a button it keeps its own `variant`/`size`/`icon` and stops inheriting later design changes from the pattern.
+- **Pass resolved attributes into Blade views.** The block `render_callback` discarded its `$attributes` argument and re-read `$block->attributes` instead, bypassing the value WordPress guarantees carries resolved Block Bindings values for dynamic blocks. `render_block_blade()` now takes them as an optional third argument and the callback passes them through. No behavior change for blocks without bindings.
+
 ## 0.15.6
 
 - **Give the `l-section` background video an accessible name.** The `<video>` added in 0.15.5 rendered with no `title` or `aria-label` (`<video>` has no `alt`). It now labels itself from the attachment's alt text, falling back to the attachment title, and emits both; with neither set it is treated as decorative and gets `aria-hidden="true"`. New `webentor/l-section/video_label` filter overrides the label. Frontend template only.

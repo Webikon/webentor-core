@@ -149,7 +149,10 @@ function register_block_from_filename($filename)
 
     // Only add the render callback if the block has a file called markdown.php in it's directory
     $block_options['render_callback'] = function ($attributes, $content, $block) {
-        return render_block_blade($block);
+        // Pass $attributes through rather than re-reading $block->attributes: this is
+        // the argument WP guarantees carries resolved Block Bindings values
+        // (Pattern Overrides, post meta, …) for dynamic blocks.
+        return render_block_blade($block, null, $attributes);
     };
 
     $registered_block = register_block_type_from_metadata($block_folder, $block_options);
@@ -181,11 +184,12 @@ function register_block_from_filename($filename)
 /**
  * Render blade view from block object and also handle inner blocks.
  *
- * @param  \WP_Block $block
- * @param  \WP_Block $parent_block
+ * @param  \WP_Block  $block
+ * @param  \WP_Block  $parent_block
+ * @param  array|null $attributes Resolved attributes, defaults to the block's own.
  * @return string
  */
-function render_block_blade($block, $parent_block = null)
+function render_block_blade($block, $parent_block = null, $attributes = null)
 {
     // We don't need to render blocks in admin or while saving, this will dramatically improve Gutenberg loading time
     if (is_admin() || wp_doing_ajax() || (!empty($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' && defined('REST_REQUEST'))) {
@@ -209,21 +213,23 @@ function render_block_blade($block, $parent_block = null)
         }
     }
 
+    $attributes = $attributes ?? $block->attributes;
+
     // Create ID HTML attribute from anchor value
     $anchor = '';
-    if (!empty($block->attributes['anchor'])) {
-        $anchor = 'id="' . esc_attr($block->attributes['anchor']) . '" ';
+    if (!empty($attributes['anchor'])) {
+        $anchor = 'id="' . esc_attr($attributes['anchor']) . '" ';
     }
 
     $block_name = $block->parsed_block['blockName']; // in format "namespace/block-name"
     $block_slug = substr($block_name, strrpos($block_name, "/") + 1); // get only "block-name"
 
     // Single call to avoid duplicate attribute iteration
-    $block_classes_result = prepareBlockClassesFromSettings($block->attributes, $block, $parent_block);
+    $block_classes_result = prepareBlockClassesFromSettings($attributes, $block, $parent_block);
     $classes = $block_classes_result['classes'];
     $classes_by_property = $block_classes_result['classes_by_property'];
     $all_classes_by_property = $block_classes_result['all_classes_by_property'];
-    $bg_classes = prepareBgBlockClassesFromSettings($block->attributes);
+    $bg_classes = prepareBgBlockClassesFromSettings($attributes);
 
     $additional_data = [];
 
@@ -249,7 +255,7 @@ function render_block_blade($block, $parent_block = null)
     // check if file exists
     if (\Roots\view()->exists($view_path)) {
         $block_content = \Roots\view($view_path, [
-            'attributes' => $block->attributes,
+            'attributes' => $attributes,
             'innerBlocksContent' => $inner_blocks_html,
             'anchor' => $anchor,
             'block_classes' => $classes,
