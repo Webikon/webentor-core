@@ -4,7 +4,7 @@
     "name": "_utils"
   },
   "editor.deps.json": {
-    "file": "assets/editor.deps-Bd1lgXQE.json",
+    "file": "editor.deps.json",
     "src": "editor.deps.json"
   },
   "resources/blocks/e-accordion/script.ts": {

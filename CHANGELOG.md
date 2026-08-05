@@ -1,5 +1,11 @@
 # Webentor Core Changelog
 
+## 0.15.8
+
+- **Fix: the editor script's WordPress dependencies were never applied.** `setup-core.php` reads `public/build/editor.deps.json`, but the build only ever emitted that file hashed under `assets/`, so the path never existed and the core editor bundle enqueued with just `react`/`react-dom` — none of its ten `wp-*` dependencies. It is now emitted, sorted, at the path PHP reads.
+- Fixes a related build-output churn: `@roots/vite-plugin` builds that dependency list in a `Set`, whose insertion order follows module-transform order and is nondeterministic under Rolldown. Every rebuild changed the asset hash, filename and `manifest.json`, so `git diff` could not distinguish a real build change from noise. Output is now byte-stable across rebuilds.
+- Editor-only and transparent to consumers: `pnpm up @webikon/webentor-core` within the existing `^0.15` range. Verified against the test-site — 26 blocks insert and validate, editor and frontend console output identical to 0.15.7.
+
 ## 0.15.7
 
 - **Pattern Overrides support for Webentor blocks (WordPress 7.0).** WP 7.0 opened Pattern Overrides to custom blocks via a single server-side opt-in, so `e-button` (`button`), `e-accordion` and `e-tab-container` (`title`), `e-image` (`imgId`, `link`), `e-svg` (`imgId`), `e-icon-picker` (`icon`) and `e-gallery` (`images`) now expose their content attributes to Block Bindings — a synced pattern can be reused across pages with per-instance content while the design keeps propagating from the original. The list is filterable via the new `webentor/block_bindings_supported_attributes` filter, and because Pattern Overrides and Block Bindings share it, these attributes also become connectable to post meta. Container blocks are overridden through their inner blocks rather than the container itself; see the new Pattern Overrides guide in the docs. One caveat: WordPress keys bindings by top-level attribute name only, so `e-button`'s single `button` object is overridden as a whole — once an instance overrides a button it keeps its own `variant`/`size`/`icon` and stops inheriting later design changes from the pattern.
