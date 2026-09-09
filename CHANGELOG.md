@@ -1,5 +1,10 @@
 # Webentor Core Changelog
 
+## 0.15.9
+
+- **WordPress 7.1 responsive viewports follow the Tailwind breakpoints.** WP 7.1 per-viewport block styles and hide-on-viewport visibility read theme.json `settings.viewport` (defaults 480px/782px), which cuts through the `sm`/`md` ranges. Core now derives it from `settings.custom.breakpoints` — mobile = `md` − 1px, tablet = `lg` − 1px — so WP Mobile is below `md`, Tablet is `md`, Desktop is `lg` and up. An explicit `settings.viewport` in theme.json wins; the new `webentor/theme_json_viewport` filter adjusts the derived values. Older WordPress ignores the key.
+- Verified against WordPress 7.1: every block validates, no editor or frontend deprecations. Transparent patch within `^0.15`.
+
 ## 0.15.8
 
 - **Fix: the editor script's WordPress dependencies were never applied.** `setup-core.php` reads `public/build/editor.deps.json`, but the build only ever emitted that file hashed under `assets/`, so the path never existed and the core editor bundle enqueued with just `react`/`react-dom` — none of its ten `wp-*` dependencies. It is now emitted, sorted, at the path PHP reads.
