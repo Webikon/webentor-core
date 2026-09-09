@@ -153,6 +153,42 @@ add_action('wp_enqueue_scripts', function () {
 }, 5);
 
 /**
+ * Align WordPress responsive viewports with the Tailwind breakpoints.
+ *
+ * WP 7.1 `@mobile`/`@tablet` style states and hide-on-viewport visibility read
+ * `settings.viewport` (defaults 480px/782px), which straddles our `sm`/`md`
+ * ranges. Derive them from `settings.custom.breakpoints` so WP Mobile = below
+ * `md`, Tablet = the `md` range, Desktop = `lg` and up. A theme.json that
+ * declares `settings.viewport` itself wins. Older WP drops the unknown key.
+ */
+add_filter('wp_theme_json_data_theme', function ($theme_json) {
+    $data = $theme_json->get_data();
+
+    if (!empty($data['settings']['viewport'])) {
+        return $theme_json;
+    }
+
+    $breakpoints = $data['settings']['custom']['breakpoints'] ?? [];
+    // (int) "768px" === 768
+    $md = (int) ($breakpoints['md'] ?? 0);
+    $lg = (int) ($breakpoints['lg'] ?? 0);
+
+    if ($md <= 1 || $lg <= $md) {
+        return $theme_json;
+    }
+
+    $viewport = apply_filters('webentor/theme_json_viewport', [
+        'mobile' => ($md - 1) . 'px',
+        'tablet' => ($lg - 1) . 'px',
+    ], $breakpoints);
+
+    return $theme_json->update_with([
+        'version' => 3,
+        'settings' => ['viewport' => $viewport],
+    ]);
+});
+
+/**
  * Add the WordPress AJAX URL to the window object.
  *
  * This allows JavaScript to make AJAX requests to the WordPress admin-ajax.php endpoint.
