@@ -30,7 +30,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=24.0.0"
   },
   "type": "module",
   "exports": {
@@ -188,7 +188,7 @@
     "eslint-plugin-react": "^7.37.5",
     "glob": "^13.0.6",
     "husky": "^9.1.7",
-    "lint-staged": "^16.4.0",
+    "lint-staged": "^17.6.0",
     "patch-package": "^8.0.1",
     "postcss": "^8.5.15",
     "postcss-pxtorem": "^6.1.0",
