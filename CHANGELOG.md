@@ -1,5 +1,20 @@
 # Webentor Core Changelog
 
+## 0.15.10
+
+- **WordPress 7.1 components.** The Query Loop taxonomy filter hides the `FormTokenField`
+  how-to text with `help=""`, since components 37 (WordPress 7.1) deprecates
+  `__experimentalShowHowTo`. On WordPress 7.0 the hint text shows again, which is cosmetic.
+- `@wordpress/*` devDependencies now match the WordPress 7.1.2 bundle (block-editor 16,
+  components 37, compose 8.4, element 8.3, icons 15.2). They run from `window.wp`, so only
+  types and lint change. The exception is `@wordpress/icons`, which is bundled: the editor
+  build now ships icons 15. The unused `@wordpress/block-library` is removed.
+- **Node 24 floor** (`engines.node >=24.0.0`). Node 20 is past end of life. pnpm only warns
+  about it unless `engine-strict` is set. Dev: `lint-staged` 17.
+- `repository.url` points at the monorepo with a `directory`, so npm provenance matches it.
+- A transparent patch within `^0.15`: `pnpm up @webikon/webentor-core` and
+  `composer update webikon/webentor-core`.
+
 ## 0.15.9
 
 - **WordPress 7.1 responsive viewports follow the Tailwind breakpoints.** WP 7.1 per-viewport block styles and hide-on-viewport visibility read theme.json `settings.viewport` (defaults 480px/782px), which cuts through the `sm`/`md` ranges. Core now derives it from `settings.custom.breakpoints` — mobile = `md` − 1px, tablet = `lg` − 1px — so WP Mobile is below `md`, Tablet is `md`, Desktop is `lg` and up. An explicit `settings.viewport` in theme.json wins; the new `webentor/theme_json_viewport` filter adjusts the derived values. Older WordPress ignores the key.

@@ -178,7 +178,9 @@ function TaxonomyItem({ taxonomy, termIds, onChange }) {
           suggestions={suggestions}
           displayTransform={decodeEntities}
           onChange={onTermsChange}
-          __experimentalShowHowTo={false}
+          // Empty `help` hides the how-to text (components 37+). WP 7.0 ignores it and shows the
+          // hint; `__experimentalShowHowTo` would hide it there but logs a deprecation on 7.1.
+          help=""
         />
       </PanelRow>
     </div>
