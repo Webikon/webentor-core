@@ -59,7 +59,7 @@
     "isEntry": true
   },
   "resources/blocks/l-section/script.ts": {
-    "file": "assets/resources/blocks/l-section/script-Dko-DSu-.js",
+    "file": "assets/resources/blocks/l-section/script-CyflO-rK.js",
     "name": "resources/blocks/l-section/script",
     "src": "resources/blocks/l-section/script.ts",
     "isEntry": true,
@@ -77,7 +77,7 @@
     "isEntry": true
   },
   "resources/core-components/slider/slider.script.ts": {
-    "file": "assets/sliderJs-DLm2vmOQ.js",
+    "file": "assets/sliderJs-BfT-4DBV.js",
     "name": "sliderJs",
     "src": "resources/core-components/slider/slider.script.ts",
     "isEntry": true,
@@ -86,7 +86,7 @@
     ]
   },
   "resources/core-components/slider/slider.style.css": {
-    "file": "assets/sliderStyles-BSRtSZjK.css",
+    "file": "assets/sliderStyles-CIq9Jko8.css",
     "name": "sliderStyles",
     "names": [
       "sliderStyles.css"
@@ -95,7 +95,7 @@
     "isEntry": true
   },
   "resources/scripts/editor.ts": {
-    "file": "assets/coreEditorJs-arGp-XQR.js",
+    "file": "assets/coreEditorJs-EUpTl24E.js",
     "name": "coreEditorJs",
     "src": "resources/scripts/editor.ts",
     "isEntry": true,
@@ -104,7 +104,7 @@
     ]
   },
   "resources/styles/app.css": {
-    "file": "assets/coreAppStyles-oIFrvEYJ.css",
+    "file": "assets/coreAppStyles-DmG33gMH.css",
     "name": "coreAppStyles",
     "names": [
       "coreAppStyles.css"
@@ -113,7 +113,7 @@
     "isEntry": true
   },
   "resources/styles/editor.css": {
-    "file": "assets/coreEditorStyles-BFC1fv49.css",
+    "file": "assets/coreEditorStyles--2_hxicb.css",
     "name": "coreEditorStyles",
     "names": [
       "coreEditorStyles.css"

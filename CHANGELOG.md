@@ -1,5 +1,21 @@
 # Webentor Core Changelog
 
+## 0.15.11
+
+- **Custom block colours now render on the frontend.** With `settings.color.custom` on, a custom
+  background or text colour is saved as `style.color.*` hex, but Blade views only printed
+  palette-slug classes, so the editor showed it and the site dropped it. Core now adds it as an
+  inline `style` on the block's outer element, through WordPress's `wp_apply_colors_support()`.
+  That respects each block's `supports.color` and cleans the values. Palette colours are unchanged.
+  Only the first root element of a view gets the style.
+- **Security updates** (dev and build tooling only; nothing in the published runtime): phpcs 3.13.6,
+  Vite 8.3.7, Tailwind 4.3.5 (it no longer pins a vulnerable postcss), and patched indirect
+  brace-expansion, figlet, minimatch 9, nanoid, postcss-selector-parser and moment. Left open,
+  since the fix needs a major upstream bump or doesn't exist: minimatch and uuid via
+  `@10up/block-components`, glob via `@shufo/prettier-plugin-blade`, and deepmerge via `@types/wordpress__block-editor`.
+- A transparent patch within `^0.15`: `pnpm up @webikon/webentor-core` and
+  `composer update webikon/webentor-core`.
+
 ## 0.15.10
 
 - **WordPress 7.1 components.** The Query Loop taxonomy filter hides the `FormTokenField`
