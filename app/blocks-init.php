@@ -276,6 +276,8 @@ function render_block_blade($block, $parent_block = null, $attributes = null)
          * @param array    $block         The full block, including name and attributes.
          * @param WP_Block $instance      The block instance.
          */
+        $block_content = apply_custom_colors_to_block($block_content, $block, $block->attributes);
+
         $block_content = apply_filters('render_blade_block', $block_content, $block->parsed_block, $block);
 
         /**
@@ -361,6 +363,8 @@ function render_inner_block_blade($block, $parent_block = null)
          * @param array    $block         The full block, including name and attributes.
          * @param WP_Block $instance      The block instance.
          */
+        $block_content = apply_custom_colors_to_block($block_content, $block, $block->attributes);
+
         $block_content = apply_filters('render_blade_block', $block_content, $block->parsed_block, $block);
 
         /**
@@ -382,6 +386,43 @@ function render_inner_block_blade($block, $parent_block = null)
     } else {
         return $block->render();
     }
+}
+
+/**
+ * Apply custom (non-palette) colors from `style.color` as inline style on the block's outer element.
+ * Blade views only print slug-based color classes, so without this custom hex picks are dropped on the frontend.
+ *
+ * @param  mixed     $block_content
+ * @param  \WP_Block $block
+ * @param  array     $attributes
+ * @return mixed
+ */
+function apply_custom_colors_to_block($block_content, $block, $attributes)
+{
+    if (empty($attributes['style']['color']) || !$block->block_type) {
+        return $block_content;
+    }
+
+    // Core's color support: respects supports.color (incl. per-key + skipSerialization) and sanitizes.
+    // Preset slugs come back as classes only (which our views already print), so `style` is custom values only.
+    $css = wp_apply_colors_support($block->block_type, $attributes)['style'] ?? '';
+    if ($css === '') {
+        return $block_content;
+    }
+
+    // Blade returns a View object; render it so the tag processor can edit it
+    $processor = new \WP_HTML_Tag_Processor((string) $block_content);
+    if (!$processor->next_tag()) {
+        return $block_content;
+    }
+
+    $existing = trim((string) $processor->get_attribute('style'));
+    if ($existing !== '' && !str_ends_with($existing, ';')) {
+        $existing .= ';';
+    }
+    $processor->set_attribute('style', $existing . $css);
+
+    return $processor->get_updated_html();
 }
 
 /**
